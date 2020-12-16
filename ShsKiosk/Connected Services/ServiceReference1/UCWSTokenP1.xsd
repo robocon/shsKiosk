@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tokenws.ucws.nhso.go.th/" targetNamespace="http://tokenws.ucws.nhso.go.th/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="searchCurrentByPID" type="tns:searchCurrentByPID" />
+  <xs:element name="searchCurrentByPIDResponse" type="tns:searchCurrentByPIDResponse" />
+  <xs:complexType name="searchCurrentByPID">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="user_person_id" type="xs:string" />
+      <xs:element minOccurs="0" name="smctoken" type="xs:string" />
+      <xs:element minOccurs="0" name="person_id" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="searchCurrentByPIDResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:nhsoDataSetC1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="nhsoDataSetC1">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="birthdate" type="xs:string" />
+      <xs:element minOccurs="0" name="cardid" type="xs:string" />
+      <xs:element minOccurs="0" name="chat" type="xs:string" />
+      <xs:element name="count_select" type="xs:int" />
+      <xs:element minOccurs="0" name="expdate" type="xs:string" />
+      <xs:element minOccurs="0" name="fname" type="xs:string" />
+      <xs:element minOccurs="0" name="hmain" type="xs:string" />
+      <xs:element minOccurs="0" name="hmain_name" type="xs:string" />
+      <xs:element minOccurs="0" name="hmain_op" type="xs:string" />
+      <xs:element minOccurs="0" name="hmain_op_name" type="xs:string" />
+      <xs:element minOccurs="0" name="hsub" type="xs:string" />
+      <xs:element minOccurs="0" name="hsub_name" type="xs:string" />
+      <xs:element minOccurs="0" name="lname" type="xs:string" />
+      <xs:element minOccurs="0" name="maininscl" type="xs:string" />
+      <xs:element minOccurs="0" name="maininscl_main" type="xs:string" />
+      <xs:element minOccurs="0" name="maininscl_name" type="xs:string" />
+      <xs:element minOccurs="0" name="mastercup_id" type="xs:string" />
+      <xs:element minOccurs="0" name="nation" type="xs:string" />
+      <xs:element minOccurs="0" name="new_date_register" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="new_expdate" type="xs:string" />
+      <xs:element minOccurs="0" name="new_hmain" type="xs:string" />
+      <xs:element minOccurs="0" name="new_hmain_name" type="xs:string" />
+      <xs:element minOccurs="0" name="new_hmain_op" type="xs:string" />
+      <xs:element minOccurs="0" name="new_hmain_op_name" type="xs:string" />
+      <xs:element minOccurs="0" name="new_hsub" type="xs:string" />
+      <xs:element minOccurs="0" name="new_hsub_name" type="xs:string" />
+      <xs:element minOccurs="0" name="new_maininscl" type="xs:string" />
+      <xs:element minOccurs="0" name="new_maininscl_name" type="xs:string" />
+      <xs:element minOccurs="0" name="new_mastercup_id" type="xs:string" />
+      <xs:element minOccurs="0" name="new_paid_model" type="xs:string" />
+      <xs:element minOccurs="0" name="new_purchaseprovince" type="xs:string" />
+      <xs:element minOccurs="0" name="new_purchaseprovince_name" type="xs:string" />
+      <xs:element minOccurs="0" name="new_staffname" type="xs:string" />
+      <xs:element minOccurs="0" name="new_startdate" type="xs:string" />
+      <xs:element minOccurs="0" name="new_subinscl" type="xs:string" />
+      <xs:element minOccurs="0" name="new_subinscl_name" type="xs:string" />
+      <xs:element minOccurs="0" name="new_type_register" type="xs:string" />
+      <xs:element minOccurs="0" name="new_type_register_desc" type="xs:string" />
+      <xs:element minOccurs="0" name="paid_model" type="xs:string" />
+      <xs:element minOccurs="0" name="person_id" type="xs:string" />
+      <xs:element minOccurs="0" name="primary_amphur_name" type="xs:string" />
+      <xs:element minOccurs="0" name="primary_moo" type="xs:string" />
+      <xs:element minOccurs="0" name="primary_mooban_name" type="xs:string" />
+      <xs:element minOccurs="0" name="primary_province_name" type="xs:string" />
+      <xs:element minOccurs="0" name="primary_tumbon_name" type="xs:string" />
+      <xs:element minOccurs="0" name="primaryprovince" type="xs:string" />
+      <xs:element minOccurs="0" name="purchaseprovince" type="xs:string" />
+      <xs:element minOccurs="0" name="purchaseprovince_name" type="xs:string" />
+      <xs:element minOccurs="0" name="sex" type="xs:string" />
+      <xs:element minOccurs="0" name="startdate" type="xs:string" />
+      <xs:element minOccurs="0" name="startdate_sss" type="xs:string" />
+      <xs:element minOccurs="0" name="status" type="xs:string" />
+      <xs:element minOccurs="0" name="status_desc" type="xs:string" />
+      <xs:element minOccurs="0" name="subinscl" type="xs:string" />
+      <xs:element minOccurs="0" name="subinscl_name" type="xs:string" />
+      <xs:element minOccurs="0" name="title" type="xs:string" />
+      <xs:element minOccurs="0" name="title_name" type="xs:string" />
+      <xs:element minOccurs="0" name="ws_data_source" type="xs:string" />
+      <xs:element minOccurs="0" name="ws_date_request" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ws_status" type="xs:string" />
+      <xs:element minOccurs="0" name="ws_status_desc" type="xs:string" />
+      <xs:element minOccurs="0" name="wsid" type="xs:string" />
+      <xs:element minOccurs="0" name="wsid_batch" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
