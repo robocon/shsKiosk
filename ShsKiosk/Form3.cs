@@ -1,12 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -37,7 +31,10 @@ namespace ShsKiosk
             presetVn("ex01");
         }
 
-
+        /// <summary>
+        /// ออก VN แทนทะเบียนพร้อมกับ ปริ้นสลิป VN + คิว
+        /// </summary>
+        /// <param name="exType"></param>
         public async void presetVn(string exType)
         {
             string content = await Task.Run(() => SaveVn(smConfig.createVnUrl, idcard, appointId, exType));

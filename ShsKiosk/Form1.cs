@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ThaiNationalIDCard;
@@ -18,85 +19,13 @@ namespace ShsKiosk
         public Personal person;
         static readonly HttpClient client = new HttpClient();
         List<Appoint> appoint;
-
         static readonly SmConfigure smConfig = new SmConfigure();
 
         public Form1()
         {
             InitializeComponent();
-        }
-
-        static async Task<string> Ajax()
-        {
-            string nhsoContent = null;
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(smConfig.registerComUrl);
-                response.EnsureSuccessStatusCode();
-                nhsoContent = await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            return nhsoContent;
-        }
-        
-        public Personal GetPersonalCardreader()
-        {
-            idcard = new ThaiIDCard();
-            Personal person = idcard.readAllPhoto();
-            return person;
-        }
-        
-        public async Task<Personal> RunCardReadder()
-        {
-            var person = await Task.Run(() => GetPersonalCardreader());
-            return person;
-        }
-
-
-        static async Task<string> searchOpUser(string posturi, string idcard) 
-        {
-            string content = null;
-            try
-            {
-                sendAppoint appoint = new sendAppoint();
-                appoint.Idcard = idcard;
-
-                HttpClient httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(posturi, appoint);
-                response.EnsureSuccessStatusCode();
-                content = await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            return content;
-        }
-
-        static async Task<string> SearchAppoint(string posturi, string idcard)
-        {
-            string content = null;
-            try
-            {
-                sendAppoint appoint = new sendAppoint();
-                appoint.Idcard = idcard;
-
-                HttpClient httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(posturi, appoint);
-                response.EnsureSuccessStatusCode();
-                content = await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            return content;
+            this.KeyPreview = true;
+            this.KeyDown += Form1_KeyDown;
         }
 
         string[] cardReaders;
@@ -108,11 +37,18 @@ namespace ShsKiosk
             //this.FormBorderStyle = FormBorderStyle.None;
             //this.WindowState = FormWindowState.Maximized;
 
-            idcard = new ThaiIDCard();
-            cardReaders = idcard.GetReaders();
-            idcard.MonitorStart(cardReaders[0].ToString());
-            idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
-            idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
+            try
+            {
+                idcard = new ThaiIDCard();
+                cardReaders = idcard.GetReaders();
+                idcard.MonitorStart(cardReaders[0].ToString());
+                idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
+                idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
+            }
+            catch(Exception ex)
+            {
+                label1.Text = "ไม่พบเครื่องอ่านบัตรสมาร์ตการ์ด";
+            }
         }
 
         public void CardRemoveCallback()
@@ -135,6 +71,8 @@ namespace ShsKiosk
 
         private async void CardInsertedCallback(Personal personal)
         {
+            Console.WriteLine("card was inserted");
+
             label1SetText("ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...");
             pictureBox1Status(true);
 
@@ -147,12 +85,19 @@ namespace ShsKiosk
             }
             else
             {
-
                 string idcard = person.Citizenid;
 
                 // ดึง Token จากเครื่องแม่
                 string nhsoContent = await Task.Run(() => Ajax());
+                if (String.IsNullOrEmpty(nhsoContent))
+                {
+                    label1SetText("ไม่พบ Token กรุณาประสานห้องทะเบียน");
+                    return;
+                }
+
                 string[] nhso = nhsoContent.Split('#');
+
+                Console.WriteLine("nhso token found");
 
                 string staffIdCard = nhso[0];
                 string nhsoToken = nhso[1];
@@ -170,7 +115,7 @@ namespace ShsKiosk
                 }
 
                 // ตรวจสอบ HN 
-                string testOpcard = await Task.Run(() => searchOpUser(smConfig.searchOpcardUrl, idcard));
+                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
                 responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
                 if (resultOpcard.opcardStatus == "n")
                 {
@@ -180,7 +125,7 @@ namespace ShsKiosk
                 }
 
                 // ตรวจสอบการนัดหมาย
-                string content = await Task.Run(() => SearchAppoint(smConfig.searchAppointUrl, idcard));
+                string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
                 responseAppoint result = JsonConvert.DeserializeObject<responseAppoint>(content);
 
                 string appointContent = "";
@@ -274,6 +219,86 @@ namespace ShsKiosk
         {
             FormManualIdcard frm = new FormManualIdcard();
             frm.ShowDialog();
+        }
+
+        public string hn = "";
+        public string fullTxt = "";
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeysConverter kc = new KeysConverter();
+            string testKey = kc.ConvertToString(e.KeyValue);
+            fullTxt += testKey;
+            
+            if (testKey == "OemMinus")
+            {
+                hn += "-";
+            }
+            else if (Regex.IsMatch(testKey, "[0-9]", RegexOptions.IgnoreCase))
+            {
+                hn += testKey;
+            }
+
+            if (Regex.IsMatch(fullTxt, "(ControlKey)"))
+            {
+                Console.WriteLine(hn);
+
+                //label2.Text = hn;
+                hn = fullTxt = "";
+
+                label1SetText("Barcode Reader ยังไม่เปิดใช้งาน ใจเย็นๆเด้อค๊า");
+            }
+        }
+
+        public async Task<Personal> RunCardReadder()
+        {
+            Console.WriteLine("get data from cardreader");
+            var person = await Task.Run(() => GetPersonalCardreader());
+            return person;
+        }
+
+        public Personal GetPersonalCardreader()
+        {
+            idcard = new ThaiIDCard();
+            Personal person = idcard.readAllPhoto();
+            return person;
+        }
+
+        static async Task<string> Ajax()
+        {
+            string nhsoContent = null;
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(smConfig.registerComUrl);
+                response.EnsureSuccessStatusCode();
+                nhsoContent = await response.Content.ReadAsStringAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            return nhsoContent;
+        }
+
+        static async Task<string> searchFromSm(string posturi, string idcard)
+        {
+            string content = null;
+            try
+            {
+                sendAppoint appoint = new sendAppoint();
+                appoint.Idcard = idcard;
+
+                HttpClient httpClient = new HttpClient();
+                var response = await httpClient.PostAsJsonAsync(posturi, appoint);
+                response.EnsureSuccessStatusCode();
+                content = await response.Content.ReadAsStringAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
+            return content;
         }
     }
 

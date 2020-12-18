@@ -26,6 +26,8 @@ namespace ShsKiosk
 
         private void Form5_Load(object sender, EventArgs e)
         {
+            Console.WriteLine("form select doctor from appoint loaded");
+
             int yStart = 47; // ความสูง เริ่มต้น
             foreach (Appoint app in appoint)
             {
@@ -39,7 +41,6 @@ namespace ShsKiosk
                 Mybutton.Font = new Font("TH Niramit AS", 18, FontStyle.Bold);
 
                 Mybutton.Click += (object se, EventArgs ea) => {
-                    //Console.WriteLine(app.rowId+" "+app.doctor);
                     sendVNandQueue(app.rowId, app.doctor);
                 };
 
@@ -52,9 +53,6 @@ namespace ShsKiosk
 
         public async void sendVNandQueue(int rowId, string doctor)
         {
-            MessageBox.Show(rowId + " " + doctor + " เตรียมเชื่อมกับ คิว พร้อมออก vn");
-            Console.WriteLine(rowId + " " + doctor);
-
             string content = await Task.Run(() => SaveVn(smConfig.createVnUrl, idcard, rowId));
             responseSaveVn result = JsonConvert.DeserializeObject<responseSaveVn>(content);
 
