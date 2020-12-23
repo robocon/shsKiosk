@@ -24,8 +24,10 @@ namespace ShsKiosk
         public Form1()
         {
             InitializeComponent();
+
+            // Event Key สำหรับ Aibecy MP2600
             this.KeyPreview = true;
-            this.KeyDown += Form1_KeyDown;
+            //this.KeyDown += Form1_KeyDown;
         }
 
         string[] cardReaders;
@@ -206,6 +208,8 @@ namespace ShsKiosk
                 frm.appointCount = appointCount;
                 frm.appoint = appoint;
 
+                frm.hosPtRight = resultOpcard.hosPtRight;
+
                 frm.moreTxt = moreTxt;
 
                 frm.ShowDialog();
@@ -243,10 +247,9 @@ namespace ShsKiosk
             {
                 Console.WriteLine(hn);
 
-                //label2.Text = hn;
-                hn = fullTxt = "";
+                label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
 
-                label1SetText("Barcode Reader ยังไม่เปิดใช้งาน ใจเย็นๆเด้อค๊า");
+                hn = fullTxt = "";
             }
         }
 
@@ -326,6 +329,7 @@ namespace ShsKiosk
     {
         public string opcardStatus { set; get; }
         public string idcard { set; get; }
+        public string hosPtRight { set; get; }
     }
 
 }

@@ -53,13 +53,13 @@ namespace ShsKiosk
             Refresh();
 
             string idcard = textBox1.Text;
+            string hosPtRight;
 
             // ถ้าเป็น hn จะมีขีดกลาง
             if (Regex.IsMatch(idcard, "-", RegexOptions.IgnoreCase))
             {
-
                 // ตรวจสอบ HN 
-                string testOpcard = await Task.Run(() => searchOpUser(smConfig.searchByHn, idcard));
+                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, idcard));
                 responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
                 if (resultOpcard.opcardStatus == "n")
                 {
@@ -70,6 +70,7 @@ namespace ShsKiosk
                 else
                 {
                     idcard = resultOpcard.idcard;
+                    hosPtRight = resultOpcard.hosPtRight;
                 }
             }
             else
@@ -80,6 +81,11 @@ namespace ShsKiosk
                     pictureBox1.Visible = false;
                     return;
                 }
+
+                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
+                responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+                hosPtRight = resultOpcard.hosPtRight;
+
             }
 
             // ดึง Token จากเครื่องแม่
@@ -96,10 +102,6 @@ namespace ShsKiosk
             string staffIdCard = nhso[0];
             string nhsoToken = nhso[1];
 
-            Console.WriteLine(staffIdCard);
-            Console.WriteLine(nhsoToken);
-            Console.WriteLine(idcard);
-
             // ดึงข้อมูลสิทธิการรักษาจาก สปสช
             UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
             nhsoDataSetC1 pt = new nhsoDataSetC1();
@@ -112,7 +114,7 @@ namespace ShsKiosk
             }
 
             // ตรวจสอบการนัดหมาย
-            string content = await Task.Run(() => SearchAppoint(smConfig.searchAppointUrl, idcard));
+            string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
             responseAppoint result = JsonConvert.DeserializeObject<responseAppoint>(content);
 
             string appointContent = "";
@@ -134,7 +136,7 @@ namespace ShsKiosk
             if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
             {
                 label2.Text = "สิทธิหลักของท่านมีการเปลี่ยนแปลง กรุณาติดต่อห้องทะเบียน\nเพื่อทำการตรวจสอบสิทธิ";
-                Console.WriteLine("MAININSCL: "+pt.maininscl+" NEW_MAININSCL: "+pt.new_maininscl);
+                //Console.WriteLine("MAININSCL: "+pt.maininscl+" NEW_MAININSCL: "+pt.new_maininscl);
                 pictureBox1.Visible = false;
                 return;
             }
@@ -197,6 +199,8 @@ namespace ShsKiosk
 
             frm.moreTxt = moreTxt;
 
+            frm.hosPtRight = hosPtRight;
+
             frm.ShowDialog();
 
             this.Close();
@@ -226,13 +230,7 @@ namespace ShsKiosk
             return person;
         }
 
-        public async Task<Personal> RunCardReadder()
-        {
-            var person = await Task.Run(() => GetPersonalCardreader());
-            return person;
-        }
-
-        static async Task<string> searchOpUser(string posturi, string idcard)
+        static async Task<string> searchFromSm(string posturi, string idcard)
         {
             string content = null;
             try
@@ -244,27 +242,7 @@ namespace ShsKiosk
                 var response = await httpClient.PostAsJsonAsync(posturi, appoint);
                 response.EnsureSuccessStatusCode();
                 content = await response.Content.ReadAsStringAsync();
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            return content;
-        }
-
-        static async Task<string> SearchAppoint(string posturi, string idcard)
-        {
-            string content = null;
-            try
-            {
-                sendAppoint appoint = new sendAppoint();
-                appoint.Idcard = idcard;
-
-                HttpClient httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(posturi, appoint);
-                response.EnsureSuccessStatusCode();
-                content = await response.Content.ReadAsStringAsync();
+                //Console.WriteLine(content);
             }
             catch (HttpRequestException e)
             {

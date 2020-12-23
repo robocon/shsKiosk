@@ -15,6 +15,7 @@ namespace ShsKiosk
 
         public string idcard;
         public int appointId;
+        public string hosPtRight;
         static readonly HttpClient client = new HttpClient();
         static readonly SmConfigure smConfig = new SmConfigure();
 
@@ -37,8 +38,20 @@ namespace ShsKiosk
         /// <param name="exType"></param>
         public async void presetVn(string exType)
         {
-            string content = await Task.Run(() => SaveVn(smConfig.createVnUrl, idcard, appointId, exType));
-            responseSaveVn result = JsonConvert.DeserializeObject<responseSaveVn>(content);
+            SaveVn sv = new SaveVn();
+
+            /*
+            Console.WriteLine(smConfig.createVnUrl);
+            Console.WriteLine(idcard);
+            Console.WriteLine(appointId);
+            Console.WriteLine(hosPtRight);
+            Console.WriteLine(exType);
+            return;
+            */
+
+            await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, appointId, hosPtRight, exType));
+            //string content = await Task.Run(() => SaveVn(smConfig.createVnUrl, idcard, appointId, exType));
+            //responseSaveVn result = JsonConvert.DeserializeObject<responseSaveVn>(content);
 
             this.Close();
 

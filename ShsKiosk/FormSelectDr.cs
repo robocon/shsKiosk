@@ -16,6 +16,7 @@ namespace ShsKiosk
     {
         public List<Appoint> appoint;
         public string idcard;
+        public string hosPtRight;
         static readonly HttpClient client = new HttpClient();
         static readonly SmConfigure smConfig = new SmConfigure();
 
@@ -53,8 +54,9 @@ namespace ShsKiosk
 
         public async void sendVNandQueue(int rowId, string doctor)
         {
-            string content = await Task.Run(() => SaveVn(smConfig.createVnUrl, idcard, rowId));
-            responseSaveVn result = JsonConvert.DeserializeObject<responseSaveVn>(content);
+            SaveVn sv = new SaveVn();
+            await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, rowId, hosPtRight));
+            //responseSaveVn result = JsonConvert.DeserializeObject<responseSaveVn>(content);
 
             this.Close();
         }
@@ -79,6 +81,8 @@ namespace ShsKiosk
             {
                 Console.WriteLine("Message :{0} ", e.Message);
             }
+
+
 
             return content;
         }

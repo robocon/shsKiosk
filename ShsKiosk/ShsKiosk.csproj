@@ -100,6 +100,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EpsonSlip.cs" />
+    <Compile Include="SaveVn.cs" />
     <Compile Include="SmConfigure.cs" />
     <Compile Include="Connected Services\ServiceReference1\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -163,7 +165,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Report.rdlc" />
     <None Include="Connected Services\ServiceReference1\ShsKiosk.ServiceReference1.nhsoDataSetC1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
