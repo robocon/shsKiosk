@@ -18,7 +18,7 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         static readonly SmConfigure smConfig = new SmConfigure();
 
-        public async void save(string posturi, string idcard, int appointRowId, string userPtRight = null, string exType = "ex04")
+        public async Task<string> save(string posturi, string idcard, int appointRowId, string userPtRight = null, string exType = "ex04")
         {
             string content = null;
             try
@@ -38,12 +38,15 @@ namespace ShsKiosk
             {
                 Console.WriteLine("Message :{0} ", ex.Message);
             }
+            return content;
 
             if (!String.IsNullOrEmpty(content))
             {
 
-                responseSaveVn app = JsonConvert.DeserializeObject<responseSaveVn>(content);
+                //responseSaveVn app = JsonConvert.DeserializeObject<responseSaveVn>(content);
 
+                //return content;
+                /*
                 if (app.appointStatus == "y")
                 {
                     //string CurrentDat = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -129,6 +132,7 @@ namespace ShsKiosk
                         );
                     }
                 }
+                */
 
             }
         }
