@@ -1,12 +1,9 @@
-﻿using ESC_POS_USB_NET.Printer;
-using Newtonsoft.Json;
-using PCSC.Monitoring;
+﻿using Newtonsoft.Json;
 using ShsKiosk.ServiceReference1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +11,7 @@ using ThaiNationalIDCard;
 
 namespace ShsKiosk
 {
-    
+
     public partial class Form1 : Form
     {
         private ThaiIDCard idcard;
@@ -43,6 +40,7 @@ namespace ShsKiosk
 
             try
             {
+                Console.WriteLine("Form1 was loaded");
                 idcard = new ThaiIDCard();
                 cardReaders = idcard.GetReaders();
                 idcard.MonitorStart(cardReaders[0].ToString());
@@ -52,6 +50,7 @@ namespace ShsKiosk
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                button2.Hide();
                 label1.Text = "ไม่พบเครื่องอ่านบัตรสมาร์ตการ์ด";
             }
         }
@@ -210,11 +209,8 @@ namespace ShsKiosk
                 frm.appointContent = appointContent;
                 frm.appointCount = appointCount;
                 frm.appoint = appoint;
-
                 frm.hosPtRight = resultOpcard.hosPtRight;
-
                 frm.moreTxt = moreTxt;
-
                 frm.ShowDialog();
 
                 label1SetText("");
@@ -307,25 +303,10 @@ namespace ShsKiosk
             return content;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button2_Click_1(object sender, EventArgs e)
         {
-
-            //EncodingProvider ppp = CodePagesEncodingProvider.Instance;
-            //Encoding.RegisterProvider(ppp);
-
-            //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            //var encoding = System.Text.Encoding.GetEncoding(874);
-
-            //var thai2 = encoding.GetString(encoding.GetBytes("สวัสดีชาวโลก"));
-
-            Printer printer = new Printer("EPSON TM-T82X Receipt", "windows-874");
-            Bitmap image = new Bitmap(Bitmap.FromFile("Images/LogoWithName2.bmp"));
-            printer.Image(image);
-            printer.Image(new Bitmap(Bitmap.FromFile("Images/LogoWithNameOPD.bmp")));
-            printer.Append("สวัสดีชาวโลก");
-            printer.FullPaperCut();
-            printer.PrintDocument();
-
+            FormManualIdcard frm = new FormManualIdcard();
+            frm.ShowDialog();
         }
     }
 

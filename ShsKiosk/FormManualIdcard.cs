@@ -4,11 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using ThaiNationalIDCard;
-using System.IO;
 
 namespace ShsKiosk
 {
@@ -19,6 +18,7 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         List<Appoint> appoint;
         static readonly SmConfigure smConfig = new SmConfigure();
+        static nhsoDataSetC1 pt;
 
         public FormManualIdcard()
         {
@@ -28,6 +28,7 @@ namespace ShsKiosk
         private void Form4_Load(object sender, EventArgs e)
         {
             Refresh();
+            Console.WriteLine("Form manual was loaded");
             labelTitle.Text = "กรอกเลขบัตรประชาชน หรือ HN\nกดตรวจสอบสิทธิ";
         }
 
@@ -48,6 +49,7 @@ namespace ShsKiosk
         // ปุ่มเช็กสิทธิ
         private async void button12_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Button เช็กสิทธิ์ was clicked");
             label2.Text = "ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...";
             pictureBox1.Visible = true;
             Refresh();
@@ -58,6 +60,7 @@ namespace ShsKiosk
             // ถ้าเป็น hn จะมีขีดกลาง
             if (Regex.IsMatch(idcard, "-", RegexOptions.IgnoreCase))
             {
+                Console.WriteLine("Check from HN");
                 // ตรวจสอบ HN 
                 string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, idcard));
                 responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
@@ -75,6 +78,7 @@ namespace ShsKiosk
             }
             else
             {
+                Console.WriteLine("Check from idcard");
                 if ( idcard.Length != 13 )
                 {
                     label2.Text = "หมายเลขบัตรประชาชนไม่ครบ13หลัก\nกรุณาตรวจสอบหมายเลขบัตรของท่านอีกครั้ง";
@@ -96,6 +100,7 @@ namespace ShsKiosk
                 pictureBox1.Visible = false;
                 return;
             }
+            Console.WriteLine("Get nhso content from 192");
 
             string[] nhso = nhsoContent.Split('#');
 
@@ -103,13 +108,23 @@ namespace ShsKiosk
             string nhsoToken = nhso[1];
 
             // ดึงข้อมูลสิทธิการรักษาจาก สปสช
-            UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
-            nhsoDataSetC1 pt = new nhsoDataSetC1();
-            pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
-            if (pt.ws_status == "NHSO-00003")
+            try
             {
-                label2.Text = "TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication MX อีกครั้ง";
-                pictureBox1.Visible = false;
+                UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
+                pt = new nhsoDataSetC1();
+                pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
+                if (pt == null || pt.ws_status == "NHSO-00003")
+                {
+                    label2.Text = "TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication MX อีกครั้ง";
+                    pictureBox1.Visible = false;
+                    return;
+                }
+                Console.WriteLine("Get soap data from nhso");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                label2.Text = "ขออภัยในความไม่สะดวก\nการเชือมต่อมีปัญหา\nกรุณากรอก HN หรือเลขบัตรประชาชนอีกครั้ง";
                 return;
             }
 
@@ -124,6 +139,7 @@ namespace ShsKiosk
             appointStatus = result.appointStatus;
             if (appointStatus == "y")
             {
+                Console.WriteLine("Get appoint data");
                 appointContent = result.appointContent;
                 appointCount = int.Parse(result.appointCount);
                 appoint = result.appoint;
@@ -138,7 +154,7 @@ namespace ShsKiosk
                 label2.Text = "สิทธิหลักของท่านมีการเปลี่ยนแปลง กรุณาติดต่อห้องทะเบียน\nเพื่อทำการตรวจสอบสิทธิ";
                 //Console.WriteLine("MAININSCL: "+pt.maininscl+" NEW_MAININSCL: "+pt.new_maininscl);
                 pictureBox1.Visible = false;
-                return;
+                return; 
             }
 
             string moreTxt = "";

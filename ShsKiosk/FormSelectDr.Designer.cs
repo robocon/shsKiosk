@@ -43,14 +43,14 @@ namespace ShsKiosk
             this.label1.TabIndex = 0;
             this.label1.Text = "กรุณาเลือกแพทย์ที่ต้องการตรวจ";
             // 
-            // Form5
+            // FormSelectDr
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 450);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form5";
+            this.Name = "FormSelectDr";
             this.Text = "สุรศักดิ์ Kiosk";
             this.Load += new System.EventHandler(this.Form5_Load);
             this.ResumeLayout(false);

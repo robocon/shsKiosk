@@ -27,7 +27,7 @@ namespace ShsKiosk
 
         private void Form5_Load(object sender, EventArgs e)
         {
-            Console.WriteLine("form select doctor from appoint loaded");
+            Console.WriteLine("form select doctor from appoint was loaded");
 
             int yStart = 47; // ความสูง เริ่มต้น
             foreach (Appoint app in appoint)
@@ -55,10 +55,14 @@ namespace ShsKiosk
         public async void sendVNandQueue(int rowId, string doctor)
         {
             SaveVn sv = new SaveVn();
-            await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, rowId, hosPtRight));
-            //responseSaveVn result = JsonConvert.DeserializeObject<responseSaveVn>(content);
-
-            this.Close();
+            string content = await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, rowId, hosPtRight));
+            if (!String.IsNullOrEmpty(content))
+            {
+                responseSaveVn app = JsonConvert.DeserializeObject<responseSaveVn>(content);
+                EpsonSlip es = new EpsonSlip();
+                es.printOutSlip(app);
+                this.Close();
+            }
         }
 
         static async Task<string> SaveVn(string posturi, string idcard, int appointRowId, string userPtRight = null)
