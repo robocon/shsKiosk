@@ -23,7 +23,7 @@ namespace ShsKiosk
 
         public SmConfigure()
         {
-            this.registerComUrl = "http://192.168.140.44/getvalue.php";
+            this.registerComUrl = "http://192.168.142.73/getvalue.php";
             this.searchOpcardUrl = this.brokerUrl + "searchOpcard.php";
             this.searchAppointUrl = this.brokerUrl + "searchAppoint.php";
             this.createVnUrl = this.brokerUrl + "saveVn.php";

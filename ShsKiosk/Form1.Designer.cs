@@ -98,6 +98,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(166, 35);
             this.button2.TabIndex = 7;
+            this.button2.TabStop = false;
             this.button2.Text = "กรณีลืมบัตรประชาชน";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
@@ -113,7 +114,7 @@
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.ClientSize = new System.Drawing.Size(1064, 749);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);

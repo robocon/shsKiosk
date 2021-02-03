@@ -50,7 +50,7 @@ namespace ShsKiosk
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                button2.Hide();
+                //button2.Hide();
                 label1.Text = "ไม่พบเครื่องอ่านบัตรสมาร์ตการ์ด";
             }
         }
@@ -242,12 +242,23 @@ namespace ShsKiosk
                 hn += testKey;
             }
 
+            /*
             if (Regex.IsMatch(fullTxt, "(ControlKey)"))
             {
                 Console.WriteLine(hn);
 
                 label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
 
+                hn = fullTxt = "";
+            }
+            */
+            // ZD7100N Model MS-FPT301 จะลงท้ายเป็น Enter
+            // MP2600 จะลงท้ายเป็น (ControlKey)
+            if (Regex.IsMatch(fullTxt, "Enter"))
+            {
+                Console.WriteLine("QR Code/Barcode Scanner was loaded");
+                //richTextBox1.Text = hn;
+                label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
                 hn = fullTxt = "";
             }
         }
