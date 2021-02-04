@@ -64,31 +64,5 @@ namespace ShsKiosk
                 this.Close();
             }
         }
-
-        static async Task<string> SaveVn(string posturi, string idcard, int appointRowId, string userPtRight = null)
-        {
-            string content = null;
-            try
-            {
-                saveVn savevn = new saveVn();
-                savevn.Idcard = idcard;
-                savevn.appointId = appointRowId;
-                savevn.exType = "ex04";
-                savevn.userPtRight = userPtRight;
-
-                var response = await client.PostAsJsonAsync(posturi, savevn);
-                response.EnsureSuccessStatusCode();
-                content = await response.Content.ReadAsStringAsync();
-
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-
-
-            return content;
-        }
     }
 }

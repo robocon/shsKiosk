@@ -33,6 +33,7 @@ namespace ShsKiosk
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
+            //this.Focus();
             pictureBox1.Visible = false;
             //this.TopMost = true;
             //this.FormBorderStyle = FormBorderStyle.None;
@@ -90,7 +91,11 @@ namespace ShsKiosk
             else
             {
                 string idcard = person.Citizenid;
+                Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
 
+                UcwsNhso(idcard, Photo1);
+
+                /*
                 // ดึง Token จากเครื่องแม่
                 string nhsoContent = await Task.Run(() => Ajax());
                 if (String.IsNullOrEmpty(nhsoContent))
@@ -193,8 +198,7 @@ namespace ShsKiosk
                 {
                     hmain = $"( { pt.new_hmain } ) { pt.new_hmain_name }";
                 }
-
-                Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
+                
                 Form2 frm = new Form2();
                 frm.fullname = pt.fname + " " + pt.lname;
                 frm.idcard = idcard;
@@ -214,25 +218,18 @@ namespace ShsKiosk
                 frm.ShowDialog();
 
                 label1SetText("");
+                */
             }
-        }
-
-        // ฟอร์มกดเลขบัตรประชาชนที่หน้าตู้
-        private void button2_Click(object sender, EventArgs e)
-        {
-            FormManualIdcard frm = new FormManualIdcard();
-            frm.ShowDialog();
         }
 
         public string hn = "";
         public string fullTxt = "";
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private async void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             KeysConverter kc = new KeysConverter();
             string testKey = kc.ConvertToString(e.KeyValue);
             fullTxt += testKey;
-            
             if (testKey == "OemMinus")
             {
                 hn += "-";
@@ -242,25 +239,26 @@ namespace ShsKiosk
                 hn += testKey;
             }
 
-            /*
-            if (Regex.IsMatch(fullTxt, "(ControlKey)"))
-            {
-                Console.WriteLine(hn);
-
-                label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
-
-                hn = fullTxt = "";
-            }
-            */
             // ZD7100N Model MS-FPT301 จะลงท้ายเป็น Enter
-            // MP2600 จะลงท้ายเป็น (ControlKey)
+            // MP2600 จะลงท้ายเป็น ControlKeyMJ
             if (Regex.IsMatch(fullTxt, "Enter"))
             {
+                
                 Console.WriteLine("QR Code/Barcode Scanner was loaded");
-                //richTextBox1.Text = hn;
-                label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
+                //label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
+                
+                // ตรวจสอบ HN 
+                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, hn));
+                responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+
+                Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
+                Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));
+                
+                UcwsNhso(resultOpcard.idcard, Photo1);
+                
                 hn = fullTxt = "";
             }
+
         }
 
         public async Task<Personal> RunCardReadder()
@@ -314,10 +312,142 @@ namespace ShsKiosk
             return content;
         }
 
+        // ฟอร์มกดเลขบัตรประชาชนที่หน้าตู้
         private void button2_Click_1(object sender, EventArgs e)
         {
+            labelxx.Focus();
             FormManualIdcard frm = new FormManualIdcard();
             frm.ShowDialog();
+        }
+
+        public async void UcwsNhso(string idcard, Bitmap Photo1)
+        {
+            //Console.WriteLine(idcard);
+            // ดึง Token จากเครื่องแม่
+            string nhsoContent = await Task.Run(() => Ajax());
+            if (String.IsNullOrEmpty(nhsoContent))
+            {
+                label1SetText("ไม่พบ Token กรุณาประสานห้องทะเบียน");
+                return;
+            }
+
+            string[] nhso = nhsoContent.Split('#');
+
+            Console.WriteLine("nhso token found");
+
+            string staffIdCard = nhso[0];
+            string nhsoToken = nhso[1];
+
+            // ดึงข้อมูลสิทธิการรักษาจาก สปสช
+            UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
+            nhsoDataSetC1 pt = new nhsoDataSetC1();
+            pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
+            Console.WriteLine(pt.ws_status+" : "+pt.ws_status_desc);
+            if (pt.ws_status == "NHSO-00003")
+            {
+                label1SetText("TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication MX อีกครั้ง");
+                pictureBox1Status(false);
+                return;
+            }
+
+            // ตรวจสอบ HN 
+            string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
+            responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+            //Console.WriteLine(resultOpcard.opcardStatus);
+            //Console.WriteLine(resultOpcard.idcard);
+            if (resultOpcard.opcardStatus == "n")
+            {
+                label1SetText("ไม่พบ HN กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน");
+                pictureBox1Status(false);
+                return;
+            }
+
+            // ตรวจสอบการนัดหมาย
+            string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
+            responseAppoint result = JsonConvert.DeserializeObject<responseAppoint>(content);
+
+            string appointContent = "";
+            int appointCount = 0;
+            string appointStatus = "";
+
+            appointStatus = result.appointStatus;
+            //Console.WriteLine(appointStatus);
+            if (appointStatus == "y")
+            {
+                appointContent = result.appointContent;
+                appointCount = int.Parse(result.appointCount);
+                appoint = result.appoint;
+            }
+
+            pictureBox1Status(false);
+
+            // ถ้า maininscl เป็นค่าว่างแสดงว่าไม่มีสิทธิอะไรเลย ให้สงสัยก่อนว่าเป็นเงินสด
+            // ถ้ามี new_maininscl แสดงว่ามีสิทธิใหม่เกิดขึ้น เช่น หมดสิทธิ ปกส. แล้วไปใช้ 30บาท หรืออื่นๆ
+            if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
+            {
+                label1SetText("สิทธิหลักของท่านมีการเปลี่ยนแปลง กรุณาติดต่อห้องทะเบียน\nเพื่อทำการตรวจสอบสิทธิ");
+                pictureBox1Status(false);
+                return;
+            }
+
+            string moreTxt = "";
+            if ((!String.IsNullOrEmpty(pt.hmain) && pt.hmain != "11512") || (!String.IsNullOrEmpty(pt.new_hmain) && pt.new_hmain != "11512"))
+            {
+                moreTxt = "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด";
+            }
+
+            string maininscl = "";
+            string maininsclCode = "";
+            if (!String.IsNullOrEmpty(pt.maininscl))
+            {
+                maininsclCode = pt.maininscl;
+                maininscl = $"( { pt.maininscl } ) { pt.maininscl_name }";
+            }
+            else if (!String.IsNullOrEmpty(pt.new_maininscl))
+            {
+                maininsclCode = pt.new_maininscl;
+                maininscl = $"( { pt.new_maininscl } ) { pt.new_maininscl_name }";
+            }
+
+            string subinscl = "";
+            if (!String.IsNullOrEmpty(pt.subinscl))
+            {
+                subinscl = $"( { pt.subinscl } ) { pt.subinscl_name }";
+            }
+            else if (!String.IsNullOrEmpty(pt.new_subinscl))
+            {
+                subinscl = $"( { pt.new_subinscl } ) { pt.new_subinscl_name }";
+            }
+
+            string hmain = "";
+            if (!String.IsNullOrEmpty(pt.hmain))
+            {
+                hmain = $"( { pt.hmain } ) { pt.hmain_name }";
+            }
+            else if (!String.IsNullOrEmpty(pt.new_hmain))
+            {
+                hmain = $"( { pt.new_hmain } ) { pt.new_hmain_name }";
+            }
+
+            Form2 frm = new Form2();
+            frm.fullname = pt.fname + " " + pt.lname;
+            frm.idcard = idcard;
+
+            frm.mainInSclName = maininscl;
+            frm.subInSclName = subinscl;
+            frm.hMainName = hmain;
+            frm.personImage = Photo1;
+            frm.ptRight = maininsclCode;
+
+            frm.appointStatus = appointStatus;
+            frm.appointContent = appointContent;
+            frm.appointCount = appointCount;
+            frm.appoint = appoint;
+            frm.hosPtRight = resultOpcard.hosPtRight;
+            frm.moreTxt = moreTxt;
+            frm.ShowDialog();
+
+            label1SetText("");
         }
     }
 

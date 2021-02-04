@@ -43,7 +43,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("TH Niramit AS", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label1.Location = new System.Drawing.Point(4, 9);
+            this.label1.Location = new System.Drawing.Point(148, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(768, 73);
             this.label1.TabIndex = 0;
@@ -53,7 +53,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(95, 85);
+            this.button1.Location = new System.Drawing.Point(240, 107);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(254, 63);
             this.button1.TabIndex = 1;
@@ -64,7 +64,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(419, 85);
+            this.button2.Location = new System.Drawing.Point(564, 107);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(254, 63);
             this.button2.TabIndex = 2;
@@ -75,7 +75,7 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(95, 179);
+            this.button3.Location = new System.Drawing.Point(240, 201);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(254, 63);
             this.button3.TabIndex = 3;
@@ -86,7 +86,7 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(419, 179);
+            this.button4.Location = new System.Drawing.Point(564, 201);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(254, 63);
             this.button4.TabIndex = 4;
@@ -97,7 +97,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(419, 277);
+            this.button5.Location = new System.Drawing.Point(564, 299);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(254, 63);
             this.button5.TabIndex = 6;
@@ -108,7 +108,7 @@
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(95, 277);
+            this.button6.Location = new System.Drawing.Point(240, 299);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(254, 63);
             this.button6.TabIndex = 5;
@@ -119,7 +119,7 @@
             // button7
             // 
             this.button7.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(419, 369);
+            this.button7.Location = new System.Drawing.Point(564, 391);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(254, 63);
             this.button7.TabIndex = 8;
@@ -130,7 +130,7 @@
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(95, 369);
+            this.button8.Location = new System.Drawing.Point(240, 391);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(254, 63);
             this.button8.TabIndex = 7;
@@ -142,7 +142,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(1064, 561);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button5);

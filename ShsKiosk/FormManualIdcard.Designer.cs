@@ -53,7 +53,7 @@ namespace ShsKiosk
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(12, 12);
+            this.textBox1.Location = new System.Drawing.Point(141, 12);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(312, 60);
             this.textBox1.TabIndex = 0;
@@ -62,7 +62,7 @@ namespace ShsKiosk
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 250);
+            this.button1.Location = new System.Drawing.Point(141, 250);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 80);
             this.button1.TabIndex = 1;
@@ -73,7 +73,7 @@ namespace ShsKiosk
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(118, 250);
+            this.button2.Location = new System.Drawing.Point(247, 250);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 80);
             this.button2.TabIndex = 2;
@@ -84,7 +84,7 @@ namespace ShsKiosk
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(224, 250);
+            this.button3.Location = new System.Drawing.Point(353, 250);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 80);
             this.button3.TabIndex = 3;
@@ -95,7 +95,7 @@ namespace ShsKiosk
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(224, 164);
+            this.button4.Location = new System.Drawing.Point(353, 164);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(100, 80);
             this.button4.TabIndex = 6;
@@ -106,7 +106,7 @@ namespace ShsKiosk
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(118, 164);
+            this.button5.Location = new System.Drawing.Point(247, 164);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 80);
             this.button5.TabIndex = 5;
@@ -117,7 +117,7 @@ namespace ShsKiosk
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(12, 164);
+            this.button6.Location = new System.Drawing.Point(141, 164);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(100, 80);
             this.button6.TabIndex = 4;
@@ -128,7 +128,7 @@ namespace ShsKiosk
             // button7
             // 
             this.button7.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(224, 78);
+            this.button7.Location = new System.Drawing.Point(353, 78);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(100, 80);
             this.button7.TabIndex = 9;
@@ -139,7 +139,7 @@ namespace ShsKiosk
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(118, 78);
+            this.button8.Location = new System.Drawing.Point(247, 78);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(100, 80);
             this.button8.TabIndex = 8;
@@ -150,7 +150,7 @@ namespace ShsKiosk
             // button9
             // 
             this.button9.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(12, 78);
+            this.button9.Location = new System.Drawing.Point(141, 78);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(100, 80);
             this.button9.TabIndex = 7;
@@ -161,7 +161,7 @@ namespace ShsKiosk
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Location = new System.Drawing.Point(12, 336);
+            this.button10.Location = new System.Drawing.Point(141, 336);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(100, 80);
             this.button10.TabIndex = 10;
@@ -172,7 +172,7 @@ namespace ShsKiosk
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(224, 336);
+            this.button11.Location = new System.Drawing.Point(353, 336);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(100, 80);
             this.button11.TabIndex = 11;
@@ -184,7 +184,7 @@ namespace ShsKiosk
             // 
             this.labelTitle.AutoSize = true;
             this.labelTitle.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(339, 29);
+            this.labelTitle.Location = new System.Drawing.Point(468, 29);
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(24, 33);
             this.labelTitle.TabIndex = 12;
@@ -193,7 +193,7 @@ namespace ShsKiosk
             // button12
             // 
             this.button12.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button12.Location = new System.Drawing.Point(345, 250);
+            this.button12.Location = new System.Drawing.Point(474, 250);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(255, 166);
             this.button12.TabIndex = 13;
@@ -207,7 +207,7 @@ namespace ShsKiosk
             this.label2.ForeColor = System.Drawing.Color.Green;
             this.label2.Location = new System.Drawing.Point(96, 419);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(504, 80);
+            this.label2.Size = new System.Drawing.Size(760, 80);
             this.label2.TabIndex = 14;
             this.label2.Text = "-";
             // 
@@ -225,7 +225,7 @@ namespace ShsKiosk
             // button13
             // 
             this.button13.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button13.Location = new System.Drawing.Point(118, 336);
+            this.button13.Location = new System.Drawing.Point(247, 336);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(100, 80);
             this.button13.TabIndex = 16;
@@ -237,7 +237,7 @@ namespace ShsKiosk
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(612, 508);
+            this.ClientSize = new System.Drawing.Size(870, 508);
             this.Controls.Add(this.button13);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
