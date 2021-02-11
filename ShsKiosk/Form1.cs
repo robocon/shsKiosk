@@ -19,6 +19,7 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         List<Appoint> appoint;
         static readonly SmConfigure smConfig = new SmConfigure();
+        
 
         public Form1()
         {
@@ -30,11 +31,10 @@ namespace ShsKiosk
         }
 
         string[] cardReaders;
-
         private void Form1_Load_1(object sender, EventArgs e)
         {
-            //this.Focus();
             pictureBox1.Visible = false;
+
             //this.TopMost = true;
             //this.FormBorderStyle = FormBorderStyle.None;
             //this.WindowState = FormWindowState.Maximized;
@@ -51,7 +51,6 @@ namespace ShsKiosk
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                //button2.Hide();
                 label1.Text = "ไม่พบเครื่องอ่านบัตรสมาร์ตการ์ด";
             }
         }
@@ -77,7 +76,6 @@ namespace ShsKiosk
         private async void CardInsertedCallback(Personal personal)
         {
             Console.WriteLine("card was inserted");
-
             label1SetText("ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...");
             pictureBox1Status(true);
 
@@ -224,7 +222,6 @@ namespace ShsKiosk
 
         public string hn = "";
         public string fullTxt = "";
-
         private async void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             KeysConverter kc = new KeysConverter();
@@ -243,8 +240,8 @@ namespace ShsKiosk
             // MP2600 จะลงท้ายเป็น ControlKeyMJ
             if (Regex.IsMatch(fullTxt, "Enter"))
             {
-                
-                Console.WriteLine("QR Code/Barcode Scanner was loaded");
+                string logTxt = "QR Code/Barcode Scanner was loaded";
+                Console.WriteLine(logTxt);
                 //label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
                 
                 // ตรวจสอบ HN 
@@ -263,7 +260,8 @@ namespace ShsKiosk
 
         public async Task<Personal> RunCardReadder()
         {
-            Console.WriteLine("get data from cardreader");
+            string logTxt = "get data from cardreader";
+            Console.WriteLine(logTxt);
             var person = await Task.Run(() => GetPersonalCardreader());
             return person;
         }
@@ -333,7 +331,8 @@ namespace ShsKiosk
 
             string[] nhso = nhsoContent.Split('#');
 
-            Console.WriteLine("nhso token found");
+            string logTxt = "nhso token found";
+            Console.WriteLine(logTxt);
 
             string staffIdCard = nhso[0];
             string nhsoToken = nhso[1];
@@ -350,17 +349,38 @@ namespace ShsKiosk
                 return;
             }
 
+            string moreTxt = "";
+            // ถ้า maininscl เป็นค่าว่างแสดงว่าไม่มีสิทธิอะไรเลย ให้สงสัยก่อนว่าเป็นเงินสด
+            // ถ้ามี new_maininscl แสดงว่ามีสิทธิใหม่เกิดขึ้น เช่น หมดสิทธิ ปกส. แล้วไปใช้ 30บาท หรืออื่นๆ
+            if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
+            {
+                //label1SetText("รหัสสิทธิหลักของท่านมีการเปลี่ยนแปลง\nกรุณาติดต่อห้องทะเบียน เพื่อทำการทบทวนสิทธิอีกครั้ง");
+                //pictureBox1Status(false);
+                //return;
+                //moreTxt += "รหัสสิทธิหลักของท่านมีการเปลี่ยนแปลง\nกรุณาติดต่อห้องทะเบียน เพื่อทำการทบทวนสิทธิอีกครั้ง\n";
+            }
+
+            if ((!String.IsNullOrEmpty(pt.hmain) && pt.hmain != "11512") || (!String.IsNullOrEmpty(pt.new_hmain) && pt.new_hmain != "11512"))
+            {
+                moreTxt += "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด \n";
+            }
+
             // ตรวจสอบ HN 
             string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
-            //Console.WriteLine(resultOpcard.opcardStatus);
-            //Console.WriteLine(resultOpcard.idcard);
             if (resultOpcard.opcardStatus == "n")
             {
                 label1SetText("ไม่พบ HN กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน");
                 pictureBox1Status(false);
                 return;
             }
+
+            if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
+            {
+                moreTxt += "แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ";
+            }
+
+            // ตรวจสิทธิหลักสิทธิรอง
 
             // ตรวจสอบการนัดหมาย
             string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
@@ -380,21 +400,7 @@ namespace ShsKiosk
             }
 
             pictureBox1Status(false);
-
-            // ถ้า maininscl เป็นค่าว่างแสดงว่าไม่มีสิทธิอะไรเลย ให้สงสัยก่อนว่าเป็นเงินสด
-            // ถ้ามี new_maininscl แสดงว่ามีสิทธิใหม่เกิดขึ้น เช่น หมดสิทธิ ปกส. แล้วไปใช้ 30บาท หรืออื่นๆ
-            if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
-            {
-                label1SetText("สิทธิหลักของท่านมีการเปลี่ยนแปลง กรุณาติดต่อห้องทะเบียน\nเพื่อทำการตรวจสอบสิทธิ");
-                pictureBox1Status(false);
-                return;
-            }
-
-            string moreTxt = "";
-            if ((!String.IsNullOrEmpty(pt.hmain) && pt.hmain != "11512") || (!String.IsNullOrEmpty(pt.new_hmain) && pt.new_hmain != "11512"))
-            {
-                moreTxt = "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด";
-            }
+            
 
             string maininscl = "";
             string maininsclCode = "";
@@ -476,6 +482,9 @@ namespace ShsKiosk
         public string opcardStatus { set; get; }
         public string idcard { set; get; }
         public string hosPtRight { set; get; }
+
+        public string PtRightMain { set; get; }
+        public string PtRightSub { set; get; }
     }
 
 }

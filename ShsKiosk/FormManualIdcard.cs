@@ -49,21 +49,22 @@ namespace ShsKiosk
         // ปุ่มเช็กสิทธิ
         private async void button12_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Button เช็กสิทธิ์ was clicked");
+            //log.Log("Button เช็กสิทธิ์ was clicked");
+            //Console.WriteLine("Button เช็กสิทธิ์ was clicked");
             label2.Text = "ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...";
             pictureBox1.Visible = true;
             Refresh();
 
             string idcard = textBox1.Text;
             string hosPtRight;
-
+            responseOpcard resultOpcard;
             // ถ้าเป็น hn จะมีขีดกลาง
             if (Regex.IsMatch(idcard, "-", RegexOptions.IgnoreCase))
             {
                 Console.WriteLine("Check from HN");
                 // ตรวจสอบ HN 
                 string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, idcard));
-                responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+                resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
                 if (resultOpcard.opcardStatus == "n")
                 {
                     label2.Text = "ไม่พบข้อมูลผู้ป่วย กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน";
@@ -87,9 +88,14 @@ namespace ShsKiosk
                 }
 
                 string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
-                responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+                resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
                 hosPtRight = resultOpcard.hosPtRight;
 
+            }
+            string moreTxt = "";
+            if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
+            {
+                moreTxt += "แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ\n";
             }
 
             // ดึง Token จากเครื่องแม่
@@ -157,7 +163,6 @@ namespace ShsKiosk
                 return; 
             }
 
-            string moreTxt = "";
             if ((!String.IsNullOrEmpty(pt.hmain) && pt.hmain != "11512") || (!String.IsNullOrEmpty(pt.new_hmain) && pt.new_hmain != "11512"))
             {
                 moreTxt = "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด";

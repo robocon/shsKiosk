@@ -203,39 +203,40 @@ namespace ShsKiosk
                 };
                 var barcodeImg = writer2.Write(app.hn);
                 printer.Image(barcodeImg);
-
+                printer.Image(DrawTextImg($"หากที่อยู่ของท่านมีการเปลี่ยนแปลง", fontBold));
+                printer.Image(DrawTextImg($"กรุณาแจ้งแผนกทะเบียน", fontBold));
+                printer.Image(DrawTextImg($"เพื่อประโยชน์และสิทธิ์ของท่านเอง", fontBold));
                 printer.NewLines(8);
-                //printer.FullPaperCut();
+                
                 byte[] PartialCut = { 0x0A, 0x0A, 0x0A, 0x1B, 0x69 };
                 printer.Append(PartialCut);
 
-
                 //////
-
                 if (app.queueStatus == "y")
                 {
-                    printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
-                    printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
-                    printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
-                    printer.NewLines(8);
-                    printer.Append(PartialCut);
+                    for (int x=0; x < 2; x++)
+                    {
+                        printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
+                        printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
+                        printer.NewLine();
+                        printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
+                        printer.NewLine();
+                        printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
+                        printer.NewLine();
+                        printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
+                        printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
+                        printer.NewLine();
+                        printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
+                        printer.NewLine();
+                        printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
+                        printer.NewLine();
+                        printer.Image(DrawTextImg($"โปรดเก็บบัตรคิวไว้กับตัว", fontBold));
+                        printer.NewLines(8);
+                        printer.Append(PartialCut);
+                    }
                 }
-
                 //////
-
-
                 printer.PrintDocument();
-
             }
             catch (Exception ex)
             {

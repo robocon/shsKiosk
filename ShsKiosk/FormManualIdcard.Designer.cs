@@ -52,169 +52,183 @@ namespace ShsKiosk
             // 
             // textBox1
             // 
-            this.textBox1.Font = new System.Drawing.Font("TH Niramit AS", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(141, 12);
+            this.textBox1.Font = new System.Drawing.Font("TH Niramit AS", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(140, 8);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(312, 60);
+            this.textBox1.Size = new System.Drawing.Size(416, 98);
             this.textBox1.TabIndex = 0;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(141, 250);
+            this.button1.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(140, 360);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 80);
+            this.button1.Size = new System.Drawing.Size(130, 110);
             this.button1.TabIndex = 1;
+            this.button1.TabStop = false;
             this.button1.Text = "7";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(247, 250);
+            this.button2.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(284, 360);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 80);
+            this.button2.Size = new System.Drawing.Size(130, 110);
             this.button2.TabIndex = 2;
+            this.button2.TabStop = false;
             this.button2.Text = "8";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(353, 250);
+            this.button3.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(428, 360);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 80);
+            this.button3.Size = new System.Drawing.Size(130, 110);
             this.button3.TabIndex = 3;
+            this.button3.TabStop = false;
             this.button3.Text = "9";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button4
             // 
-            this.button4.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(353, 164);
+            this.button4.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(428, 240);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 80);
+            this.button4.Size = new System.Drawing.Size(130, 110);
             this.button4.TabIndex = 6;
+            this.button4.TabStop = false;
             this.button4.Text = "6";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button5
             // 
-            this.button5.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(247, 164);
+            this.button5.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(284, 240);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(100, 80);
+            this.button5.Size = new System.Drawing.Size(130, 110);
             this.button5.TabIndex = 5;
+            this.button5.TabStop = false;
             this.button5.Text = "5";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button6
             // 
-            this.button6.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(141, 164);
+            this.button6.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(140, 240);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(100, 80);
+            this.button6.Size = new System.Drawing.Size(130, 110);
             this.button6.TabIndex = 4;
+            this.button6.TabStop = false;
             this.button6.Text = "4";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button7
             // 
-            this.button7.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(353, 78);
+            this.button7.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.Location = new System.Drawing.Point(428, 120);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(100, 80);
+            this.button7.Size = new System.Drawing.Size(130, 110);
             this.button7.TabIndex = 9;
+            this.button7.TabStop = false;
             this.button7.Text = "3";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button8
             // 
-            this.button8.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(247, 78);
+            this.button8.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.Location = new System.Drawing.Point(284, 120);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(100, 80);
+            this.button8.Size = new System.Drawing.Size(130, 110);
             this.button8.TabIndex = 8;
+            this.button8.TabStop = false;
             this.button8.Text = "2";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button9
             // 
-            this.button9.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(141, 78);
+            this.button9.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button9.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.button9.Location = new System.Drawing.Point(140, 120);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(100, 80);
+            this.button9.Size = new System.Drawing.Size(130, 110);
             this.button9.TabIndex = 7;
+            this.button9.TabStop = false;
             this.button9.Text = "1";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button10
             // 
-            this.button10.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Location = new System.Drawing.Point(141, 336);
+            this.button10.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button10.Location = new System.Drawing.Point(140, 480);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(100, 80);
+            this.button10.Size = new System.Drawing.Size(130, 110);
             this.button10.TabIndex = 10;
+            this.button10.TabStop = false;
             this.button10.Text = "0";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
             // 
             // button11
             // 
-            this.button11.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(353, 336);
+            this.button11.Font = new System.Drawing.Font("TH Niramit AS", 54.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button11.Location = new System.Drawing.Point(428, 480);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(100, 80);
+            this.button11.Size = new System.Drawing.Size(128, 110);
             this.button11.TabIndex = 11;
+            this.button11.TabStop = false;
             this.button11.Text = "ลบ";
+            this.button11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // labelTitle
             // 
             this.labelTitle.AutoSize = true;
-            this.labelTitle.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(468, 29);
+            this.labelTitle.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTitle.Location = new System.Drawing.Point(564, 8);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(24, 33);
+            this.labelTitle.Size = new System.Drawing.Size(32, 44);
             this.labelTitle.TabIndex = 12;
             this.labelTitle.Text = "-";
             // 
             // button12
             // 
-            this.button12.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button12.Location = new System.Drawing.Point(474, 250);
+            this.button12.Font = new System.Drawing.Font("TH Niramit AS", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button12.Location = new System.Drawing.Point(564, 424);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(255, 166);
+            this.button12.Size = new System.Drawing.Size(360, 168);
             this.button12.TabIndex = 13;
+            this.button12.TabStop = false;
             this.button12.Text = "ตรวจสอบสิทธิ";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // label2
             // 
-            this.label2.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Green;
-            this.label2.Location = new System.Drawing.Point(96, 419);
+            this.label2.Location = new System.Drawing.Point(96, 656);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(760, 80);
+            this.label2.Size = new System.Drawing.Size(952, 80);
             this.label2.TabIndex = 14;
             this.label2.Text = "-";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 422);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 659);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(78, 78);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -224,11 +238,12 @@ namespace ShsKiosk
             // 
             // button13
             // 
-            this.button13.Font = new System.Drawing.Font("TH Niramit AS", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button13.Location = new System.Drawing.Point(247, 336);
+            this.button13.Font = new System.Drawing.Font("TH Niramit AS", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button13.Location = new System.Drawing.Point(284, 480);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(100, 80);
+            this.button13.Size = new System.Drawing.Size(130, 110);
             this.button13.TabIndex = 16;
+            this.button13.TabStop = false;
             this.button13.Text = "-";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.ButtonAddIdcard_Click);
@@ -237,7 +252,7 @@ namespace ShsKiosk
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(870, 508);
+            this.ClientSize = new System.Drawing.Size(1064, 749);
             this.Controls.Add(this.button13);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);

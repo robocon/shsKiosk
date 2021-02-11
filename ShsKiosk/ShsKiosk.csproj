@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EpsonSlip.cs" />
+    <Compile Include="LogFiles.cs" />
     <Compile Include="SaveVn.cs" />
     <Compile Include="SmConfigure.cs" />
     <Compile Include="Connected Services\ServiceReference1\Reference.cs">

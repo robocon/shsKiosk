@@ -29,17 +29,19 @@ namespace ShsKiosk
         {
             Console.WriteLine("form select doctor from appoint was loaded");
 
-            int yStart = 47; // ความสูง เริ่มต้น
+            int yStart = 120; // ความสูง เริ่มต้น
             foreach (Appoint app in appoint)
             {
                 // Creating and setting the properties of Button 
                 Button Mybutton = new Button();
-                Mybutton.Location = new Point(12, yStart);
+                Mybutton.Location = new Point(336, yStart);
+                Mybutton.TabStop = false;
                 Mybutton.Text = app.doctor;
-                Mybutton.Height = 51;
-                Mybutton.AutoSize = false;
-                Mybutton.Size = new Size(375, 47);
-                Mybutton.Font = new Font("TH Niramit AS", 18, FontStyle.Bold);
+                Mybutton.TextAlign = ContentAlignment.MiddleCenter;
+                Mybutton.Height = 150;
+                Mybutton.AutoSize = true;
+                //Mybutton.Size = new Size(390, 150);
+                Mybutton.Font = new Font("TH Niramit AS", 48, FontStyle.Bold);
 
                 Mybutton.Click += (object se, EventArgs ea) => {
                     sendVNandQueue(app.rowId, app.doctor);
@@ -48,7 +50,7 @@ namespace ShsKiosk
                 // Adding this button to form 
                 this.Controls.Add(Mybutton);
 
-                yStart += 51;
+                yStart += 150; // ความสูงเท่ากับขนาดของปุ่ม
             }
         }
 

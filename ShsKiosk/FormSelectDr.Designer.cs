@@ -36,10 +36,10 @@ namespace ShsKiosk
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(82, 9);
+            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(191, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(256, 35);
+            this.label1.Size = new System.Drawing.Size(682, 91);
             this.label1.TabIndex = 0;
             this.label1.Text = "กรุณาเลือกแพทย์ที่ต้องการตรวจ";
             // 
@@ -47,7 +47,7 @@ namespace ShsKiosk
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 450);
+            this.ClientSize = new System.Drawing.Size(1064, 749);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormSelectDr";

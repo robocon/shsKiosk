@@ -40,7 +40,7 @@
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.label1.ForeColor = System.Drawing.Color.Green;
             this.label1.Location = new System.Drawing.Point(8, 664);
             this.label1.Name = "label1";
@@ -62,40 +62,40 @@
             // labelxx
             // 
             this.labelxx.AutoSize = true;
-            this.labelxx.Font = new System.Drawing.Font("TH Niramit AS", 33.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelxx.Location = new System.Drawing.Point(317, 224);
+            this.labelxx.Font = new System.Drawing.Font("TH Niramit AS", 71.99999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelxx.Location = new System.Drawing.Point(73, 224);
             this.labelxx.Name = "labelxx";
-            this.labelxx.Size = new System.Drawing.Size(431, 65);
+            this.labelxx.Size = new System.Drawing.Size(918, 137);
             this.labelxx.TabIndex = 3;
             this.labelxx.Text = "โรงพยาบาลค่ายสุรศักดิ์มนตรี";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(406, 309);
+            this.label2.Font = new System.Drawing.Font("TH Niramit AS", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(195, 368);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(252, 33);
+            this.label2.Size = new System.Drawing.Size(675, 87);
             this.label2.TabIndex = 5;
             this.label2.Text = "กรุณาเสียบบัตรประชาชนเพื่อใช้งาน";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(326, 365);
+            this.label3.Location = new System.Drawing.Point(254, 608);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(413, 35);
+            this.label3.Size = new System.Drawing.Size(556, 46);
             this.label3.TabIndex = 6;
             this.label3.Text = "คำเตือน!!! ระหว่างการใช้งานห้ามดึงบัตรประชาชนออก";
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("TH Niramit AS", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(888, 8);
+            this.button2.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(816, 8);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(166, 35);
+            this.button2.Size = new System.Drawing.Size(238, 48);
             this.button2.TabIndex = 7;
             this.button2.TabStop = false;
             this.button2.Text = "กรณีลืมบัตรประชาชน";
