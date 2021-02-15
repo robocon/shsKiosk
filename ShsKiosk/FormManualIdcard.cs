@@ -95,7 +95,9 @@ namespace ShsKiosk
             string moreTxt = "";
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
-                moreTxt += "แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ\n";
+                label2.Text = "แจ้งเตือน! : สิทธิหลักและสิทธิรองไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ\n";
+                pictureBox1.Visible = false;
+                return;
             }
 
             // ดึง Token จากเครื่องแม่
@@ -131,6 +133,7 @@ namespace ShsKiosk
             {
                 Console.WriteLine(ex.Message);
                 label2.Text = "ขออภัยในความไม่สะดวก\nการเชือมต่อมีปัญหา\nกรุณากรอก HN หรือเลขบัตรประชาชนอีกครั้ง";
+                pictureBox1.Visible = false;
                 return;
             }
 
@@ -143,6 +146,15 @@ namespace ShsKiosk
             string appointStatus = "";
 
             appointStatus = result.appointStatus;
+
+            // ทดสอบระบบให้ lock ไว้ก่อนถ้าไม่มีนัดจะใช้ไม่ได้
+            if (appointStatus != "y")
+            {
+                label2.Text = "ไม่พบการนัดในวันนี้ กรุณาติดต่อแผนกทะเบียน";
+                pictureBox1.Visible = false;
+                return;
+            }
+
             if (appointStatus == "y")
             {
                 Console.WriteLine("Get appoint data");

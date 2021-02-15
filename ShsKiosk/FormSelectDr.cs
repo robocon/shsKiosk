@@ -34,14 +34,14 @@ namespace ShsKiosk
             {
                 // Creating and setting the properties of Button 
                 Button Mybutton = new Button();
-                Mybutton.Location = new Point(336, yStart);
+                Mybutton.Location = new Point(8, yStart);
                 Mybutton.TabStop = false;
-                Mybutton.Text = app.doctor;
+                Mybutton.Text = app.doctor+app.detail;
                 Mybutton.TextAlign = ContentAlignment.MiddleCenter;
-                Mybutton.Height = 150;
+                Mybutton.Height = 76;
                 Mybutton.AutoSize = true;
                 //Mybutton.Size = new Size(390, 150);
-                Mybutton.Font = new Font("TH Niramit AS", 48, FontStyle.Bold);
+                Mybutton.Font = new Font("TH Niramit AS", 36, FontStyle.Bold);
 
                 Mybutton.Click += (object se, EventArgs ea) => {
                     sendVNandQueue(app.rowId, app.doctor);
@@ -50,7 +50,7 @@ namespace ShsKiosk
                 // Adding this button to form 
                 this.Controls.Add(Mybutton);
 
-                yStart += 150; // ความสูงเท่ากับขนาดของปุ่ม
+                yStart += 84; // ความสูงเท่ากับขนาดของปุ่ม
             }
         }
 

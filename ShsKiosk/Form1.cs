@@ -377,7 +377,10 @@ namespace ShsKiosk
 
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
-                moreTxt += "แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ";
+                //moreTxt += "แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ";
+                label1SetText("แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ");
+                pictureBox1Status(false);
+                return;
             }
 
             // ตรวจสิทธิหลักสิทธิรอง
@@ -391,6 +394,14 @@ namespace ShsKiosk
             string appointStatus = "";
 
             appointStatus = result.appointStatus;
+
+            // ทดสอบระบบให้ lock ไว้ก่อนถ้าไม่มีนัดจะใช้ไม่ได้
+            if (appointStatus != "y")
+            {
+                label1SetText("ไม่พบการนัดในวันนี้ กรุณาติดต่อแผนกทะเบียน");
+                return;
+            }
+
             //Console.WriteLine(appointStatus);
             if (appointStatus == "y")
             {
@@ -462,6 +473,8 @@ namespace ShsKiosk
         public int rowId { set; get; }
 
         public string doctor { set; get; }
+        public string detail { set; get; }
+        public string room { set; get; }
     }
 
     public class responseAppoint

@@ -8,6 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using System.Windows.Forms;
 using ZXing;
 
 namespace ShsKiosk
@@ -214,32 +215,46 @@ namespace ShsKiosk
                 //////
                 if (app.queueStatus == "y")
                 {
-                    for (int x=0; x < 2; x++)
-                    {
-                        printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
-                        printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
-                        printer.NewLine();
-                        printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
-                        printer.NewLine();
-                        printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
-                        printer.NewLine();
-                        printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
-                        printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
-                        printer.NewLine();
-                        printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
-                        printer.NewLine();
-                        printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
-                        printer.NewLine();
-                        printer.Image(DrawTextImg($"โปรดเก็บบัตรคิวไว้กับตัว", fontBold));
-                        printer.NewLines(8);
-                        printer.Append(PartialCut);
-                    }
+                    printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
+                    printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
+                    printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"สำหรับเจ้าหน้าที่", fontBold));
+                    printer.NewLines(8);
+                    printer.Append(PartialCut);
+
+                    printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
+                    printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
+                    printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"สำหรับผู้ป่วย กรุณาเก็บไว้อย่าทำหาย", fontBold));
+                    printer.NewLines(8);
+                    printer.Append(PartialCut);
                 }
                 //////
                 printer.PrintDocument();
             }
             catch (Exception ex)
             {
+                MessageBox.Show("ไม่สามารถพิมพ์ได้ " + ex.Message, "แจ้งเตือน");
                 Console.WriteLine(ex.Message);
             }
         }

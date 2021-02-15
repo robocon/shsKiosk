@@ -55,6 +55,25 @@ namespace ShsKiosk
             label10.Text = hMainName;
             pictureBox1.Image = personImage;
 
+            labelAlert.Text = "";
+
+            //
+            bool testLock = true;
+            foreach (Appoint app in appoint)
+            {
+                if (app.room == "อาคารเฉลิมพระเกียรติ")
+                {
+                    testLock = false;
+                }
+            }
+
+            if (testLock == true)
+            {
+                labelAlert.Text += "ขออภัยในความไม่สะดวก\nระบบอยู่ในระหว่างการทดสอบเฉพาะห้องตรวจโรคผู้ป่วยนอกอาคารเฉลิมพระเกียรติ\nกรุณาติดต่อห้องทะเบียน\n";
+                button3.Hide();
+                return;
+            }
+
             // ถ้าไม่มีนัด จะแสดงปุ่มให้เปิด Form3
             if (appointCount == 0)
             {
@@ -66,11 +85,11 @@ namespace ShsKiosk
                 label13.Show();
                 button3.Show();
 
-                label12.Text = appointContent;
+                label12.Text += appointContent;
             }
 
             if (!string.IsNullOrEmpty(moreTxt)) {
-                labelAlert.Text = moreTxt;
+                labelAlert.Text += moreTxt;
             }
         }
 
