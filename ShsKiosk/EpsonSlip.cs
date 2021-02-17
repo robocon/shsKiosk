@@ -218,25 +218,27 @@ namespace ShsKiosk
                     printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
                     printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
                     printer.NewLine();
+                    // 
+                    // เพิ่มห้องตรวจโรค
+                    // 
                     printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
                     printer.NewLine();
                     printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
                     printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
                     printer.NewLine();
                     printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
                     printer.NewLine();
-                    printer.Image(DrawTextImg($"สำหรับเจ้าหน้าที่", fontBold));
+                    printer.Image(DrawTextImg($"คิวพบแพทย์ผู้ป่วยนัด", fontBold));
                     printer.NewLines(8);
                     printer.Append(PartialCut);
 
                     printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
                     printer.Image(DrawTextImg("ใช้บริการโดยตู้ Kiosk", fontRegular));
                     printer.NewLine();
+                    // 
+                    // เพิ่มห้องตรวจโรค
+                    // 
                     printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
-                    printer.NewLine();
-                    printer.Image(DrawTextImg($"VN : {app.vn}", fontSuperBold));
                     printer.NewLine();
                     printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
                     printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
@@ -245,7 +247,7 @@ namespace ShsKiosk
                     printer.NewLine();
                     printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
                     printer.NewLine();
-                    printer.Image(DrawTextImg($"สำหรับผู้ป่วย กรุณาเก็บไว้อย่าทำหาย", fontBold));
+                    printer.Image(DrawTextImg($"คิวพบแพทย์ผู้ป่วยนัด ใบคิวสำหรับผู้ป่วย", fontBold));
                     printer.NewLines(8);
                     printer.Append(PartialCut);
                 }

@@ -471,10 +471,10 @@ namespace ShsKiosk
     public class Appoint
     {
         public int rowId { set; get; }
-
         public string doctor { set; get; }
         public string detail { set; get; }
         public string room { set; get; }
+        public string tdMD { set; get; }
     }
 
     public class responseAppoint
