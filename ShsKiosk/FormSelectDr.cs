@@ -56,6 +56,7 @@ namespace ShsKiosk
 
         public async void sendVNandQueue(int rowId, string doctor)
         {
+            Console.WriteLine($"Selected Doctor {rowId}");
             SaveVn sv = new SaveVn();
             string content = await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, rowId, hosPtRight));
             if (!String.IsNullOrEmpty(content))

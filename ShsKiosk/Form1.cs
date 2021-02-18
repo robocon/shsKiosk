@@ -344,7 +344,7 @@ namespace ShsKiosk
             Console.WriteLine(pt.ws_status+" : "+pt.ws_status_desc);
             if (pt.ws_status == "NHSO-00003")
             {
-                label1SetText("TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication MX อีกครั้ง");
+                label1SetText("TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication อีกครั้ง");
                 pictureBox1Status(false);
                 return;
             }

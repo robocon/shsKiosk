@@ -119,8 +119,10 @@ namespace ShsKiosk
          */
         private async void button3_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Button3(ออกvn) was clicked");
             if (appointCount > 1) // ถ้ามีนัด 2แพทย์
             {
+                Console.WriteLine("Show FormSelectDr");
                 FormSelectDr frm = new FormSelectDr();
                 frm.appoint = appoint;
                 frm.idcard = idcard;
@@ -129,8 +131,8 @@ namespace ShsKiosk
             }
             else // ถ้ามีนัด 1 แพทย์
             {
+                Console.WriteLine("Class Save vn 1 doctor");
                 SaveVn sv = new SaveVn();
-
                 int appointRowId = appoint.ToArray()[0].rowId;
                 string content = await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, appointRowId, ptRight));
                 if (!String.IsNullOrEmpty(content))
@@ -163,6 +165,7 @@ namespace ShsKiosk
         public string ptType { set; get; }
         public string queueNumber { set; get; }
         public int queueWait { set; get; }
+        public string queueRoom { set; get; }
     }
 
     public class saveVn {
