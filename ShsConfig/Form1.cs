@@ -63,11 +63,50 @@ namespace ShsConfig
                 notify.Text = ex.Message;
             }
         }
+
+        string pathBrokerConfig = Path.Combine(Environment.CurrentDirectory, @"Data\", "brokerDbConfig.json");
+
+        private void btnBrokerCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnBrokerSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DbConfig DbConfig = new DbConfig();
+                DbConfig.host = brokerHost.Text.Trim();
+                DbConfig.user = brokerUser.Text.Trim();
+                DbConfig.pass = brokerPass.Text.Trim();
+                DbConfig.db = brokerDb.Text.Trim();
+                string jsonTxt = JsonConvert.SerializeObject(DbConfig);
+
+                StreamWriter sw = new StreamWriter(pathBrokerConfig, false);
+                sw.WriteLine(jsonTxt);
+                sw.Flush();
+                sw.Close();
+
+                notifyBroker.Text = "บันทึกข้อมูลเรียบร้อย";
+            }
+            catch (Exception ex)
+            {
+                notifyBroker.Text = ex.Message;
+            }
+        }
     }
 
     class Config
     {
         public string ipUc { get; set; }
         public string ipBroker { get; set; }
+    }
+
+    class DbConfig
+    {
+        public string host { get; set; }
+        public string user { get; set; }
+        public string pass { get; set; }
+        public string db { get; set; }
     }
 }
