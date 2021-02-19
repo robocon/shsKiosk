@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +10,8 @@ namespace ShsKiosk
 {
     public class SmConfigure
     {
-        private string brokerUrl = "http://localhost/smbroker/";
+        DirectoryInfo di = new DirectoryInfo(@"Data\");
+        string pathFileConfig = Path.Combine(Environment.CurrentDirectory, @"Data\", "configure.json");
 
         // ดึงข้อมูลบัตรกับ token เครื่อง UcAuthen
         public string registerComUrl { get; set; }
@@ -23,11 +26,22 @@ namespace ShsKiosk
 
         public SmConfigure()
         {
-            this.registerComUrl = "http://192.168.142.73/getvalue.php";
-            this.searchOpcardUrl = this.brokerUrl + "searchOpcard.php";
-            this.searchAppointUrl = this.brokerUrl + "searchAppoint.php";
-            this.createVnUrl = this.brokerUrl + "saveVn.php";
-            this.searchByHn = this.brokerUrl + "searchByHn.php";
+            string json = File.ReadAllText(pathFileConfig);
+            Config c = JsonConvert.DeserializeObject<Config>(json);
+
+            string brokerUrl = $"http://{c.ipBroker}/smbroker/";
+
+            this.registerComUrl = $"http://{c.ipUc}/getvalue.php";
+            this.searchOpcardUrl = brokerUrl + "searchOpcard.php";
+            this.searchAppointUrl = brokerUrl + "searchAppoint.php";
+            this.createVnUrl = brokerUrl + "saveVn.php";
+            this.searchByHn = brokerUrl + "searchByHn.php";
         }
+    }
+
+    class Config
+    {
+        public string ipUc { get; set; }
+        public string ipBroker { get; set; }
     }
 }
