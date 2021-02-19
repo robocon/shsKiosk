@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShsKiosk", "ShsKiosk\ShsKiosk.csproj", "{EB5AD338-965C-4DF7-9044-3DCDB77D2733}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShsConfig", "ShsConfig\ShsConfig.csproj", "{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EB5AD338-965C-4DF7-9044-3DCDB77D2733}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB5AD338-965C-4DF7-9044-3DCDB77D2733}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB5AD338-965C-4DF7-9044-3DCDB77D2733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
