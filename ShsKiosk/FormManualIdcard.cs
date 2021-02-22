@@ -56,25 +56,32 @@ namespace ShsKiosk
             Refresh();
 
             string idcard = textBox1.Text;
-            string hosPtRight;
-            responseOpcard resultOpcard;
+            string hosPtRight = "";
+            responseOpcard resultOpcard = new responseOpcard();
             // ถ้าเป็น hn จะมีขีดกลาง
             if (Regex.IsMatch(idcard, "-", RegexOptions.IgnoreCase))
             {
                 Console.WriteLine("Check from HN");
                 // ตรวจสอบ HN 
-                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, idcard));
-                resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
-                if (resultOpcard.opcardStatus == "n")
+                try
                 {
-                    label2.Text = "ไม่พบข้อมูลผู้ป่วย กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน";
-                    pictureBox1.Visible = false;
-                    return;
+                    string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, idcard));
+                    resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+                    if (resultOpcard.opcardStatus == "n")
+                    {
+                        label2.Text = "ไม่พบข้อมูลผู้ป่วย กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน";
+                        pictureBox1.Visible = false;
+                        return;
+                    }
+                    else
+                    {
+                        idcard = resultOpcard.idcard;
+                        hosPtRight = resultOpcard.hosPtRight;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    idcard = resultOpcard.idcard;
-                    hosPtRight = resultOpcard.hosPtRight;
+                    label2.Text = ex.Message;
                 }
             }
             else
