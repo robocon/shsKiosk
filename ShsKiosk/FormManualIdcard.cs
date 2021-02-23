@@ -75,6 +75,7 @@ namespace ShsKiosk
                     }
                     else
                     {
+                        Console.WriteLine(idcard);
                         idcard = resultOpcard.idcard;
                         hosPtRight = resultOpcard.hosPtRight;
                     }
@@ -94,11 +95,18 @@ namespace ShsKiosk
                     return;
                 }
 
-                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
-                resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
-                hosPtRight = resultOpcard.hosPtRight;
-
+                try
+                {
+                    string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
+                    resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+                    hosPtRight = resultOpcard.hosPtRight;
+                }
+                catch (Exception ex)
+                {
+                    label2.Text = ex.Message;
+                }
             }
+
             string moreTxt = "";
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
@@ -130,7 +138,7 @@ namespace ShsKiosk
                 pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
                 if (pt == null || pt.ws_status == "NHSO-00003")
                 {
-                    label2.Text = "TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication MX อีกครั้ง";
+                    label2.Text = "TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication อีกครั้ง";
                     pictureBox1.Visible = false;
                     return;
                 }
@@ -144,9 +152,20 @@ namespace ShsKiosk
                 return;
             }
 
-            // ตรวจสอบการนัดหมาย
-            string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
-            responseAppoint result = JsonConvert.DeserializeObject<responseAppoint>(content);
+            responseAppoint result = new responseAppoint();
+            try
+            {
+                // ตรวจสอบการนัดหมาย
+                string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
+                result = JsonConvert.DeserializeObject<responseAppoint>(content);
+            }
+            catch (Exception ex)
+            {
+                label2.Text = ex.Message;
+                pictureBox1.Visible = false;
+                return;
+            }
+            
 
             string appointContent = "";
             int appointCount = 0;

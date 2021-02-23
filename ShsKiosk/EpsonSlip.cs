@@ -152,12 +152,16 @@ namespace ShsKiosk
                 Font fontSuperBold = new Font(fontName, 32, FontStyle.Bold, GraphicsUnit.Pixel);
                 Font superBoldUnderline = new Font(fontName, 32, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
 
-                //Printer printer = new Printer("w80");
-                Printer printer = new Printer("TM-T88IV", "windows-874");
+                Printer printer = new Printer("w80");
+                //Printer printer = new Printer("TM-T88IV", "windows-874");
+
+                System.Globalization.CultureInfo _cultureTHInfo = new System.Globalization.CultureInfo("th-TH");
+                string currDate = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss",_cultureTHInfo);
 
                 printer.AlignCenter();
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
-                printer.Image(DrawTextImg($"{app.dateSave}", fontRegular));
+                //Disable app.dateSave
+                printer.Image(DrawTextImg(currDate, fontRegular));
                 printer.Image(DrawTextImg(app.ex, fontRegular));
                 printer.NewLine();
                 printer.Image(DrawTextImg("HN : " + app.hn, superBoldUnderline));
@@ -216,7 +220,7 @@ namespace ShsKiosk
                 if (app.queueStatus == "y")
                 {
                     printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
-                    printer.Image(DrawTextImg(app.dateSave, fontRegular));
+                    printer.Image(DrawTextImg(currDate, fontRegular));
                     printer.NewLine();
                     printer.Image(DrawTextImg(app.queueRoom, fontRegular));
                     printer.NewLine();
@@ -232,7 +236,7 @@ namespace ShsKiosk
                     printer.Append(PartialCut);
 
                     printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
-                    printer.Image(DrawTextImg(app.dateSave, fontRegular));
+                    printer.Image(DrawTextImg(currDate, fontRegular));
                     printer.NewLine();
                     printer.Image(DrawTextImg(app.queueRoom, fontRegular));
                     printer.NewLine();
