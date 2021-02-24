@@ -120,6 +120,7 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form3";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "สุรศักดิ์ Kiosk";
             this.Load += new System.EventHandler(this.Form3_Load);
             this.ResumeLayout(false);

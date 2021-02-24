@@ -65,6 +65,7 @@ namespace ShsKiosk
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormSelectDr";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "สุรศักดิ์ Kiosk";
             this.Load += new System.EventHandler(this.Form5_Load);
             this.ResumeLayout(false);

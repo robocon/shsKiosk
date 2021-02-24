@@ -219,8 +219,10 @@ namespace ShsKiosk
                 //////
                 if (app.queueStatus == "y")
                 {
-                    printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
-                    printer.Image(DrawTextImg(currDate, fontRegular));
+                    //printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
+                    //printer.Image(DrawTextImg(currDate, fontRegular));
+                    //printer.NewLine();
+                    printer.Image(DrawTextImg("บัตรคิวซักประวัติ", fontBold));
                     printer.NewLine();
                     printer.Image(DrawTextImg(app.queueRoom, fontRegular));
                     printer.NewLine();
@@ -235,8 +237,12 @@ namespace ShsKiosk
                     printer.NewLines(8);
                     printer.Append(PartialCut);
 
-                    printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
-                    printer.Image(DrawTextImg(currDate, fontRegular));
+                    //printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon2.bmp")));
+                    //printer.Image(DrawTextImg(currDate, fontRegular));
+                    //printer.NewLine();
+                    printer.Image(DrawTextImg("บัตรคิวซักประวัติ", fontBold));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
                     printer.NewLine();
                     printer.Image(DrawTextImg(app.queueRoom, fontRegular));
                     printer.NewLine();

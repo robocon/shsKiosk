@@ -256,6 +256,7 @@
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "สุรศักดิ์ Kiosk";
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

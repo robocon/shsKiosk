@@ -272,6 +272,7 @@ namespace ShsKiosk
             this.Controls.Add(this.textBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormManualIdcard";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "สุรศักดิ์ Kiosk";
             this.Load += new System.EventHandler(this.Form4_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
