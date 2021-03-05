@@ -326,6 +326,7 @@ namespace ShsKiosk
             if (String.IsNullOrEmpty(nhsoContent))
             {
                 label1SetText("ไม่พบ Token กรุณาประสานห้องทะเบียน");
+                pictureBox1Status(false);
                 return;
             }
 
@@ -399,6 +400,7 @@ namespace ShsKiosk
             if (appointStatus != "y")
             {
                 label1SetText("ไม่พบการนัดในวันนี้ กรุณาติดต่อแผนกทะเบียน");
+                pictureBox1Status(false);
                 return;
             }
 

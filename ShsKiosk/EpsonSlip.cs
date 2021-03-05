@@ -149,8 +149,8 @@ namespace ShsKiosk
                 Font fontRegular = new Font(fontName, 16, FontStyle.Regular, GraphicsUnit.Pixel);
                 Font fontBold = new Font(fontName, 16, FontStyle.Bold, GraphicsUnit.Pixel);
                 Font fontBoldUnderline = new Font(fontName, 16, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
-                Font fontSuperBold = new Font(fontName, 32, FontStyle.Bold, GraphicsUnit.Pixel);
-                Font superBoldUnderline = new Font(fontName, 32, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
+                Font fontSuperBold = new Font(fontName, 28, FontStyle.Bold, GraphicsUnit.Pixel);
+                Font superBoldUnderline = new Font(fontName, 28, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
 
                 Printer printer = new Printer("w80");
                 //Printer printer = new Printer("TM-T88IV", "windows-874");
@@ -162,7 +162,7 @@ namespace ShsKiosk
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
 
                 printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
-                printer.Image(DrawTextImg(app.queueRoom, fontRegular));
+                //printer.Image(DrawTextImg(app.queueRoom, fontRegular));
                 if (!String.IsNullOrEmpty(app.doctor))
                 {
                     printer.Image(DrawTextImg(app.doctor, fontRegular));
@@ -208,9 +208,9 @@ namespace ShsKiosk
                 };
                 var barcodeImg = writer2.Write(app.hn);
                 printer.Image(barcodeImg);
-                printer.Image(DrawTextImg($"หากที่อยู่ของท่านมีการเปลี่ยนแปลง", fontBold));
-                printer.Image(DrawTextImg($"กรุณาแจ้งแผนกทะเบียน", fontBold));
-                printer.Image(DrawTextImg($"เพื่อประโยชน์และสิทธิ์ของท่านเอง", fontBold));
+                //printer.Image(DrawTextImg($"หากที่อยู่ของท่านมีการเปลี่ยนแปลง", fontBold));
+                //printer.Image(DrawTextImg($"กรุณาแจ้งแผนกทะเบียน", fontBold));
+                //printer.Image(DrawTextImg($"เพื่อประโยชน์และสิทธิ์ของท่านเอง", fontBold));
                 printer.NewLines(8);
                 
                 byte[] PartialCut = { 0x0A, 0x0A, 0x0A, 0x1B, 0x69 };
@@ -244,13 +244,14 @@ namespace ShsKiosk
                     //printer.NewLine();
                     printer.Image(DrawTextImg("คิวพบแพทย์ผู้ป่วยนัด", fontBold));
                     printer.Image(DrawTextImg(currDate, fontRegular));
-                    printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
+                    printer.Image(DrawTextImg(app.queueNumber, fontBold));
                     printer.Image(DrawTextImg(app.queueRoom, fontRegular));
+                    printer.Image(DrawTextImg($"คิวที่ {app.runNumber}", fontBold));
                     if (!String.IsNullOrEmpty(app.doctor))
                     {
                         printer.Image(DrawTextImg(app.doctor, fontRegular));
                     }
-                    printer.Image(DrawTextImg($"HN : {app.hn}", fontSuperBold));
+                    printer.Image(DrawTextImg($"HN : {app.hn}", fontBold));
                     printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
                     printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
                     printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
