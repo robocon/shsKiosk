@@ -42,16 +42,16 @@
             // 
             this.label1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.label1.ForeColor = System.Drawing.Color.Green;
-            this.label1.Location = new System.Drawing.Point(8, 664);
+            this.label1.Location = new System.Drawing.Point(14, 504);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1036, 78);
+            this.label1.Size = new System.Drawing.Size(1036, 234);
             this.label1.TabIndex = 1;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(8, 664);
+            this.pictureBox1.Location = new System.Drawing.Point(8, 496);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(78, 78);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -84,7 +84,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(254, 608);
+            this.label3.Location = new System.Drawing.Point(254, 464);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(556, 46);
             this.label3.TabIndex = 6;

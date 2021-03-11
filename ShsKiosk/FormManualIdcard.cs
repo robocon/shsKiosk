@@ -29,7 +29,7 @@ namespace ShsKiosk
         {
             Refresh();
             Console.WriteLine("Form manual was loaded");
-            labelTitle.Text = "กรอกเลขบัตรประชาชน หรือ HN\nกดตรวจสอบสิทธิ";
+            //labelTitle.Text = "กรอกเลขบัตรประชาชน หรือ HN\nกดตรวจสอบสิทธิ";
         }
 
         public void ButtonAddIdcard_Click(object sender, EventArgs e)
@@ -49,64 +49,59 @@ namespace ShsKiosk
         // ปุ่มเช็กสิทธิ
         private async void button12_Click(object sender, EventArgs e)
         {
-            //log.Log("Button เช็กสิทธิ์ was clicked");
-            //Console.WriteLine("Button เช็กสิทธิ์ was clicked");
             label2.Text = "ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...";
             pictureBox1.Visible = true;
             Refresh();
 
-            string idcard = textBox1.Text;
+            string textBoxTest = textBox1.Text;
             string hosPtRight = "";
+            string idcard = "";
             responseOpcard resultOpcard = new responseOpcard();
+            // ตรวจสอบข้อมูลเบื้องต้นจาก HN และเลขบัตรประชาชน
             // ถ้าเป็น hn จะมีขีดกลาง
-            if (Regex.IsMatch(idcard, "-", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(textBoxTest, "-", RegexOptions.IgnoreCase))
             {
-                Console.WriteLine("Check from HN");
+                Console.WriteLine($"Manual ค้นหาจาก HN {smConfig.searchOpcardUrl}");
                 // ตรวจสอบ HN 
-                try
+                string testOpcard = await Task.Run(() => searchFromSmByHn(smConfig.searchOpcardUrl, textBoxTest));
+                if (!string.IsNullOrEmpty(testOpcard))
                 {
-                    string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchByHn, idcard));
                     resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
                     if (resultOpcard.opcardStatus == "n")
                     {
-                        label2.Text = "ไม่พบข้อมูลผู้ป่วย กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน";
+                        label2.Text = resultOpcard.errorMsg;
                         pictureBox1.Visible = false;
                         return;
                     }
-                    else
-                    {
-                        Console.WriteLine(idcard);
-                        idcard = resultOpcard.idcard;
-                        hosPtRight = resultOpcard.hosPtRight;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    label2.Text = ex.Message;
+                    idcard = resultOpcard.idcard;
+                    hosPtRight = resultOpcard.hosPtRight;
                 }
             }
             else
             {
-                Console.WriteLine("Check from idcard");
-                if ( idcard.Length != 13 )
+                Console.WriteLine($"Manual ค้นหาจาก idcard {smConfig.searchOpcardUrl}");
+                if (textBoxTest.Length != 13 )
                 {
                     label2.Text = "หมายเลขบัตรประชาชนไม่ครบ13หลัก\nกรุณาตรวจสอบหมายเลขบัตรของท่านอีกครั้ง";
                     pictureBox1.Visible = false;
                     return;
                 }
 
-                try
+                string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, textBoxTest));
+                if (!string.IsNullOrEmpty(testOpcard))
                 {
-                    string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
                     resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+                    if (resultOpcard.opcardStatus == "n")
+                    {
+                        label2.Text = resultOpcard.errorMsg;
+                        pictureBox1.Visible = false;
+                        return;
+                    }
+                    idcard = resultOpcard.idcard;
                     hosPtRight = resultOpcard.hosPtRight;
                 }
-                catch (Exception ex)
-                {
-                    label2.Text = ex.Message;
-                }
             }
-
+            Console.WriteLine(idcard);
             string moreTxt = "";
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
@@ -116,89 +111,47 @@ namespace ShsKiosk
             }
 
             // ดึง Token จากเครื่องแม่
+            Console.WriteLine("ตรวจสอบ Token จากเครื่องห้องทะเบียน");
             string nhsoContent = await Task.Run(() => Ajax());
             if (string.IsNullOrEmpty(nhsoContent))
             {
-                label2.Text = "ไม่สามารถติดต่อเซิฟเวอร์ตรวจสอบสิทธิได้ กรุณาติดต่อห้องทะเบียน เพื่อให้เจ้าหน้าที่ตรวจสอบข้อมูล";
+                label2.Text = "ไม่สามารถติดต่อเครื่องตรวจสอบสิทธิห้องทะเบียนได้ กรุณาติดต่อศูนย์คอมฯ";
                 pictureBox1.Visible = false;
                 return;
             }
-            Console.WriteLine("Get nhso content from 192");
 
             string[] nhso = nhsoContent.Split('#');
-
             string staffIdCard = nhso[0];
             string nhsoToken = nhso[1];
-
             // ดึงข้อมูลสิทธิการรักษาจาก สปสช
             try
             {
+                Console.WriteLine("ทำการเชื่อมต่อกับ WebService สปสช");
                 UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
                 pt = new nhsoDataSetC1();
                 pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
                 if (pt == null || pt.ws_status == "NHSO-00003")
                 {
-                    label2.Text = "TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication อีกครั้ง";
+                    label2.Text = "TOKEN หมดอายุการใช้งาน ติดต่อทะเบียนเพื่อเปิดใช้ UcAuthentication อีกครั้ง";
                     pictureBox1.Visible = false;
                     return;
                 }
-                Console.WriteLine("Get soap data from nhso");
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                label2.Text = "ขออภัยในความไม่สะดวก\nการเชือมต่อมีปัญหา\nกรุณากรอก HN หรือเลขบัตรประชาชนอีกครั้ง";
+                label2.Text = "ไม่สามารถติดต่อกับ WebService สปสช ได้";
                 pictureBox1.Visible = false;
                 return;
             }
-
-            responseAppoint result = new responseAppoint();
-            try
-            {
-                // ตรวจสอบการนัดหมาย
-                string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
-                result = JsonConvert.DeserializeObject<responseAppoint>(content);
-            }
-            catch (Exception ex)
-            {
-                label2.Text = ex.Message;
-                pictureBox1.Visible = false;
-                return;
-            }
-            
-
-            string appointContent = "";
-            int appointCount = 0;
-            string appointStatus = "";
-
-            appointStatus = result.appointStatus;
-
-            // ทดสอบระบบให้ lock ไว้ก่อนถ้าไม่มีนัดจะใช้ไม่ได้
-            if (appointStatus != "y")
-            {
-                label2.Text = "ไม่พบการนัดในวันนี้ กรุณาติดต่อแผนกทะเบียน";
-                pictureBox1.Visible = false;
-                return;
-            }
-
-            if (appointStatus == "y")
-            {
-                Console.WriteLine("Get appoint data");
-                appointContent = result.appointContent;
-                appointCount = int.Parse(result.appointCount);
-                appoint = result.appoint;
-            }
-
-            //pictureBox1.Visible = false;
 
             // ถ้า maininscl เป็นค่าว่างแสดงว่าไม่มีสิทธิอะไรเลย ให้สงสัยก่อนว่าเป็นเงินสด
             // ถ้ามี new_maininscl แสดงว่ามีสิทธิใหม่เกิดขึ้น เช่น หมดสิทธิ ปกส. แล้วไปใช้ 30บาท หรืออื่นๆ
             if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
             {
                 label2.Text = "สิทธิหลักของท่านมีการเปลี่ยนแปลง กรุณาติดต่อห้องทะเบียน\nเพื่อทำการตรวจสอบสิทธิ";
-                //Console.WriteLine("MAININSCL: "+pt.maininscl+" NEW_MAININSCL: "+pt.new_maininscl);
                 pictureBox1.Visible = false;
-                return; 
+                return;
             }
 
             if ((!String.IsNullOrEmpty(pt.hmain) && pt.hmain != "11512") || (!String.IsNullOrEmpty(pt.new_hmain) && pt.new_hmain != "11512"))
@@ -206,6 +159,33 @@ namespace ShsKiosk
                 moreTxt = "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด";
             }
 
+            Console.WriteLine($"ค้นหาการนัด {smConfig.searchAppointUrl} {idcard}");
+            responseAppoint result = new responseAppoint();
+            // ตรวจสอบการนัดหมาย
+            string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
+            string appointContent = "";
+            int appointCount = 0;
+            string appointStatus = "";
+
+            if (!string.IsNullOrEmpty(content))
+            {
+                result = JsonConvert.DeserializeObject<responseAppoint>(content);
+                appointStatus = result.appointStatus;
+                if (appointStatus == "y")
+                {
+                    appointContent = result.appointContent;
+                    appointCount = int.Parse(result.appointCount);
+                    appoint = result.appoint;
+                }
+                else
+                {
+                    label2.Text = result.errorMsg;
+                    pictureBox1.Visible = false;
+                    return;
+                }
+            }
+
+            // 
             string maininscl = "";
             string maininsclCode = "";
             if (!String.IsNullOrEmpty(pt.maininscl))
@@ -250,6 +230,8 @@ namespace ShsKiosk
             frm.hMainName = hmain;
             frm.personImage = Photo1;
             frm.ptRight = maininsclCode;
+            frm.hn = resultOpcard.hn;
+            frm.ptname = resultOpcard.ptname;
 
             frm.appointStatus = appointStatus;
             frm.appointContent = appointContent;
@@ -259,7 +241,7 @@ namespace ShsKiosk
             frm.moreTxt = moreTxt;
 
             frm.hosPtRight = hosPtRight;
-
+            label2.Text = "";
             frm.ShowDialog();
 
             this.Close();
@@ -294,14 +276,34 @@ namespace ShsKiosk
             string content = null;
             try
             {
-                sendAppoint appoint = new sendAppoint();
+                sendSearchOpCard appoint = new sendSearchOpCard();
                 appoint.Idcard = idcard;
 
                 HttpClient httpClient = new HttpClient();
                 var response = await httpClient.PostAsJsonAsync(posturi, appoint);
                 response.EnsureSuccessStatusCode();
                 content = await response.Content.ReadAsStringAsync();
-                //Console.WriteLine(content);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
+            return content;
+        }
+
+        static async Task<string> searchFromSmByHn(string posturi, string hn)
+        {
+            string content = null;
+            try
+            {
+                sendSearchOpCard appoint = new sendSearchOpCard();
+                appoint.hn = hn;
+
+                HttpClient httpClient = new HttpClient();
+                var response = await httpClient.PostAsJsonAsync(posturi, appoint);
+                response.EnsureSuccessStatusCode();
+                content = await response.Content.ReadAsStringAsync();
             }
             catch (HttpRequestException e)
             {

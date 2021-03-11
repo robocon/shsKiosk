@@ -20,6 +20,8 @@ namespace ShsKiosk
         public string mainInSclName;
         public string subInSclName;
         public string hMainName;
+        public string hn;
+        public string ptname;
         
         public string ptRight;
 
@@ -47,7 +49,7 @@ namespace ShsKiosk
             button3.Hide();
 
             Refresh();
-
+            ptnameHos.Text = ptname;
             label6.Text = idcard;
             label7.Text = fullname;
             label8.Text = mainInSclName;
@@ -58,14 +60,18 @@ namespace ShsKiosk
             labelAlert.Text = "";
 
             //
-            bool testLock = true;
+            //bool testLock = true;
+            /*
             foreach (Appoint app in appoint)
             {
                 if (app.room == "อาคารเฉลิมพระเกียรติ")
                 {
-                    testLock = false;
+                    //testLock = false;
                 }
             }
+            */
+            bool testLock = false;
+
 
             if (testLock == true)
             {
@@ -84,7 +90,7 @@ namespace ShsKiosk
                 label12.Show();
                 label13.Show();
                 button3.Show();
-
+                label12.Text = "";
                 label12.Text += appointContent;
             }
 
@@ -122,7 +128,7 @@ namespace ShsKiosk
             Console.WriteLine("Button3(ออกvn) was clicked");
             if (appointCount > 1) // ถ้ามีนัด 2แพทย์
             {
-                Console.WriteLine("Show FormSelectDr");
+                Console.WriteLine("แสดงข้อมูลแพทย์หลายคน");
                 FormSelectDr frm = new FormSelectDr();
                 frm.appoint = appoint;
                 frm.idcard = idcard;
@@ -131,7 +137,7 @@ namespace ShsKiosk
             }
             else // ถ้ามีนัด 1 แพทย์
             {
-                Console.WriteLine("Class Save vn 1 doctor");
+                Console.WriteLine("กดออก VN แพทย์คนเดียว");
                 SaveVn sv = new SaveVn();
                 int appointRowId = appoint.ToArray()[0].rowId;
                 string content = await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, appointRowId, ptRight));

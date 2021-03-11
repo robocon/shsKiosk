@@ -47,6 +47,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.labelAlert = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ptnameHos = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -183,22 +185,23 @@
             // 
             // label12
             // 
-            this.label12.Font = new System.Drawing.Font("TH Niramit AS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label12.Location = new System.Drawing.Point(8, 376);
+            this.label12.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label12.Location = new System.Drawing.Point(8, 424);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(1040, 138);
+            this.label12.Size = new System.Drawing.Size(1040, 132);
             this.label12.TabIndex = 14;
+            this.label12.Text = "asdfasdf";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.label13.ForeColor = System.Drawing.Color.Green;
-            this.label13.Location = new System.Drawing.Point(8, 336);
+            this.label13.Location = new System.Drawing.Point(8, 376);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(143, 46);
+            this.label13.Size = new System.Drawing.Size(170, 46);
             this.label13.TabIndex = 15;
-            this.label13.Text = "คุณมีนัดวันนี้";
+            this.label13.Text = "รายการนัดวันนี้";
             // 
             // button3
             // 
@@ -216,10 +219,11 @@
             // 
             this.labelAlert.Font = new System.Drawing.Font("TH Niramit AS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelAlert.ForeColor = System.Drawing.Color.Red;
-            this.labelAlert.Location = new System.Drawing.Point(8, 520);
+            this.labelAlert.Location = new System.Drawing.Point(12, 560);
             this.labelAlert.Name = "labelAlert";
-            this.labelAlert.Size = new System.Drawing.Size(1040, 141);
+            this.labelAlert.Size = new System.Drawing.Size(1040, 120);
             this.labelAlert.TabIndex = 17;
+            this.labelAlert.Text = "test";
             // 
             // groupBox1
             // 
@@ -233,19 +237,41 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(824, 328);
+            this.groupBox1.Size = new System.Drawing.Size(824, 312);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ข้อมูลการตรวจสอบสิทธิออนไลน์จาก  Web Services สปสช.";
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label11.Location = new System.Drawing.Point(8, 328);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(256, 44);
+            this.label11.TabIndex = 20;
+            this.label11.Text = "ชื่อ-สกุล(ในโรงพยาบาล) : ";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // ptnameHos
+            // 
+            this.ptnameHos.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.ptnameHos.Location = new System.Drawing.Point(264, 328);
+            this.ptnameHos.Name = "ptnameHos";
+            this.ptnameHos.Size = new System.Drawing.Size(552, 44);
+            this.ptnameHos.TabIndex = 13;
+            this.ptnameHos.Text = "-";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1064, 749);
+            this.Controls.Add(this.ptnameHos);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.labelAlert);
             this.Controls.Add(this.button3);
@@ -287,5 +313,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label labelAlert;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label ptnameHos;
     }
 }

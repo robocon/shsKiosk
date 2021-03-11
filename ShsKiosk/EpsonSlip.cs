@@ -154,26 +154,20 @@ namespace ShsKiosk
 
                 Printer printer = new Printer("w80");
                 //Printer printer = new Printer("TM-T88IV", "windows-874");
+                //Printer printer = new Printer("TM-T82X");
 
                 System.Globalization.CultureInfo _cultureTHInfo = new System.Globalization.CultureInfo("th-TH");
                 string currDate = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss",_cultureTHInfo);
 
                 printer.AlignCenter();
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
-
-                printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
-                //printer.Image(DrawTextImg(app.queueRoom, fontRegular));
-                if (!String.IsNullOrEmpty(app.doctor))
-                {
-                    printer.Image(DrawTextImg(app.doctor, fontRegular));
-                }
-                printer.NewLine();
-
                 printer.Image(DrawTextImg(currDate, fontRegular));
                 printer.Image(DrawTextImg(app.ex, fontRegular));
                 printer.Image(DrawTextImg("HN : " + app.hn, superBoldUnderline));
                 printer.Image(DrawTextImg("VN : " + app.vn, superBoldUnderline));
-                printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
+                printer.NewLine();
+                printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontBold));
+                printer.NewLine();
                 printer.Image(DrawTextImg($"สิทธิ : {app.ptright}", fontBoldUnderline));
                 if (!String.IsNullOrEmpty(app.hospCode))
                 {
@@ -183,7 +177,9 @@ namespace ShsKiosk
                 printer.Image(DrawTextImg($"อายุ {app.age}", fontRegular));
                 printer.Image(DrawTextImg($"บัตร ปชช. : {app.idcard}", fontRegular));
                 printer.Image(DrawTextImg(app.mx, fontRegular));
-
+                printer.NewLine();
+                printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
+                printer.NewLine();
                 var writer = new BarcodeWriter
                 {
                     Format = BarcodeFormat.QR_CODE,

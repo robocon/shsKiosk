@@ -19,7 +19,7 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         List<Appoint> appoint;
         static readonly SmConfigure smConfig = new SmConfigure();
-        
+        static nhsoDataSetC1 pt;
 
         public Form1()
         {
@@ -34,7 +34,6 @@ namespace ShsKiosk
         private void Form1_Load_1(object sender, EventArgs e)
         {
             pictureBox1.Visible = false;
-
             //this.TopMost = true;
             //this.FormBorderStyle = FormBorderStyle.None;
             //this.WindowState = FormWindowState.Maximized;
@@ -320,47 +319,54 @@ namespace ShsKiosk
 
         public async void UcwsNhso(string idcard, Bitmap Photo1)
         {
-            //Console.WriteLine(idcard);
+            Console.WriteLine("ตรวจสอบ Token จากเครื่องห้องทะเบียน");
             // ดึง Token จากเครื่องแม่
             string nhsoContent = await Task.Run(() => Ajax());
             if (String.IsNullOrEmpty(nhsoContent))
             {
-                label1SetText("ไม่พบ Token กรุณาประสานห้องทะเบียน");
+                label1SetText("ไม่สามารถติดต่อเครื่องตรวจสอบสิทธิห้องทะเบียนได้ กรุณาติดต่อศูนย์คอมฯ");
                 pictureBox1Status(false);
                 return;
             }
 
             string[] nhso = nhsoContent.Split('#');
-
-            string logTxt = "nhso token found";
-            Console.WriteLine(logTxt);
-
             string staffIdCard = nhso[0];
             string nhsoToken = nhso[1];
 
             // ดึงข้อมูลสิทธิการรักษาจาก สปสช
-            UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
-            nhsoDataSetC1 pt = new nhsoDataSetC1();
-            pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
-            Console.WriteLine(pt.ws_status+" : "+pt.ws_status_desc);
-            if (pt.ws_status == "NHSO-00003")
+            try
             {
-                label1SetText("TOKEN หมดอายุการใช้งาน กรุณายืนยันตัวตนผ่านโปรแกรม UcAuthentication อีกครั้ง");
+                Console.WriteLine("ทำการเชื่อมต่อกับ WebService สปสช");
+                UCWSTokenP1Client soapClient = new UCWSTokenP1Client();
+                pt = new nhsoDataSetC1();
+                pt = soapClient.searchCurrentByPID(staffIdCard, nhsoToken, idcard);
+                if (pt.ws_status == "NHSO-00003")
+                {
+                    label1SetText("TOKEN หมดอายุการใช้งาน ติดต่อทะเบียนเพื่อเปิดใช้ UcAuthentication อีกครั้ง");
+                    pictureBox1Status(false);
+                    return;
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                label1SetText("ไม่สามารถติดต่อกับ WebService สปสช ได้");
                 pictureBox1Status(false);
                 return;
             }
+            
 
             string moreTxt = "";
             // ถ้า maininscl เป็นค่าว่างแสดงว่าไม่มีสิทธิอะไรเลย ให้สงสัยก่อนว่าเป็นเงินสด
             // ถ้ามี new_maininscl แสดงว่ามีสิทธิใหม่เกิดขึ้น เช่น หมดสิทธิ ปกส. แล้วไปใช้ 30บาท หรืออื่นๆ
             if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
             {
-                //label1SetText("รหัสสิทธิหลักของท่านมีการเปลี่ยนแปลง\nกรุณาติดต่อห้องทะเบียน เพื่อทำการทบทวนสิทธิอีกครั้ง");
-                //pictureBox1Status(false);
-                //return;
-                //moreTxt += "รหัสสิทธิหลักของท่านมีการเปลี่ยนแปลง\nกรุณาติดต่อห้องทะเบียน เพื่อทำการทบทวนสิทธิอีกครั้ง\n";
+                label1SetText("รหัสสิทธิหลักของท่านมีการเปลี่ยนแปลง\nกรุณาติดต่อห้องทะเบียน เพื่อทำการทบทวนสิทธิอีกครั้ง");
+                pictureBox1Status(false);
+                return;
             }
 
+            // แจ้งเตือน
             if ((!String.IsNullOrEmpty(pt.hmain) && pt.hmain != "11512") || (!String.IsNullOrEmpty(pt.new_hmain) && pt.new_hmain != "11512"))
             {
                 moreTxt += "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด \n";
@@ -371,49 +377,43 @@ namespace ShsKiosk
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
             if (resultOpcard.opcardStatus == "n")
             {
-                label1SetText("ไม่พบ HN กรุณาติดต่อห้องทะเบียนเพื่อลงทะเบียน");
+                label1SetText(resultOpcard.errorMsg);
                 pictureBox1Status(false);
                 return;
             }
 
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
-                //moreTxt += "แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ";
                 label1SetText("แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ");
                 pictureBox1Status(false);
                 return;
             }
-
             // ตรวจสิทธิหลักสิทธิรอง
 
             // ตรวจสอบการนัดหมาย
+            Console.WriteLine($"ค้นหาการนัด {smConfig.searchAppointUrl} {idcard}");
             string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
-            responseAppoint result = JsonConvert.DeserializeObject<responseAppoint>(content);
-
             string appointContent = "";
             int appointCount = 0;
             string appointStatus = "";
-
-            appointStatus = result.appointStatus;
-
-            // ทดสอบระบบให้ lock ไว้ก่อนถ้าไม่มีนัดจะใช้ไม่ได้
-            if (appointStatus != "y")
+            if (!string.IsNullOrEmpty(content))
             {
-                label1SetText("ไม่พบการนัดในวันนี้ กรุณาติดต่อแผนกทะเบียน");
-                pictureBox1Status(false);
-                return;
+                responseAppoint result = JsonConvert.DeserializeObject<responseAppoint>(content);
+                appointStatus = result.appointStatus;
+                if (appointStatus == "y")
+                {
+                    appointContent = result.appointContent;
+                    appointCount = int.Parse(result.appointCount);
+                    appoint = result.appoint;
+                }
+                else
+                {
+                    label1SetText(result.errorMsg);
+                    pictureBox1Status(false);
+                    return;
+                }
             }
-
-            //Console.WriteLine(appointStatus);
-            if (appointStatus == "y")
-            {
-                appointContent = result.appointContent;
-                appointCount = int.Parse(result.appointCount);
-                appoint = result.appoint;
-            }
-
             pictureBox1Status(false);
-            
 
             string maininscl = "";
             string maininsclCode = "";
@@ -485,21 +485,32 @@ namespace ShsKiosk
         public string appointContent { get; set; }
         public string appointCount { get; set; }
         public List<Appoint> appoint { get; set; }
+        public string errorMsg { get; set; }
     }
 
     public class sendAppoint
     {
         public string Idcard { get; set; }
+        public string hn { get; set; }
+    }
+
+    public class sendSearchOpCard
+    {
+        public string Idcard { get; set; }
+        public string hn { get; set; }
     }
 
     public class responseOpcard
     {
         public string opcardStatus { set; get; }
         public string idcard { set; get; }
+        public string hn { set; get; }
+        public string ptname { set; get; }
         public string hosPtRight { set; get; }
 
         public string PtRightMain { set; get; }
         public string PtRightSub { set; get; }
+        public string errorMsg { set; get; }
     }
 
 }
