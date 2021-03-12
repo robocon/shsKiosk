@@ -15,6 +15,8 @@ namespace ShsKiosk
 {
     class EpsonSlip
     {
+        static readonly SmConfigure smConfig = new SmConfigure();
+
         // https://gist.github.com/naveedmurtuza/6600103
         public byte[] DrawText(String text, Font font)
         {
@@ -152,9 +154,7 @@ namespace ShsKiosk
                 Font fontSuperBold = new Font(fontName, 28, FontStyle.Bold, GraphicsUnit.Pixel);
                 Font superBoldUnderline = new Font(fontName, 28, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
 
-                Printer printer = new Printer("w80");
-                //Printer printer = new Printer("TM-T88IV", "windows-874");
-                //Printer printer = new Printer("TM-T82X");
+                Printer printer = new Printer(smConfig.printerName);
 
                 System.Globalization.CultureInfo _cultureTHInfo = new System.Globalization.CultureInfo("th-TH");
                 string currDate = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss",_cultureTHInfo);

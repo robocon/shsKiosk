@@ -21,14 +21,29 @@ namespace ShsKiosk
         static readonly SmConfigure smConfig = new SmConfigure();
         static nhsoDataSetC1 pt;
 
+        private static System.Timers.Timer aTimer;
+
         public Form1()
         {
             InitializeComponent();
 
             // Event Key สำหรับ Aibecy MP2600
             this.KeyPreview = true;
-            //this.KeyDown += Form1_KeyDown;
+
+            aTimer = new System.Timers.Timer(5000);
+            aTimer.Elapsed += TimerElapsed;
         }
+        private string input;
+        private void TimerElapsed(object sender, EventArgs e)
+        {
+            Console.WriteLine("TimerElapsed: TIME STOPPPPPPP");
+            //input = string.Empty;
+            //aTimer.Stop();
+            aTimer.Enabled = false;
+            testGetKeyChar = "";
+            //aTimer = null;
+        }
+
 
         string[] cardReaders;
         private void Form1_Load_1(object sender, EventArgs e)
@@ -223,6 +238,17 @@ namespace ShsKiosk
         public string fullTxt = "";
         private async void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            //e.KeyData
+            //e.keyEnter;
+            //Console.WriteLine(e.KeyCode);
+            /*
+            if (e.KeyData == (char)13)
+            {
+
+            }
+            */
+
+            /*
             KeysConverter kc = new KeysConverter();
             string testKey = kc.ConvertToString(e.KeyValue);
             fullTxt += testKey;
@@ -254,7 +280,7 @@ namespace ShsKiosk
                 
                 hn = fullTxt = "";
             }
-
+            */
         }
 
         public async Task<Personal> RunCardReadder()
@@ -467,6 +493,72 @@ namespace ShsKiosk
             frm.ShowDialog();
 
             label1SetText("");
+        }
+
+        private string testGetKeyChar = "";
+
+        private async void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            testGetKeyChar += e.KeyChar;
+            if (e.KeyChar == (char)13)
+            {
+                if (!aTimer.Enabled)
+                {
+                    aTimer.Enabled = true;
+                    //Console.WriteLine(testGetKeyChar.Trim());
+
+                    string hn = testGetKeyChar.Trim();
+                    Console.WriteLine(hn);
+
+                    Console.WriteLine("QR Code/Barcode Scanner was loaded");
+                    //label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
+
+                    // ตรวจสอบ HN 
+                    string testOpcard = await Task.Run(() => searchFromSmByHn(smConfig.searchOpcardUrl, hn));
+                    if (!string.IsNullOrEmpty(testOpcard))
+                    {
+                        responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
+
+                        Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
+                        Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));
+
+                        UcwsNhso(resultOpcard.idcard, Photo1);
+                    }
+                    else
+                    {
+                        label1SetText($"ไม่พบข้อมูล {smConfig.searchOpcardUrl}");
+                    }
+
+                    hn = testGetKeyChar = "";
+
+                }
+                else
+                {
+                    Console.WriteLine("Timer still working");
+                    return;
+                }
+            }
+        }
+
+        static async Task<string> searchFromSmByHn(string posturi, string hn)
+        {
+            string content = null;
+            try
+            {
+                sendSearchOpCard appoint = new sendSearchOpCard();
+                appoint.hn = hn;
+
+                HttpClient httpClient = new HttpClient();
+                var response = await httpClient.PostAsJsonAsync(posturi, appoint);
+                response.EnsureSuccessStatusCode();
+                content = await response.Content.ReadAsStringAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+
+            return content;
         }
     }
 

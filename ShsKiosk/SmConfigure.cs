@@ -24,6 +24,8 @@ namespace ShsKiosk
 
         public string searchByHn { get; set; }
 
+        public string printerName { get; set; }
+
         public SmConfigure()
         {
             string json = File.ReadAllText(pathFileConfig);
@@ -36,6 +38,7 @@ namespace ShsKiosk
             this.searchAppointUrl = brokerUrl + "searchAppoint.php";
             this.createVnUrl = brokerUrl + "saveVn.php";
             this.searchByHn = brokerUrl + "searchByHn.php";
+            this.printerName = c.printerName;
         }
     }
 
@@ -43,5 +46,6 @@ namespace ShsKiosk
     {
         public string ipUc { get; set; }
         public string ipBroker { get; set; }
+        public string printerName { get; set; }
     }
 }

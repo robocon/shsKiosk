@@ -30,6 +30,7 @@ namespace ShsConfig
                 Config config = new Config();
                 config.ipUc = ipUc.Text.Trim();
                 config.ipBroker = ipBroker.Text.Trim();
+                config.printerName = printerName.Text.Trim();
                 string jsonTxt = JsonConvert.SerializeObject(config);
                 StreamWriter sw = new StreamWriter(pathFileConfig, false);
                 sw.WriteLine(jsonTxt);
@@ -68,6 +69,7 @@ namespace ShsConfig
                 Config c = JsonConvert.DeserializeObject<Config>(json);
                 ipUc.Text = c.ipUc;
                 ipBroker.Text = c.ipBroker;
+                printerName.Text = c.printerName;
                 
                 string jsonPath = File.ReadAllText(pathBrokerConfig);
                 DbConfig cf = JsonConvert.DeserializeObject<DbConfig>(jsonPath);
@@ -87,6 +89,7 @@ namespace ShsConfig
     {
         public string ipUc { get; set; }
         public string ipBroker { get; set; }
+        public string printerName { get; set; }
     }
 
     class DbConfig

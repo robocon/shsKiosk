@@ -47,6 +47,8 @@ namespace ShsConfig
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.printerName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -206,6 +208,8 @@ namespace ShsConfig
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.printerName);
+            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.ipUc);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label3);
@@ -213,7 +217,7 @@ namespace ShsConfig
             this.groupBox1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 16);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(464, 192);
+            this.groupBox1.Size = new System.Drawing.Size(464, 264);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ตั้งค่าการใช้งาน";
@@ -235,6 +239,26 @@ namespace ShsConfig
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "ตั้งค่า Database Broker";
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(24, 184);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(256, 40);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "เครื่องปริ้น";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // printerName
+            // 
+            this.printerName.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.printerName.Location = new System.Drawing.Point(288, 176);
+            this.printerName.Name = "printerName";
+            this.printerName.Size = new System.Drawing.Size(168, 50);
+            this.printerName.TabIndex = 8;
+            this.printerName.TabStop = false;
+            this.printerName.Text = "w80";
             // 
             // Form1
             // 
@@ -276,6 +300,8 @@ namespace ShsConfig
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox printerName;
+        private System.Windows.Forms.Label label1;
     }
 }
 
