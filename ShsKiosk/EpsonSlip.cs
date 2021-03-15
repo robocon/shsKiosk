@@ -153,12 +153,12 @@ namespace ShsKiosk
                 Font fontBoldUnderline = new Font(fontName, 16, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
                 Font fontSuperBold = new Font(fontName, 28, FontStyle.Bold, GraphicsUnit.Pixel);
                 Font superBoldUnderline = new Font(fontName, 28, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Pixel);
+                byte[] PartialCut = { 0x0A, 0x0A, 0x0A, 0x1B, 0x69 };
+                System.Globalization.CultureInfo _cultureTHInfo = new System.Globalization.CultureInfo("th-TH");
+                string currDate = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss", _cultureTHInfo);
 
                 Printer printer = new Printer(smConfig.printerName);
-
-                System.Globalization.CultureInfo _cultureTHInfo = new System.Globalization.CultureInfo("th-TH");
-                string currDate = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss",_cultureTHInfo);
-
+                /*
                 printer.AlignCenter();
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
                 printer.Image(DrawTextImg(currDate, fontRegular));
@@ -178,7 +178,9 @@ namespace ShsKiosk
                 printer.Image(DrawTextImg($"บัตร ปชช. : {app.idcard}", fontRegular));
                 printer.Image(DrawTextImg(app.mx, fontRegular));
                 printer.NewLine();
-                printer.Image(DrawTextImg(app.queueNumber, fontSuperBold));
+                printer.Image(DrawTextImg($"คิวซักประวัติ {app.fakeQueue}", fontBold));
+                printer.NewLine();
+                printer.Image(DrawTextImg($"คิวห้องตรวจ {app.queueNumber}", fontBold));
                 printer.NewLine();
                 var writer = new BarcodeWriter
                 {
@@ -208,10 +210,8 @@ namespace ShsKiosk
                 //printer.Image(DrawTextImg($"กรุณาแจ้งแผนกทะเบียน", fontBold));
                 //printer.Image(DrawTextImg($"เพื่อประโยชน์และสิทธิ์ของท่านเอง", fontBold));
                 printer.NewLines(8);
-                
-                byte[] PartialCut = { 0x0A, 0x0A, 0x0A, 0x1B, 0x69 };
                 printer.Append(PartialCut);
-
+                */
                 //////
                 if (app.queueStatus == "y")
                 {
@@ -242,7 +242,10 @@ namespace ShsKiosk
                     printer.Image(DrawTextImg(currDate, fontRegular));
                     printer.Image(DrawTextImg(app.queueNumber, fontBold));
                     printer.Image(DrawTextImg(app.queueRoom, fontRegular));
-                    printer.Image(DrawTextImg($"คิวที่ {app.runNumber}", fontBold));
+                    printer.Image(DrawTextImg($"เลขคิวห้องตรวจ {app.runNumber}", fontSuperBold, 32));
+                    printer.NewLine();
+                    printer.Image(DrawTextImg($"เลขคิวซักประวัติ {app.fakeQueue}", fontSuperBold, 32));
+                    printer.NewLine();
                     if (!String.IsNullOrEmpty(app.doctor))
                     {
                         printer.Image(DrawTextImg(app.doctor, fontRegular));
@@ -251,7 +254,7 @@ namespace ShsKiosk
                     printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
                     printer.Image(DrawTextImg($"ประเภท : {app.ptType}", fontRegular));
                     printer.Image(DrawTextImg($"จำนวนคิวที่รอ {app.queueWait} คิว", fontRegular));
-                    printer.Image(DrawTextImg($"ใบคิวสำหรับผู้ป่วย", fontBold));
+                    printer.Image(DrawTextImg($"ใบคิวสำหรับผู้ป่วย โปรดเก็บไว้กับตัว", fontBold));
                     printer.NewLines(8);
                     printer.Append(PartialCut);
                 }

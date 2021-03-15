@@ -173,6 +173,7 @@ namespace ShsKiosk
         public int queueWait { set; get; }
         public string queueRoom { set; get; }
         public string runNumber { set; get; }
+        public string fakeQueue { set; get; }
     }
 
     public class saveVn {

@@ -41,7 +41,7 @@ namespace ShsKiosk
                 Mybutton.Height = 76;
                 Mybutton.AutoSize = true;
                 //Mybutton.Size = new Size(390, 150);
-                Mybutton.Font = new Font("TH Niramit AS", 36, FontStyle.Bold);
+                Mybutton.Font = new Font("TH Niramit AS", 28, FontStyle.Bold);
 
                 Mybutton.Click += (object se, EventArgs ea) => {
                     sendVNandQueue(app.rowId, app.doctor);
