@@ -236,7 +236,7 @@ namespace ShsKiosk
 
         public string hn = "";
         public string fullTxt = "";
-        private async void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             //e.KeyData
             //e.keyEnter;
