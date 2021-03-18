@@ -178,9 +178,9 @@ namespace ShsKiosk
                 printer.Image(DrawTextImg($"บัตร ปชช. : {app.idcard}", fontRegular));
                 printer.Image(DrawTextImg(app.mx, fontRegular));
                 printer.NewLine();
-                printer.Image(DrawTextImg($"คิวซักประวัติ {app.fakeQueue}", fontBold));
+                printer.Image(DrawTextImg($"เลขคิวซักประวัติ {app.fakeQueue}", fontBold));
                 printer.NewLine();
-                printer.Image(DrawTextImg($"คิวห้องตรวจ {app.queueNumber}", fontBold));
+                printer.Image(DrawTextImg($"เลขคิวห้องตรวจ {app.queueNumber}", fontBold));
                 printer.NewLine();
                 var writer = new BarcodeWriter
                 {
