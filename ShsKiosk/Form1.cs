@@ -484,6 +484,9 @@ namespace ShsKiosk
             frm.personImage = Photo1;
             frm.ptRight = maininsclCode;
 
+            frm.hn = resultOpcard.hn;
+            frm.ptname = resultOpcard.ptname;
+
             frm.appointStatus = appointStatus;
             frm.appointContent = appointContent;
             frm.appointCount = appointCount;

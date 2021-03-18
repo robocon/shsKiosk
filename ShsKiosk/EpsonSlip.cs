@@ -158,7 +158,7 @@ namespace ShsKiosk
                 string currDate = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss", _cultureTHInfo);
 
                 Printer printer = new Printer(smConfig.printerName);
-                /*
+                
                 printer.AlignCenter();
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
                 printer.Image(DrawTextImg(currDate, fontRegular));
@@ -211,7 +211,7 @@ namespace ShsKiosk
                 //printer.Image(DrawTextImg($"เพื่อประโยชน์และสิทธิ์ของท่านเอง", fontBold));
                 printer.NewLines(8);
                 printer.Append(PartialCut);
-                */
+                
                 //////
                 if (app.queueStatus == "y")
                 {
