@@ -182,6 +182,16 @@ namespace ShsKiosk
                 printer.NewLine();
                 printer.Image(DrawTextImg($"เลขคิวห้องตรวจ {app.queueNumber}", fontBold));
                 printer.NewLine();
+                if (!String.IsNullOrEmpty(app.doctor))
+                {
+                    printer.Image(DrawTextImg(app.doctor, fontRegular));
+                }
+                else
+                {
+                    printer.Image(DrawTextImg("แพทย์.....................", fontRegular));
+                }
+                printer.Image(DrawTextImg("ยื่นรับยาที่ช่องหมายเลข6", fontBold));
+                /*
                 var writer = new BarcodeWriter
                 {
                     Format = BarcodeFormat.QR_CODE,
@@ -193,19 +203,23 @@ namespace ShsKiosk
                 };
                 var qrCodeImg = writer.Write(app.hn);
                 printer.Image(qrCodeImg);
+                */
 
                 var writer2 = new BarcodeWriter
                 {
-                    Format = BarcodeFormat.CODE_128,
+                    Format = BarcodeFormat.CODE_39,
                     Options = new ZXing.Common.EncodingOptions
                     {
-                        Height = 60,
+                        Height = 60, 
                         Width = 306,
                         PureBarcode = true
                     }
                 };
                 var barcodeImg = writer2.Write(app.hn);
                 printer.Image(barcodeImg);
+
+                printer.Image(new Bitmap(Bitmap.FromFile("Images/extra.bmp")));
+
                 //printer.Image(DrawTextImg($"หากที่อยู่ของท่านมีการเปลี่ยนแปลง", fontBold));
                 //printer.Image(DrawTextImg($"กรุณาแจ้งแผนกทะเบียน", fontBold));
                 //printer.Image(DrawTextImg($"เพื่อประโยชน์และสิทธิ์ของท่านเอง", fontBold));
@@ -249,6 +263,10 @@ namespace ShsKiosk
                     if (!String.IsNullOrEmpty(app.doctor))
                     {
                         printer.Image(DrawTextImg(app.doctor, fontRegular));
+                    }
+                    else
+                    {
+                        printer.Image(DrawTextImg("แพทย์.....................", fontRegular));
                     }
                     printer.Image(DrawTextImg($"HN : {app.hn}", fontBold));
                     printer.Image(DrawTextImg($"ชื่อ : {app.ptname}", fontRegular));
