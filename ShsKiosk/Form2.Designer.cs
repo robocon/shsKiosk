@@ -49,8 +49,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this.ptnameHos = new System.Windows.Forms.Label();
+            this.loadingForm2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingForm2)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -265,11 +267,22 @@
             this.ptnameHos.TabIndex = 13;
             this.ptnameHos.Text = "-";
             // 
+            // loadingForm2
+            // 
+            this.loadingForm2.Image = ((System.Drawing.Image)(resources.GetObject("loadingForm2.Image")));
+            this.loadingForm2.Location = new System.Drawing.Point(168, 688);
+            this.loadingForm2.Name = "loadingForm2";
+            this.loadingForm2.Size = new System.Drawing.Size(51, 51);
+            this.loadingForm2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.loadingForm2.TabIndex = 21;
+            this.loadingForm2.TabStop = false;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1064, 749);
+            this.Controls.Add(this.loadingForm2);
             this.Controls.Add(this.ptnameHos);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.groupBox1);
@@ -288,6 +301,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingForm2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -315,5 +329,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label ptnameHos;
+        private System.Windows.Forms.PictureBox loadingForm2;
     }
 }

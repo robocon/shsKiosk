@@ -48,6 +48,8 @@ namespace ShsKiosk
             button1.Hide();
             button3.Hide();
 
+            loadingForm2.Hide();
+
             Refresh();
             ptnameHos.Text = ptname;
             label6.Text = idcard;
@@ -125,6 +127,8 @@ namespace ShsKiosk
          */
         private async void button3_Click(object sender, EventArgs e)
         {
+            button3.Enabled = false;
+            loadingForm2.Show();
             Console.WriteLine("Button3(ออกvn) was clicked");
             if (appointCount > 1) // ถ้ามีนัด 2แพทย์
             {
@@ -148,6 +152,8 @@ namespace ShsKiosk
                     es.printOutSlip(app);
                 }
             }
+            button3.Enabled = true;
+            loadingForm2.Hide();
             this.Close();
         }
     }
