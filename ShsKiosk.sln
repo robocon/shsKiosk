@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShsKiosk", "ShsKiosk\ShsKio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShsConfig", "ShsConfig\ShsConfig.csproj", "{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisFromHn", "RegisFromHn\RegisFromHn.csproj", "{5F2B4F3B-B66B-4365-A42E-557E73CC1BED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43A931A3-BB61-4485-9CD3-4317A4ED5EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F2B4F3B-B66B-4365-A42E-557E73CC1BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F2B4F3B-B66B-4365-A42E-557E73CC1BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F2B4F3B-B66B-4365-A42E-557E73CC1BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F2B4F3B-B66B-4365-A42E-557E73CC1BED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -46,9 +46,10 @@ namespace ShsConfig
             this.brokerDb = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.printerName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +57,7 @@ namespace ShsConfig
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(24, 64);
+            this.label2.Location = new System.Drawing.Point(8, 64);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(256, 40);
             this.label2.TabIndex = 1;
@@ -66,7 +67,7 @@ namespace ShsConfig
             // ipUc
             // 
             this.ipUc.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ipUc.Location = new System.Drawing.Point(288, 64);
+            this.ipUc.Location = new System.Drawing.Point(272, 64);
             this.ipUc.Name = "ipUc";
             this.ipUc.Size = new System.Drawing.Size(168, 50);
             this.ipUc.TabIndex = 2;
@@ -76,7 +77,7 @@ namespace ShsConfig
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(269, 416);
+            this.btnSave.Location = new System.Drawing.Point(285, 400);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 48);
             this.btnSave.TabIndex = 3;
@@ -88,7 +89,7 @@ namespace ShsConfig
             // btnCancel
             // 
             this.btnCancel.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(477, 416);
+            this.btnCancel.Location = new System.Drawing.Point(461, 400);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(124, 48);
             this.btnCancel.TabIndex = 4;
@@ -100,7 +101,7 @@ namespace ShsConfig
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(24, 120);
+            this.label3.Location = new System.Drawing.Point(8, 120);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(256, 40);
             this.label3.TabIndex = 5;
@@ -110,7 +111,7 @@ namespace ShsConfig
             // ipBroker
             // 
             this.ipBroker.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ipBroker.Location = new System.Drawing.Point(288, 120);
+            this.ipBroker.Location = new System.Drawing.Point(272, 120);
             this.ipBroker.Name = "ipBroker";
             this.ipBroker.Size = new System.Drawing.Size(168, 50);
             this.ipBroker.TabIndex = 6;
@@ -121,7 +122,7 @@ namespace ShsConfig
             // 
             this.notify.Font = new System.Drawing.Font("TH Niramit AS", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notify.ForeColor = System.Drawing.Color.Green;
-            this.notify.Location = new System.Drawing.Point(16, 360);
+            this.notify.Location = new System.Drawing.Point(15, 464);
             this.notify.Name = "notify";
             this.notify.Size = new System.Drawing.Size(840, 40);
             this.notify.TabIndex = 7;
@@ -217,13 +218,34 @@ namespace ShsConfig
             this.groupBox1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 16);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(464, 264);
+            this.groupBox1.Size = new System.Drawing.Size(448, 264);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ตั้งค่าการใช้งาน";
             // 
+            // printerName
+            // 
+            this.printerName.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.printerName.Location = new System.Drawing.Point(272, 176);
+            this.printerName.Name = "printerName";
+            this.printerName.Size = new System.Drawing.Size(168, 50);
+            this.printerName.TabIndex = 8;
+            this.printerName.TabStop = false;
+            this.printerName.Text = "w80";
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(8, 184);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(256, 40);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "เครื่องปริ้น";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.brokerHost);
             this.groupBox2.Controls.Add(this.brokerDb);
@@ -233,38 +255,29 @@ namespace ShsConfig
             this.groupBox2.Controls.Add(this.brokerPass);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(488, 16);
+            this.groupBox2.Location = new System.Drawing.Point(472, 16);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(368, 328);
+            this.groupBox2.Size = new System.Drawing.Size(384, 376);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "ตั้งค่า Database Broker";
+            this.groupBox2.Text = "ตั้งค่า Database Broker ";
             // 
-            // label1
+            // label5
             // 
-            this.label1.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(24, 184);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(256, 40);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "เครื่องปริ้น";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // printerName
-            // 
-            this.printerName.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.printerName.Location = new System.Drawing.Point(288, 176);
-            this.printerName.Name = "printerName";
-            this.printerName.Size = new System.Drawing.Size(168, 50);
-            this.printerName.TabIndex = 8;
-            this.printerName.TabStop = false;
-            this.printerName.Text = "w80";
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("TH Niramit AS", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label5.Location = new System.Drawing.Point(8, 320);
+            this.label5.MaximumSize = new System.Drawing.Size(368, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(357, 58);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "กรณีตั้งค่า broker เป็น localhost ให้เซ็ตค่าการ Connect DB ในนี้";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(871, 477);
+            this.ClientSize = new System.Drawing.Size(871, 509);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.notify);
@@ -302,6 +315,7 @@ namespace ShsConfig
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox printerName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label5;
     }
 }
 
