@@ -132,7 +132,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(840, 8);
+            this.pictureBox1.Location = new System.Drawing.Point(840, 32);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(216, 280);
             this.pictureBox1.TabIndex = 7;
@@ -210,7 +210,7 @@
             this.button3.Font = new System.Drawing.Font("TH Niramit AS", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.button3.Location = new System.Drawing.Point(224, 688);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(208, 51);
+            this.button3.Size = new System.Drawing.Size(208, 50);
             this.button3.TabIndex = 16;
             this.button3.TabStop = false;
             this.button3.Text = "ออก VN";
@@ -281,6 +281,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1064, 749);
             this.Controls.Add(this.loadingForm2);
             this.Controls.Add(this.ptnameHos);

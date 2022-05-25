@@ -303,6 +303,7 @@ namespace ShsKiosk
             string nhsoContent = null;
             try
             {
+                Console.WriteLine("โหลดข้อมูลจากทะเบียน {0}",smConfig.registerComUrl);
                 HttpResponseMessage response = await client.GetAsync(smConfig.registerComUrl);
                 response.EnsureSuccessStatusCode();
                 nhsoContent = await response.Content.ReadAsStringAsync();
@@ -419,6 +420,7 @@ namespace ShsKiosk
             // ตรวจสอบการนัดหมาย
             Console.WriteLine($"ค้นหาการนัด {smConfig.searchAppointUrl} {idcard}");
             string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
+            Console.WriteLine(content);
             string appointContent = "";
             int appointCount = 0;
             string appointStatus = "";

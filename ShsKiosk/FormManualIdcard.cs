@@ -84,6 +84,7 @@ namespace ShsKiosk
                 {
                     label2.Text = "หมายเลขบัตรประชาชนไม่ครบ13หลัก\nกรุณาตรวจสอบหมายเลขบัตรของท่านอีกครั้ง";
                     pictureBox1.Visible = false;
+                    this.ActiveControl = textBox1;
                     return;
                 }
 
