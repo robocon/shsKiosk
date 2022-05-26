@@ -113,10 +113,20 @@ namespace ShsKiosk
 
             // ดึง Token จากเครื่องแม่
             Console.WriteLine("ตรวจสอบ Token จากเครื่องห้องทะเบียน");
-            string nhsoContent = await Task.Run(() => Ajax());
+            // ดึง Token จากเครื่องแม่
+            string nhsoContent = await Task.Run(() => LoadRegisterToken($"http://{smConfig.ipUc}/getvalue.php"));
             if (string.IsNullOrEmpty(nhsoContent))
             {
-                label2.Text = "ไม่สามารถติดต่อเครื่องตรวจสอบสิทธิห้องทะเบียนได้ กรุณาติดต่อศูนย์คอมฯ";
+                nhsoContent = await Task.Run(() => LoadRegisterToken($"http://{smConfig.ipUc2}/getvalue.php"));
+                if (string.IsNullOrEmpty(nhsoContent))
+                {
+                    nhsoContent = await Task.Run(() => LoadRegisterToken($"http://{smConfig.ipUc3}/getvalue.php"));
+                }
+            }
+
+            if (String.IsNullOrEmpty(nhsoContent))
+            {
+                label2.Text = "กรุณาติดต่อห้องทะเบียน เพื่อทำการขอรหัส Authentication";
                 pictureBox1.Visible = false;
                 return;
             }
@@ -164,6 +174,7 @@ namespace ShsKiosk
             responseAppoint result = new responseAppoint();
             // ตรวจสอบการนัดหมาย
             string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
+            Console.WriteLine(content);
             string appointContent = "";
             int appointCount = 0;
             string appointStatus = "";
@@ -248,12 +259,12 @@ namespace ShsKiosk
             this.Close();
         }
 
-        static async Task<string> Ajax()
+        static async Task<string> LoadRegisterToken(string url)
         {
             string nhsoContent = null;
             try
             {
-                HttpResponseMessage response = await client.GetAsync(smConfig.registerComUrl);
+                HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 nhsoContent = await response.Content.ReadAsStringAsync();
             }

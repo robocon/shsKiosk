@@ -26,12 +26,17 @@ namespace ShsKiosk
 
         public string printerName { get; set; }
 
+        public string ipUc { get; set; }
+        public string ipUc2 { get; set; }
+        public string ipUc3 { get; set; }
+
+
         public SmConfigure()
         {
             string json = File.ReadAllText(pathFileConfig);
             Config c = JsonConvert.DeserializeObject<Config>(json);
 
-            string brokerUrl = $"http://{c.ipBroker}/smbroker/";
+            string brokerUrl = $"http://{c.ipBroker}/kioskbroker/";
 
             this.registerComUrl = $"http://{c.ipUc}/getvalue.php";
             this.searchOpcardUrl = brokerUrl + "searchOpcard.php";
@@ -39,12 +44,19 @@ namespace ShsKiosk
             this.createVnUrl = brokerUrl + "saveVn.php";
             this.searchByHn = brokerUrl + "searchByHn.php";
             this.printerName = c.printerName;
+
+            this.ipUc = c.ipUc;
+            this.ipUc2 = c.ipUc2;
+            this.ipUc3 = c.ipUc3;
+            
         }
     }
 
     class Config
     {
         public string ipUc { get; set; }
+        public string ipUc2 { get; set; }
+        public string ipUc3 { get; set; }
         public string ipBroker { get; set; }
         public string printerName { get; set; }
     }

@@ -29,6 +29,8 @@ namespace ShsConfig
             {
                 Config config = new Config();
                 config.ipUc = ipUc.Text.Trim();
+                config.ipUc2 = ipUc2.Text.Trim();
+                config.ipUc3 = ipUc3.Text.Trim();
                 config.ipBroker = ipBroker.Text.Trim();
                 config.printerName = printerName.Text.Trim();
                 string jsonTxt = JsonConvert.SerializeObject(config);
@@ -68,6 +70,8 @@ namespace ShsConfig
                 string json = File.ReadAllText(pathFileConfig);
                 Config c = JsonConvert.DeserializeObject<Config>(json);
                 ipUc.Text = c.ipUc;
+                ipUc2.Text = c.ipUc2;
+                ipUc3.Text = c.ipUc3;
                 ipBroker.Text = c.ipBroker;
                 printerName.Text = c.printerName;
                 
@@ -88,6 +92,8 @@ namespace ShsConfig
     class Config
     {
         public string ipUc { get; set; }
+        public string ipUc2 { get; set; }
+        public string ipUc3 { get; set; }
         public string ipBroker { get; set; }
         public string printerName { get; set; }
     }
