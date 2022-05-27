@@ -39,7 +39,7 @@ namespace ShsConfig
                 sw.Flush();
                 sw.Close();
 
-                DbConfig DbConfig = new DbConfig();
+                /*DbConfig DbConfig = new DbConfig();
                 DbConfig.host = brokerHost.Text.Trim();
                 DbConfig.user = brokerUser.Text.Trim();
                 DbConfig.pass = brokerPass.Text.Trim();
@@ -48,7 +48,7 @@ namespace ShsConfig
                 StreamWriter swDb = new StreamWriter(pathBrokerConfig, false);
                 swDb.WriteLine(jsonDbTxt);
                 swDb.Flush();
-                swDb.Close();
+                swDb.Close();*/
 
                 notify.Text = "บันทึกข้อมูลเรียบร้อย";
             }
@@ -75,12 +75,12 @@ namespace ShsConfig
                 ipBroker.Text = c.ipBroker;
                 printerName.Text = c.printerName;
                 
-                string jsonPath = File.ReadAllText(pathBrokerConfig);
+                /*string jsonPath = File.ReadAllText(pathBrokerConfig);
                 DbConfig cf = JsonConvert.DeserializeObject<DbConfig>(jsonPath);
                 brokerHost.Text = cf.host;
                 brokerUser.Text = cf.user;
                 brokerPass.Text = cf.pass;
-                brokerDb.Text = cf.db;
+                brokerDb.Text = cf.db;*/
             }
             catch (Exception ex)
             {
