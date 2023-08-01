@@ -164,8 +164,8 @@ namespace ShsKiosk
                 
                 printer.AlignCenter();
 
-                printer.Image(DrawTextImg($"คิวห้องตรวจ {app.queueNumber}", superBoldv2));
-                printer.NewLines(3);
+                //printer.Image(DrawTextImg($"คิวห้องตรวจ {app.queueNumber}", superBoldv2));
+                //printer.NewLines(3);
 
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
                 printer.Image(DrawTextImg(currDate, fontRegular));
@@ -185,8 +185,8 @@ namespace ShsKiosk
                 printer.Image(DrawTextImg($"บัตร ปชช. : {app.idcard}", fontRegular));
                 printer.Image(DrawTextImg(app.mx, fontRegular));
                 printer.NewLine();
-                printer.Image(DrawTextImg($"คิวซักประวัติที่ {app.fakeQueue}", fontBold));
-                printer.NewLine();
+                //printer.Image(DrawTextImg($"คิวซักประวัติที่ {app.fakeQueue}", fontBold));
+                //printer.NewLine();
                 
                 if (!String.IsNullOrEmpty(app.doctor))
                 {
@@ -197,7 +197,7 @@ namespace ShsKiosk
                     printer.Image(DrawTextImg("แพทย์.....................", fontRegular));
                 }
                 
-                /*
+                
                 var writer = new BarcodeWriter
                 {
                     Format = BarcodeFormat.QR_CODE,
@@ -209,8 +209,8 @@ namespace ShsKiosk
                 };
                 var qrCodeImg = writer.Write(app.hn);
                 printer.Image(qrCodeImg);
-                */
 
+                /*
                 var writer2 = new BarcodeWriter
                 {
                     Format = BarcodeFormat.CODE_39,
@@ -223,6 +223,8 @@ namespace ShsKiosk
                 };
                 var barcodeImg = writer2.Write(app.hn);
                 printer.Image(barcodeImg);
+                */
+
                 printer.Image(DrawTextImg("ยื่นรับยาที่ช่องหมายเลข6", fontBold));
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/extra.bmp")));
 
@@ -264,8 +266,8 @@ namespace ShsKiosk
                     printer.Image(DrawTextImg(app.queueRoom+" คิวที่ "+ app.runNumber, fontRegular));
                     //printer.Image(DrawTextImg($"เลขคิวห้องตรวจ {app.runNumber}", fontSuperBold, 32));
                     printer.NewLine();
-                    printer.Image(DrawTextImg($"คิวซักประวัติที่ {app.fakeQueue}", fontSuperBold, 32));
-                    printer.NewLine();
+                    //printer.Image(DrawTextImg($"คิวซักประวัติที่ {app.fakeQueue}", fontSuperBold, 32));
+                    //printer.NewLine();
                     if (!String.IsNullOrEmpty(app.doctor))
                     {
                         printer.Image(DrawTextImg(app.doctor, fontRegular));

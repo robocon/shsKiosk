@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using ThaiNationalIDCard;
 
 namespace ShsKiosk
@@ -104,16 +105,19 @@ namespace ShsKiosk
             }
             Console.WriteLine(idcard);
             string moreTxt = "";
+            /*
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
                 label2.Text = "แจ้งเตือน! : สิทธิหลักและสิทธิรองไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ\n";
                 pictureBox1.Visible = false;
                 return;
             }
+            */
 
             // ดึง Token จากเครื่องแม่
             Console.WriteLine("ตรวจสอบ Token จากเครื่องห้องทะเบียน");
             // ดึง Token จากเครื่องแม่
+            /*
             string nhsoContent = await Task.Run(() => LoadRegisterToken($"http://{smConfig.ipUc}/getvalue.php"));
             if (string.IsNullOrEmpty(nhsoContent))
             {
@@ -123,14 +127,24 @@ namespace ShsKiosk
                     nhsoContent = await Task.Run(() => LoadRegisterToken($"http://{smConfig.ipUc3}/getvalue.php"));
                 }
             }
+            */
 
+            /*
+            HttpResponseMessage response = await client.GetAsync("http://localhost/kioskbroker/getToken.php");
+            response.EnsureSuccessStatusCode();
+            string nhsoContent = await response.Content.ReadAsStringAsync();
+            */
+
+            /*
             if (String.IsNullOrEmpty(nhsoContent))
             {
                 label2.Text = "กรุณาติดต่อห้องทะเบียน เพื่อทำการขอรหัส Authentication";
                 pictureBox1.Visible = false;
                 return;
             }
+            */
 
+            /*
             string[] nhso = nhsoContent.Split('#');
             string staffIdCard = nhso[0];
             string nhsoToken = nhso[1];
@@ -155,9 +169,11 @@ namespace ShsKiosk
                 pictureBox1.Visible = false;
                 return;
             }
+            */
 
             // ถ้า maininscl เป็นค่าว่างแสดงว่าไม่มีสิทธิอะไรเลย ให้สงสัยก่อนว่าเป็นเงินสด
             // ถ้ามี new_maininscl แสดงว่ามีสิทธิใหม่เกิดขึ้น เช่น หมดสิทธิ ปกส. แล้วไปใช้ 30บาท หรืออื่นๆ
+            /*
             if (String.IsNullOrEmpty(pt.maininscl) || !String.IsNullOrEmpty(pt.new_maininscl))
             {
                 label2.Text = "สิทธิหลักของท่านมีการเปลี่ยนแปลง กรุณาติดต่อห้องทะเบียน\nเพื่อทำการตรวจสอบสิทธิ";
@@ -169,6 +185,7 @@ namespace ShsKiosk
             {
                 moreTxt = "แจ้งเตือน! : สถานพยาบาลหลักของท่านไม่ใช่ โรงพยาบาลค่ายสุรศักดิ์มนตรี ท่านจะได้สิทธิเป็นเงินสด";
             }
+            */
 
             Console.WriteLine($"ค้นหาการนัด {smConfig.searchAppointUrl} {idcard}");
             responseAppoint result = new responseAppoint();
@@ -200,6 +217,7 @@ namespace ShsKiosk
             // 
             string maininscl = "";
             string maininsclCode = "";
+            /*
             if (!String.IsNullOrEmpty(pt.maininscl))
             {
                 maininsclCode = pt.maininscl;
@@ -210,8 +228,10 @@ namespace ShsKiosk
                 maininsclCode = pt.new_maininscl;
                 maininscl = $"( { pt.new_maininscl } ) { pt.new_maininscl_name }";
             }
+            */
 
             string subinscl = "";
+            /*
             if (!String.IsNullOrEmpty(pt.subinscl))
             {
                 subinscl = $"( { pt.subinscl } ) { pt.subinscl_name }";
@@ -220,8 +240,10 @@ namespace ShsKiosk
             {
                 subinscl = $"( { pt.new_subinscl } ) { pt.new_subinscl_name }";
             }
+            */
 
             string hmain = "";
+            /*
             if (!String.IsNullOrEmpty(pt.hmain))
             {
                 hmain = $"( { pt.hmain } ) { pt.hmain_name }";
@@ -230,11 +252,13 @@ namespace ShsKiosk
             {
                 hmain = $"( { pt.new_hmain } ) { pt.new_hmain_name }";
             }
+            */
 
             Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
             Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));
             Form2 frm = new Form2();
-            frm.fullname = pt.fname + " " + pt.lname;
+            //frm.fullname = pt.fname + " " + pt.lname;
+            frm.fullname = resultOpcard.ptname;
             frm.idcard = idcard;
 
             frm.mainInSclName = maininscl;
