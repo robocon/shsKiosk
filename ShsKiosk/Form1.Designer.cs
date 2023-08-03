@@ -35,6 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.mainPicLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,10 +103,19 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
+            // mainPicLabel
+            // 
+            this.mainPicLabel.Location = new System.Drawing.Point(127, 600);
+            this.mainPicLabel.Name = "mainPicLabel";
+            this.mainPicLabel.Size = new System.Drawing.Size(830, 195);
+            this.mainPicLabel.TabIndex = 8;
+            this.mainPicLabel.Text = "mainPicLabel";
+            // 
             // Form1
             // 
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1064, 749);
+            this.Controls.Add(this.mainPicLabel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -133,6 +143,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label mainPicLabel;
     }
 }
 

@@ -167,7 +167,10 @@ namespace ShsKiosk
                 //printer.Image(DrawTextImg($"คิวห้องตรวจ {app.queueNumber}", superBoldv2));
                 //printer.NewLines(3);
 
-                printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
+                //printer.Image(new Bitmap(Bitmap.FromFile("Images/small-icon.bmp")));
+                printer.Image(DrawTextImg($"โรงพยาบาลค่ายสุรศักดิ์มนตรี", fontBold));
+                printer.NewLine();
+
                 printer.Image(DrawTextImg(currDate, fontRegular));
                 printer.Image(DrawTextImg(app.ex, fontRegular));
                 printer.Image(DrawTextImg("HN : " + app.hn, superBoldUnderline));

@@ -50,7 +50,7 @@ namespace ShsKiosk
         // ปุ่มเช็กสิทธิ
         private async void button12_Click(object sender, EventArgs e)
         {
-            label2.Text = "ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...";
+            label2.Text = "ระบบกำลังตรวจสอบข้อมูล กรุณารอสักครู่...";
             pictureBox1.Visible = true;
             Refresh();
 

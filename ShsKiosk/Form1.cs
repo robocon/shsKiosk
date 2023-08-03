@@ -54,6 +54,27 @@ namespace ShsKiosk
             //this.FormBorderStyle = FormBorderStyle.None;
             //this.WindowState = FormWindowState.Maximized;
 
+
+            Image img = Image.FromFile("Images/mainPic.png");
+            Bitmap Photo1 = new Bitmap(img, new Size(830, 432));
+            //mainPicLabel.Visible = false;
+            mainPicLabel.Text = "";
+            mainPicLabel.Image = Photo1;
+            //mainPicLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            mainPicLabel.Size = new Size(830, 432);
+
+            /*Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
+            Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));*/
+
+
+            /*Label lblImage = new Label();
+            lblImage.Parent = this;
+            lblImage.Location = new Point(250, 0);
+            lblImage.Image = img;
+            lblImage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblImage.Size = new Size(img.Width, img.Height);*/
+
+
             try
             {
                 Console.WriteLine("Form1 was loaded");
@@ -91,14 +112,14 @@ namespace ShsKiosk
         private async void CardInsertedCallback(Personal personal)
         {
             Console.WriteLine("card was inserted");
-            label1SetText("ระบบกำลังตรวจสอบสิทธิ กรุณารอสักครู่...");
+            label1SetText("ระบบกำลังตรวจสอบข้อมูล กรุณารอสักครู่...");
             pictureBox1Status(true);
 
             // ดึงค่าจากบัตรประชาชน
             var person = await RunCardReadder();
             if (person == null)
             {
-                label1SetText("ไม่พบข้อมูลบัตรประชาชน");
+                label1SetText("ไม่พบข้อมูลบัตรประชาชน กรุณาตรวจสอบชิปการ์ด");
                 pictureBox1Status(false);
             }
             else
@@ -258,12 +279,14 @@ namespace ShsKiosk
                 return;
             }
 
+            /*
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
                 label1SetText("แจ้งเตือน! : สิทธิหลัก และสิทธิรอง ไม่ตรงกัน กรุณาติดต่อห้องทะเบียนเพื่อทบทวนสิทธิ");
                 pictureBox1Status(false);
                 return;
             }
+            */
             // ตรวจสิทธิหลักสิทธิรอง
 
             // ตรวจสอบการนัดหมาย
@@ -319,7 +342,7 @@ namespace ShsKiosk
             }
             */
 
-            string hmain = "";
+            string hmain = resultOpcard.hospcode;
             /*
             if (!String.IsNullOrEmpty(pt.hmain))
             {
@@ -469,6 +492,7 @@ namespace ShsKiosk
         public string PtRightMain { set; get; }
         public string PtRightSub { set; get; }
         public string errorMsg { set; get; }
+        public string hospcode { set; get; }
     }
 
 }

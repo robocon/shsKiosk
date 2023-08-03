@@ -54,7 +54,7 @@ namespace ShsKiosk
             ptnameHos.Text = ptname;
             label6.Text = idcard;
             label7.Text = fullname;
-            label8.Text = mainInSclName;
+            label8.Text = hosPtRight;
             label9.Text = subInSclName;
             label10.Text = hMainName;
             pictureBox1.Image = personImage;
