@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -37,6 +38,13 @@ namespace ShsKiosk
         public Bitmap personImage;
         static readonly HttpClient client = new HttpClient();
         static readonly SmConfigure smConfig = new SmConfigure();
+
+        public string mobile;
+        public string claimType;
+        public string hcode;
+        public string correlationId;
+        public string pid;
+        public Boolean cardStatus;
 
         private void Form2_Load(object sender, EventArgs e)
         {
@@ -128,6 +136,33 @@ namespace ShsKiosk
         private async void button3_Click(object sender, EventArgs e)
         {
             button3.Enabled = false;
+
+            if (cardStatus)
+            {
+                saveNhsoService nhso = new saveNhsoService();
+                nhso.pid = pid;
+                nhso.claimType = claimType;
+                nhso.mobile = mobile;
+                nhso.correlationId = correlationId;
+                nhso.hn = hn;
+                nhso.hcode = hcode;
+
+                HttpClient httpClient = new HttpClient();
+                var response = await httpClient.PostAsJsonAsync("http://localhost:8189/api/nhso-service/confirm-save", nhso);
+                response.EnsureSuccessStatusCode();
+                string nhsoSave = await response.Content.ReadAsStringAsync();
+
+                /*var client = new HttpClient();
+                string json = JsonConvert.SerializeObject(nhso);
+                Console.WriteLine(json);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = null;
+                response = client.PostAsync("http://localhost:8189/api/nhso-service/confirm-save", content).Result;*/
+
+                // {"pid":"1509900231582","claimType":"PG0060001","correlationId":"a76b1ce8-40e8-4062-97cc-dc869ecbf19e","createdDate":"2023-08-04T15:32:17","claimCode":"PP1238504971"}
+                Console.WriteLine(nhsoSave);
+            }
+
             loadingForm2.Show();
             Console.WriteLine("Button3(ออกvn) was clicked");
             if (appointCount > 1) // ถ้ามีนัด 2แพทย์
@@ -187,5 +222,15 @@ namespace ShsKiosk
         public int appointId { set; get; }
         public string exType { set; get; }
         public string userPtRight { set; get; }
+    }
+
+    public class saveNhsoService
+    {
+        public string pid { set; get; }
+        public string claimType { set; get; }
+        public string mobile { set; get; }
+        public string correlationId { set; get; }
+        public string hn { set; get; }
+        public string hcode { set; get; }
     }
 }

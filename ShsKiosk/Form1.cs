@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -50,30 +51,13 @@ namespace ShsKiosk
         private void Form1_Load_1(object sender, EventArgs e)
         {
             pictureBox1.Visible = false;
-            //this.TopMost = true;
-            //this.FormBorderStyle = FormBorderStyle.None;
-            //this.WindowState = FormWindowState.Maximized;
 
-
+            // แสดงรูปวิธีใช้ที่หน้าตู้
             Image img = Image.FromFile("Images/mainPic.png");
-            Bitmap Photo1 = new Bitmap(img, new Size(830, 432));
-            //mainPicLabel.Visible = false;
+            Bitmap Photo1 = new Bitmap(img, new Size(845, 750));
             mainPicLabel.Text = "";
             mainPicLabel.Image = Photo1;
-            //mainPicLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            mainPicLabel.Size = new Size(830, 432);
-
-            /*Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
-            Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));*/
-
-
-            /*Label lblImage = new Label();
-            lblImage.Parent = this;
-            lblImage.Location = new Point(250, 0);
-            lblImage.Image = img;
-            lblImage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblImage.Size = new Size(img.Width, img.Height);*/
-
+            mainPicLabel.Size = new Size(845, 750);
 
             try
             {
@@ -127,7 +111,7 @@ namespace ShsKiosk
                 string idcard = person.Citizenid;
                 Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
 
-                UcwsNhso(idcard, Photo1);
+                UcwsNhso(idcard, Photo1, true);
 
             }
         }
@@ -193,10 +177,8 @@ namespace ShsKiosk
             frm.ShowDialog();
         }
 
-        public async void UcwsNhso(string idcard, Bitmap Photo1)
+        public async void UcwsNhso(string idcard, Bitmap Photo1, Boolean cardStatus)
         {
-            Console.WriteLine("ตรวจสอบ Token จากเครื่องห้องทะเบียน");
-
             // ดึง Token จากเครื่องแม่
             /*
             string nhsoContent = await Task.Run(() => LoadRegisterToken($"http://{smConfig.ipUc}/getvalue.php"));
@@ -270,6 +252,7 @@ namespace ShsKiosk
             */
 
             // ตรวจสอบ HN 
+            Console.WriteLine("ดึงข้อมูลจาก Opcard");
             string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
             if (resultOpcard.opcardStatus == "n")
@@ -278,7 +261,23 @@ namespace ShsKiosk
                 pictureBox1Status(false);
                 return;
             }
+            Console.WriteLine(testOpcard);
 
+            string correlationId = "";
+            string pid = "";
+            if (cardStatus)
+            {
+                Console.WriteLine("ดึงค่าจาก Service smart card");
+                HttpResponseMessage resSmartCard = await client.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=true");
+                resSmartCard.EnsureSuccessStatusCode();
+                string smartCardString = await resSmartCard.Content.ReadAsStringAsync();
+                Console.WriteLine("Smartcard data : " + smartCardString);
+                resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
+
+                correlationId = smartcard.correlationId;
+                pid = smartcard.pid;
+            }
+            
             /*
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
@@ -373,6 +372,14 @@ namespace ShsKiosk
             frm.appoint = appoint;
             frm.hosPtRight = resultOpcard.hosPtRight;
             frm.moreTxt = moreTxt;
+
+            frm.mobile = resultOpcard.mobile;
+            frm.claimType = "PG0060001";
+            frm.hcode = "11512";
+            frm.correlationId = correlationId;
+            frm.pid = pid;
+            frm.cardStatus = cardStatus;
+
             frm.ShowDialog();
 
             label1SetText("");
@@ -411,7 +418,7 @@ namespace ShsKiosk
                         Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
                         Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));
 
-                        UcwsNhso(resultOpcard.idcard, Photo1);
+                        UcwsNhso(resultOpcard.idcard, Photo1, false);
                     }
                     else
                     {
@@ -493,6 +500,13 @@ namespace ShsKiosk
         public string PtRightSub { set; get; }
         public string errorMsg { set; get; }
         public string hospcode { set; get; }
+        public string mobile { set; get; }
+    }
+
+    public class resSmartCard
+    {
+        public string pid { set; get; }
+        public string correlationId { set; get; }
     }
 
 }

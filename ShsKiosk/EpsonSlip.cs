@@ -228,7 +228,7 @@ namespace ShsKiosk
                 printer.Image(barcodeImg);
                 */
 
-                printer.Image(DrawTextImg("ยื่นรับยาที่ช่องหมายเลข6", fontBold));
+                //printer.Image(DrawTextImg("ยื่นรับยาที่ช่องหมายเลข6", fontBold));
                 printer.Image(new Bitmap(Bitmap.FromFile("Images/extra.bmp")));
 
                 //printer.Image(DrawTextImg($"หากที่อยู่ของท่านมีการเปลี่ยนแปลง", fontBold));
