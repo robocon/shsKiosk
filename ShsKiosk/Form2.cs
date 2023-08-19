@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -160,9 +162,35 @@ namespace ShsKiosk
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage nhsoSave = null;
                 nhsoSave = client.PostAsync("http://localhost:8189/api/nhso-service/confirm-save", content).Result;
+                if (nhsoSave.IsSuccessStatusCode)
+                {
+                    string responseBody = await nhsoSave.Content.ReadAsStringAsync();
+                    Console.WriteLine("Response FROM NHSO: "+responseBody);
+                    responseNhsoService resNhsoService = JsonConvert.DeserializeObject<responseNhsoService>(responseBody);
 
+                    String shsBrokerUrl = "http://192.168.129.143/newauthen/shsBroker.php?action=save";
+                    shsBrokerUrl += "&pid=" + System.Net.WebUtility.UrlEncode(pid);
+                    shsBrokerUrl += "&claimType=" + System.Net.WebUtility.UrlEncode(claimType);
+                    shsBrokerUrl += "&mobile=" + System.Net.WebUtility.UrlEncode(mobile);
+                    shsBrokerUrl += "&correlationId=" + System.Net.WebUtility.UrlEncode(correlationId);
+                    shsBrokerUrl += "&createdDate=" + System.Net.WebUtility.UrlEncode(resNhsoService.createdDate);
+                    shsBrokerUrl += "&claimCode=" + System.Net.WebUtility.UrlEncode(resNhsoService.claimCode);
+                    shsBrokerUrl += "&hn=" + System.Net.WebUtility.UrlEncode(hn);
+                    shsBrokerUrl += "&hcode=" + System.Net.WebUtility.UrlEncode(hcode);
+                    shsBrokerUrl += "&sOfficer=" + System.Net.WebUtility.UrlEncode("Kiosk");
+                    Console.WriteLine("Send to save shsbroker: "+shsBrokerUrl);
+                    var shs = new HttpClient();
+                    var resShs = await shs.GetAsync(shsBrokerUrl);
+                    var contentShs = resShs.Content.ReadAsStringAsync();
+                    Console.WriteLine(contentShs);
+                }
+                else
+                {
+                    string responseBody = await nhsoSave.Content.ReadAsStringAsync();
+                    Console.WriteLine("วันนี้ขอ Authen เรียบร้อยแล้ว :"+ responseBody);
+                }
                 // {"pid":"1509900231582","claimType":"PG0060001","correlationId":"a76b1ce8-40e8-4062-97cc-dc869ecbf19e","createdDate":"2023-08-04T15:32:17","claimCode":"PP1238504971"}
-                Console.WriteLine(nhsoSave);
+
             }
 
             loadingForm2.Show();
@@ -234,5 +262,11 @@ namespace ShsKiosk
         public string correlationId { set; get; }
         public string hn { set; get; }
         public string hcode { set; get; }
+    }
+
+    public class responseNhsoService
+    {
+        public string claimCode { set; get; }
+        public string createdDate { set; get; }
     }
 }
