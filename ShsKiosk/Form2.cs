@@ -158,10 +158,9 @@ namespace ShsKiosk
 
                 var client = new HttpClient();
                 string json = JsonConvert.SerializeObject(nhso);
-                Console.WriteLine(json);
+                Console.WriteLine("JSON CONVERT: "+json);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage nhsoSave = null;
-                nhsoSave = client.PostAsync("http://localhost:8189/api/nhso-service/confirm-save", content).Result;
+                HttpResponseMessage nhsoSave = await client.PostAsync("http://localhost:8189/api/nhso-service/confirm-save", content);
                 if (nhsoSave.IsSuccessStatusCode)
                 {
                     string responseBody = await nhsoSave.Content.ReadAsStringAsync();
@@ -173,7 +172,8 @@ namespace ShsKiosk
                     shsBrokerUrl += "&claimType=" + System.Net.WebUtility.UrlEncode(claimType);
                     shsBrokerUrl += "&mobile=" + System.Net.WebUtility.UrlEncode(mobile);
                     shsBrokerUrl += "&correlationId=" + System.Net.WebUtility.UrlEncode(correlationId);
-                    shsBrokerUrl += "&createdDate=" + System.Net.WebUtility.UrlEncode(resNhsoService.createdDate);
+                    //shsBrokerUrl += "&createdDate=" + System.Net.WebUtility.UrlEncode(resNhsoService.createdDate);
+                    shsBrokerUrl += "&createdDate=" + resNhsoService.createdDate;
                     shsBrokerUrl += "&claimCode=" + System.Net.WebUtility.UrlEncode(resNhsoService.claimCode);
                     shsBrokerUrl += "&hn=" + System.Net.WebUtility.UrlEncode(hn);
                     shsBrokerUrl += "&hcode=" + System.Net.WebUtility.UrlEncode(hcode);
@@ -182,7 +182,7 @@ namespace ShsKiosk
                     var shs = new HttpClient();
                     var resShs = await shs.GetAsync(shsBrokerUrl);
                     var contentShs = resShs.Content.ReadAsStringAsync();
-                    Console.WriteLine(contentShs);
+                    Console.WriteLine("Response FROM Broker: "+contentShs);
                 }
                 else
                 {
