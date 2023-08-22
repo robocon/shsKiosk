@@ -51,10 +51,10 @@ namespace ShsKiosk
             drawing.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
             //paint the background
-            drawing.Clear(Color.White);
+            drawing.Clear(System.Drawing.Color.White);
 
             //create a brush for the text
-            Brush textBrush = new SolidBrush(Color.Black);
+            Brush textBrush = new SolidBrush(System.Drawing.Color.Black);
 
             drawing.DrawString(text, font, textBrush, new RectangleF(0, 0, textSize.Width, textSize.Height), sf);
 
@@ -115,10 +115,10 @@ namespace ShsKiosk
             drawing.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
             //paint the background
-            drawing.Clear(Color.White);
+            drawing.Clear(System.Drawing.Color.White);
 
             //create a brush for the text
-            Brush textBrush = new SolidBrush(Color.Black);
+            Brush textBrush = new SolidBrush(System.Drawing.Color.Black);
 
             //drawing.DrawString(text, font, textBrush, new RectangleF(0, 0, textSize.Width, textSize.Height), sf);
             drawing.DrawString(text, font, textBrush, new RectangleF(0, 0, 306, setHeight), sf);

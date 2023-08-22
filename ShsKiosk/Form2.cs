@@ -50,6 +50,7 @@ namespace ShsKiosk
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            Console.WriteLine(cardStatus);
             Console.WriteLine("Form2 was loaded");
             label12.BackColor = System.Drawing.Color.Transparent;
             label12.Hide();
@@ -139,7 +140,7 @@ namespace ShsKiosk
         {
             button3.Enabled = false;
             var logger = new Logger();
-            if (cardStatus)
+            if (cardStatus == true)
             {
                 saveNhsoService nhso = new saveNhsoService();
                 nhso.pid = pid;
@@ -174,7 +175,6 @@ namespace ShsKiosk
                     shsBrokerUrl += "&claimType=" + System.Net.WebUtility.UrlEncode(claimType);
                     shsBrokerUrl += "&mobile=" + System.Net.WebUtility.UrlEncode(mobile);
                     shsBrokerUrl += "&correlationId=" + System.Net.WebUtility.UrlEncode(correlationId);
-                    //shsBrokerUrl += "&createdDate=" + System.Net.WebUtility.UrlEncode(resNhsoService.createdDate);
                     shsBrokerUrl += "&createdDate=" + resNhsoService.createdDate;
                     shsBrokerUrl += "&claimCode=" + System.Net.WebUtility.UrlEncode(resNhsoService.claimCode);
                     shsBrokerUrl += "&hn=" + System.Net.WebUtility.UrlEncode(hn);

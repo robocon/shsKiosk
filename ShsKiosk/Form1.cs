@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ThaiNationalIDCard;
+using System.Management;
+using Microsoft.PointOfService;
 
 namespace ShsKiosk
 {
@@ -277,21 +279,31 @@ namespace ShsKiosk
 
             string correlationId = "";
             string pid = "";
-            if (cardStatus)
+
+            logger.Log("cardStatus: " + cardStatus);
+
+            if (cardStatus==true)
             {
                 Console.WriteLine("ดึงค่าจาก Service smart card");
                 HttpResponseMessage resSmartCard = await client.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=true");
-                resSmartCard.EnsureSuccessStatusCode();
-                string smartCardString = await resSmartCard.Content.ReadAsStringAsync();
-                Console.WriteLine("Nhso data : " + smartCardString);
-                
-                resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
-                logger.Log("ข้อมูลจาก nhso : " + smartcard.correlationId+" --> "+smartcard.pid);
+                if (resSmartCard.IsSuccessStatusCode)
+                {
+                    //resSmartCard.EnsureSuccessStatusCode();
+                    string smartCardString = await resSmartCard.Content.ReadAsStringAsync();
+                    Console.WriteLine("Nhso data : " + smartCardString);
 
-                correlationId = smartcard.correlationId;
-                pid = smartcard.pid;
+                    resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
+                    logger.Log("ข้อมูลจาก nhso : " + smartcard.correlationId + " --> " + smartcard.pid);
+
+                    correlationId = smartcard.correlationId;
+                    pid = smartcard.pid;
+                }
+                else
+                {
+                    logger.Log("เซิฟเวอร์ nhso มีปัญหาไม่สามารถขอ authen ได้ กรุณาติดต่อในกลุ่มไลน์เด้อจ้า");
+                }
             }
-            
+
             /*
             if (resultOpcard.PtRightMain != resultOpcard.PtRightSub)
             {
@@ -472,6 +484,7 @@ namespace ShsKiosk
 
             return content;
         }
+
     }
 
     public class Appoint
