@@ -3,6 +3,7 @@ using ShsKiosk.ServiceReference1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Policy;
@@ -64,6 +65,7 @@ namespace ShsKiosk
                 Console.WriteLine("Form1 was loaded");
                 idcard = new ThaiIDCard();
                 cardReaders = idcard.GetReaders();
+                Console.WriteLine(cardReaders[0].ToString());
                 idcard.MonitorStart(cardReaders[0].ToString());
                 idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
                 idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
@@ -79,7 +81,9 @@ namespace ShsKiosk
         {
             label1SetText("");
             pictureBox1Status(false);
-
+            Console.WriteLine(cardReaders[0].ToString());
+            Console.WriteLine("Card was remove");
+            Console.WriteLine(idcard.Error());
             idcard.MonitorStop(cardReaders[0].ToString());
         }
 
@@ -99,16 +103,20 @@ namespace ShsKiosk
             label1SetText("ระบบกำลังตรวจสอบข้อมูล กรุณารอสักครู่...");
             pictureBox1Status(true);
 
+            var logger = new Logger();
+
             // ดึงค่าจากบัตรประชาชน
             var person = await RunCardReadder();
             if (person == null)
             {
                 label1SetText("ไม่พบข้อมูลบัตรประชาชน กรุณาตรวจสอบชิปการ์ด");
                 pictureBox1Status(false);
+                logger.Log("เสียบบัตรประชาชน แต่ไม่พบข้อมูล");
             }
             else
             {
                 string idcard = person.Citizenid;
+                logger.Log("เสียบบัตรประชาชน ข้อมูล "+idcard);
                 Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
 
                 UcwsNhso(idcard, Photo1, true);
@@ -251,17 +259,21 @@ namespace ShsKiosk
             }
             */
 
+            var logger = new Logger();
+
             // ตรวจสอบ HN 
             Console.WriteLine("ดึงข้อมูลจาก Opcard");
             string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
             if (resultOpcard.opcardStatus == "n")
             {
+                logger.Log("ไม่พบข้อมูลจาก opcard");
                 label1SetText(resultOpcard.errorMsg);
                 pictureBox1Status(false);
                 return;
             }
             Console.WriteLine(testOpcard);
+            logger.Log("ข้อมูลจาก opcard HN: "+ resultOpcard.hn);
 
             string correlationId = "";
             string pid = "";
@@ -271,8 +283,10 @@ namespace ShsKiosk
                 HttpResponseMessage resSmartCard = await client.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=true");
                 resSmartCard.EnsureSuccessStatusCode();
                 string smartCardString = await resSmartCard.Content.ReadAsStringAsync();
-                Console.WriteLine("Smartcard data : " + smartCardString);
+                Console.WriteLine("Nhso data : " + smartCardString);
+                
                 resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
+                logger.Log("ข้อมูลจาก nhso : " + smartcard.correlationId+" --> "+smartcard.pid);
 
                 correlationId = smartcard.correlationId;
                 pid = smartcard.pid;
@@ -301,12 +315,14 @@ namespace ShsKiosk
                 appointStatus = result.appointStatus;
                 if (appointStatus == "y")
                 {
+                    logger.Log("ข้อมูลการนัด "+ result.appointContent);
                     appointContent = result.appointContent;
                     appointCount = int.Parse(result.appointCount);
                     appoint = result.appoint;
                 }
                 else
                 {
+                    logger.Log("ไม่พบข้อมูลการนัด");
                     label1SetText(result.errorMsg);
                     pictureBox1Status(false);
                     return;
@@ -507,6 +523,55 @@ namespace ShsKiosk
     {
         public string pid { set; get; }
         public string correlationId { set; get; }
+    }
+
+    public abstract class LogBase
+    {
+        public abstract void Log(string Messsage);
+    }
+
+    public class Logger : LogBase
+    {
+
+        private String CurrentDirectory
+        {
+            get;
+            set;
+        }
+
+        private String FileName
+        {
+            get;
+            set;
+        }
+
+        private String FilePath
+        {
+            get;
+            set;
+        }
+
+        public Logger()
+        {
+            this.CurrentDirectory = Directory.GetCurrentDirectory();
+            this.FileName = "Log.txt";
+            this.FilePath = this.CurrentDirectory + "/logs/" + this.FileName;
+
+        }
+
+        public override void Log(string Messsage)
+        {
+
+            System.Console.WriteLine("Logged : {0}", Messsage);
+
+            using (System.IO.StreamWriter w = System.IO.File.AppendText(this.FilePath))
+            {
+                w.Write("\r\nLog Entry : ");
+                w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
+                w.WriteLine("  :{0}", Messsage);
+                w.WriteLine("-----------------------------------------------");
+            }
+        }
     }
 
 }

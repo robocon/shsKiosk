@@ -138,7 +138,7 @@ namespace ShsKiosk
         private async void button3_Click(object sender, EventArgs e)
         {
             button3.Enabled = false;
-
+            var logger = new Logger();
             if (cardStatus)
             {
                 saveNhsoService nhso = new saveNhsoService();
@@ -167,6 +167,8 @@ namespace ShsKiosk
                     Console.WriteLine("Response FROM NHSO: "+responseBody);
                     responseNhsoService resNhsoService = JsonConvert.DeserializeObject<responseNhsoService>(responseBody);
 
+                    logger.Log("nhso Authen Code : " + resNhsoService.claimCode);
+
                     String shsBrokerUrl = "http://192.168.129.143/newauthen/shsBroker.php?action=save";
                     shsBrokerUrl += "&pid=" + System.Net.WebUtility.UrlEncode(pid);
                     shsBrokerUrl += "&claimType=" + System.Net.WebUtility.UrlEncode(claimType);
@@ -179,6 +181,7 @@ namespace ShsKiosk
                     shsBrokerUrl += "&hcode=" + System.Net.WebUtility.UrlEncode(hcode);
                     shsBrokerUrl += "&sOfficer=" + System.Net.WebUtility.UrlEncode("Kiosk");
                     Console.WriteLine("Send to save shsbroker: "+shsBrokerUrl);
+                    logger.Log("Send to save shsbroker: " + shsBrokerUrl);
                     var shs = new HttpClient();
                     var resShs = await shs.GetAsync(shsBrokerUrl);
                     var contentShs = resShs.Content.ReadAsStringAsync();
