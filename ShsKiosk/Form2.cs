@@ -41,7 +41,7 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         static readonly SmConfigure smConfig = new SmConfigure();
 
-        public string mobile;
+        public string mobilePhone;
         public string claimType;
         public string hcode;
         public string correlationId;
@@ -142,25 +142,28 @@ namespace ShsKiosk
             var logger = new Logger();
             if (cardStatus == true)
             {
+                //mobilePhone = "0999999999";
                 saveNhsoService nhso = new saveNhsoService();
                 nhso.pid = pid;
                 nhso.claimType = claimType;
-                nhso.mobile = mobile;
+                nhso.mobile = mobilePhone;
                 nhso.correlationId = correlationId;
                 nhso.hn = hn;
                 nhso.hcode = hcode;
 
                 Console.WriteLine(nhso);
+                logger.Log("http://localhost:8189/api/nhso-service/confirm-save");
+                logger.Log("Before Confirm Save : " + pid+":"+claimType + ":" + mobilePhone + ":" + correlationId + ":" + hn + ":" + hcode);
 
                 /*HttpClient httpClient = new HttpClient();
                 var response = await httpClient.PostAsJsonAsync("http://localhost:8189/api/nhso-service/confirm-save", nhso);
                 response.EnsureSuccessStatusCode();
                 string nhsoSave = await response.Content.ReadAsStringAsync();*/
 
-                var client = new HttpClient();
+                HttpClient client = new HttpClient();
                 string json = JsonConvert.SerializeObject(nhso);
                 Console.WriteLine("JSON CONVERT: "+json);
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
                 HttpResponseMessage nhsoSave = await client.PostAsync("http://localhost:8189/api/nhso-service/confirm-save", content);
                 if (nhsoSave.IsSuccessStatusCode)
                 {
@@ -173,7 +176,7 @@ namespace ShsKiosk
                     String shsBrokerUrl = "http://192.168.129.143/newauthen/shsBroker.php?action=save";
                     shsBrokerUrl += "&pid=" + System.Net.WebUtility.UrlEncode(pid);
                     shsBrokerUrl += "&claimType=" + System.Net.WebUtility.UrlEncode(claimType);
-                    shsBrokerUrl += "&mobile=" + System.Net.WebUtility.UrlEncode(mobile);
+                    shsBrokerUrl += "&mobile=" + System.Net.WebUtility.UrlEncode(mobilePhone);
                     shsBrokerUrl += "&correlationId=" + System.Net.WebUtility.UrlEncode(correlationId);
                     shsBrokerUrl += "&createdDate=" + resNhsoService.createdDate;
                     shsBrokerUrl += "&claimCode=" + System.Net.WebUtility.UrlEncode(resNhsoService.claimCode);
@@ -182,15 +185,16 @@ namespace ShsKiosk
                     shsBrokerUrl += "&sOfficer=" + System.Net.WebUtility.UrlEncode("Kiosk");
                     Console.WriteLine("Send to save shsbroker: "+shsBrokerUrl);
                     logger.Log("Send to save shsbroker: " + shsBrokerUrl);
-                    var shs = new HttpClient();
-                    var resShs = await shs.GetAsync(shsBrokerUrl);
-                    var contentShs = resShs.Content.ReadAsStringAsync();
-                    Console.WriteLine("Response FROM Broker: "+contentShs);
+                    HttpClient shs = new HttpClient();
+                    HttpResponseMessage resShs = await shs.GetAsync(shsBrokerUrl);
+                    //var contentShs = resShs.Content.ReadAsStringAsync();
+                    //Console.WriteLine("Response FROM Broker: "+contentShs);
                 }
                 else
                 {
                     string responseBody = await nhsoSave.Content.ReadAsStringAsync();
-                    Console.WriteLine("วันนี้ขอ Authen เรียบร้อยแล้ว :"+ responseBody);
+                    Console.WriteLine("Error :"+ responseBody);
+                    logger.Log("Error :" + responseBody);
                 }
                 // {"pid":"1509900231582","claimType":"PG0060001","correlationId":"a76b1ce8-40e8-4062-97cc-dc869ecbf19e","createdDate":"2023-08-04T15:32:17","claimCode":"PP1238504971"}
 

@@ -401,7 +401,7 @@ namespace ShsKiosk
             frm.hosPtRight = resultOpcard.hosPtRight;
             frm.moreTxt = moreTxt;
 
-            frm.mobile = resultOpcard.mobile;
+            frm.mobilePhone = resultOpcard.mobile.Trim();
             frm.claimType = "PG0060001";
             frm.hcode = "11512";
             frm.correlationId = correlationId;
