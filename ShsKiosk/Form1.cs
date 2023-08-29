@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using ThaiNationalIDCard;
 using System.Management;
 using Microsoft.PointOfService;
+using System.Web.Script.Serialization;
 
 namespace ShsKiosk
 {
@@ -275,7 +276,8 @@ namespace ShsKiosk
                 return;
             }
             Console.WriteLine(testOpcard);
-            logger.Log("ข้อมูลจาก opcard HN: "+ resultOpcard.hn);
+            var resultOpcardJson = new JavaScriptSerializer().Serialize(resultOpcard);
+            logger.Log("ข้อมูลจาก opcard : "+ resultOpcardJson);
 
             string correlationId = "";
             string pid = "";

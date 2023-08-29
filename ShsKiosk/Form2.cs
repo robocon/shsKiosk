@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace ShsKiosk
@@ -153,7 +154,10 @@ namespace ShsKiosk
 
                 Console.WriteLine(nhso);
                 logger.Log("http://localhost:8189/api/nhso-service/confirm-save");
-                logger.Log("Before Confirm Save : " + pid+":"+claimType + ":" + mobilePhone + ":" + correlationId + ":" + hn + ":" + hcode);
+
+                var nhsoJson = new JavaScriptSerializer().Serialize(nhso);
+
+                logger.Log("Before Confirm Save : " + nhsoJson);
 
                 /*HttpClient httpClient = new HttpClient();
                 var response = await httpClient.PostAsJsonAsync("http://localhost:8189/api/nhso-service/confirm-save", nhso);
