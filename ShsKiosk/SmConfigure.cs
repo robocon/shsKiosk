@@ -30,6 +30,8 @@ namespace ShsKiosk
         public string ipUc2 { get; set; }
         public string ipUc3 { get; set; }
 
+        public string notifyHost { get; set; }
+
 
         public SmConfigure()
         {
@@ -48,6 +50,7 @@ namespace ShsKiosk
             this.ipUc = c.ipUc;
             this.ipUc2 = c.ipUc2;
             this.ipUc3 = c.ipUc3;
+            this.notifyHost = c.notifyHost;
             
         }
     }
@@ -59,5 +62,6 @@ namespace ShsKiosk
         public string ipUc3 { get; set; }
         public string ipBroker { get; set; }
         public string printerName { get; set; }
+        public string notifyHost { get; set; }
     }
 }

@@ -177,7 +177,7 @@ namespace ShsKiosk
 
                     logger.Log("nhso Authen Code : " + resNhsoService.claimCode);
 
-                    String shsBrokerUrl = "http://192.168.129.143/newauthen/shsBroker.php?action=save";
+                    String shsBrokerUrl = "http://"+ smConfig.notifyHost + "/newauthen/shsBroker.php?action=save";
                     shsBrokerUrl += "&pid=" + System.Net.WebUtility.UrlEncode(pid);
                     shsBrokerUrl += "&claimType=" + System.Net.WebUtility.UrlEncode(claimType);
                     shsBrokerUrl += "&mobile=" + System.Net.WebUtility.UrlEncode(mobilePhone);
