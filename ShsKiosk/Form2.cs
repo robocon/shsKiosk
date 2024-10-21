@@ -49,6 +49,8 @@ namespace ShsKiosk
         public string pid;
         public Boolean cardStatus;
 
+        public string labelAlertText;
+
         private void Form2_Load(object sender, EventArgs e)
         {
             Console.WriteLine(cardStatus);
@@ -72,7 +74,9 @@ namespace ShsKiosk
             pictureBox1.Image = personImage;
 
             labelAlert.Text = "";
-
+            if (labelAlertText != "") {
+                labelAlert.Text = labelAlertText;
+            }
             //
             //bool testLock = true;
             /*
@@ -83,7 +87,7 @@ namespace ShsKiosk
                     //testLock = false;
                 }
             }
-            */
+            
             bool testLock = false;
 
 
@@ -93,6 +97,7 @@ namespace ShsKiosk
                 button3.Hide();
                 return;
             }
+            */
 
             // ถ้าไม่มีนัด จะแสดงปุ่มให้เปิด Form3
             if (appointCount == 0)
@@ -213,6 +218,7 @@ namespace ShsKiosk
                 frm.appoint = appoint;
                 frm.idcard = idcard;
                 frm.hosPtRight = hosPtRight;
+                frm.TopLevel = true;
                 frm.ShowDialog();
             }
             else // ถ้ามีนัด 1 แพทย์

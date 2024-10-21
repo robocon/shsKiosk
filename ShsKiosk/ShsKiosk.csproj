@@ -216,6 +216,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Connected Services\ServiceReference1\ShsKiosk.ServiceReference1.nhsoDataSetC1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -262,6 +263,7 @@
   <ItemGroup>
     <Content Include="Logo.ico" />
     <Content Include="logo_oQK_icon.ico" />
+    <None Include="Resources\Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

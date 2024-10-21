@@ -265,7 +265,7 @@ namespace ShsKiosk
             var logger = new Logger();
 
             // ตรวจสอบ HN 
-            Console.WriteLine("ดึงข้อมูลจาก Opcard");
+            Console.WriteLine("ตรวจสอบข้อมูลจาก OPCARAD ( searchOpcard.php ) ");
             string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
             if (resultOpcard.opcardStatus == "n")
@@ -283,7 +283,7 @@ namespace ShsKiosk
             string pid = "";
 
             logger.Log("cardStatus: " + cardStatus);
-
+            string labelAlertForm2 = "";
             if (cardStatus==true)
             {
                 Console.WriteLine("ดึงค่าจาก Service smart card");
@@ -302,6 +302,7 @@ namespace ShsKiosk
                 }
                 else
                 {
+                    labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
                     logger.Log("เซิฟเวอร์ nhso มีปัญหาไม่สามารถขอ authen ได้ กรุณาติดต่อในกลุ่มไลน์เด้อจ้า");
                 }
             }
@@ -316,7 +317,7 @@ namespace ShsKiosk
             */
             // ตรวจสิทธิหลักสิทธิรอง
 
-            // ตรวจสอบการนัดหมาย
+            // ตรวจสอบการนัดหมาย ( searchAppoint.php )
             Console.WriteLine($"ค้นหาการนัด {smConfig.searchAppointUrl} {idcard}");
             string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
             Console.WriteLine(content);
@@ -409,7 +410,8 @@ namespace ShsKiosk
             frm.correlationId = correlationId;
             frm.pid = pid;
             frm.cardStatus = cardStatus;
-
+            frm.TopLevel = true;
+            frm.labelAlertText = labelAlertForm2;
             frm.ShowDialog();
 
             label1SetText("");
