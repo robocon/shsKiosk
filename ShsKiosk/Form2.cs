@@ -218,7 +218,7 @@ namespace ShsKiosk
                 frm.appoint = appoint;
                 frm.idcard = idcard;
                 frm.hosPtRight = hosPtRight;
-                frm.TopLevel = true;
+                //frm.TopLevel = true;
                 frm.ShowDialog();
             }
             else // ถ้ามีนัด 1 แพทย์

@@ -14,6 +14,7 @@ using ThaiNationalIDCard;
 using System.Management;
 using Microsoft.PointOfService;
 using System.Web.Script.Serialization;
+using System.Linq;
 
 namespace ShsKiosk
 {
@@ -52,6 +53,9 @@ namespace ShsKiosk
 
 
         string[] cardReaders;
+        Form2 frm = new Form2();
+        FormSelectDr frmDr = new FormSelectDr();
+
         private void Form1_Load_1(object sender, EventArgs e)
         {
             pictureBox1.Visible = false;
@@ -88,6 +92,20 @@ namespace ShsKiosk
             Console.WriteLine("Card was remove");
             Console.WriteLine(idcard.Error());
             idcard.MonitorStop(cardReaders[0].ToString());
+
+            var childForms = Application.OpenForms.OfType<Form2>().ToList();
+            if (childForms.Count() > 0)
+            {
+                frm.BeginInvoke(new MethodInvoker(delegate { frm.Close(); }));
+            }
+
+            /*
+            var childForms2 = Application.OpenForms.OfType<FormSelectDr>().ToList();
+            if (childForms2.Count() > 0)
+            {
+                frmDr.BeginInvoke(new MethodInvoker(delegate { frmDr.Close(); }));
+            }
+            */
         }
 
         public void pictureBox1Status(bool status)
@@ -384,7 +402,7 @@ namespace ShsKiosk
             }
             */
 
-            Form2 frm = new Form2();
+            //Form2 frm = new Form2();
             frm.fullname = resultOpcard.ptname;
             frm.idcard = idcard;
 
@@ -410,7 +428,7 @@ namespace ShsKiosk
             frm.correlationId = correlationId;
             frm.pid = pid;
             frm.cardStatus = cardStatus;
-            frm.TopLevel = true;
+            //frm.TopLevel = true;
             frm.labelAlertText = labelAlertForm2;
             frm.ShowDialog();
 

@@ -298,6 +298,7 @@
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "สุรศักดิ์ Kiosk";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
