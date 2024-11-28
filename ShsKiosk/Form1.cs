@@ -26,9 +26,13 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         List<Appoint> appoint;
         static readonly SmConfigure smConfig = new SmConfigure();
-        static nhsoDataSetC1 pt;
+        /*static nhsoDataSetC1 pt;*/
 
         private static System.Timers.Timer aTimer;
+        /*private string input;*/
+        string[] cardReaders;
+        Form2 frm = new Form2();
+        FormSelectDr frmDr = new FormSelectDr();
 
         public Form1()
         {
@@ -40,7 +44,7 @@ namespace ShsKiosk
             aTimer = new System.Timers.Timer(5000);
             aTimer.Elapsed += TimerElapsed;
         }
-        private string input;
+        
         private void TimerElapsed(object sender, EventArgs e)
         {
             Console.WriteLine("TimerElapsed: TIME STOPPPPPPP");
@@ -52,9 +56,7 @@ namespace ShsKiosk
         }
 
 
-        string[] cardReaders;
-        Form2 frm = new Form2();
-        FormSelectDr frmDr = new FormSelectDr();
+        
 
         private void Form1_Load_1(object sender, EventArgs e)
         {

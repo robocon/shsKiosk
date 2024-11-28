@@ -19,7 +19,7 @@ namespace ShsKiosk
         static readonly HttpClient client = new HttpClient();
         List<Appoint> appoint;
         static readonly SmConfigure smConfig = new SmConfigure();
-        static nhsoDataSetC1 pt;
+        /*static nhsoDataSetC1 pt;*/
 
         public FormManualIdcard()
         {
