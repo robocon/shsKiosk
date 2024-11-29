@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewFormV2));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.description = new System.Windows.Forms.Label();
             this.iconLoader = new System.Windows.Forms.PictureBox();
@@ -50,7 +49,6 @@
             this.labelIdcard = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconLoader)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.shsLogo)).BeginInit();
@@ -66,8 +64,8 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.74356F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.25644F));
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label4, 1, 3);
@@ -97,38 +95,29 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "ระบบลงทะเบียนอัตโนมัติ โรงพยาบาลค่ายสุรศักดิ์มนตรี";
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel2);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(216, 246);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(720, 59);
-            this.flowLayoutPanel1.TabIndex = 7;
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 6.476684F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 93.52332F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.305648F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.69435F));
             this.tableLayoutPanel2.Controls.Add(this.description, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.iconLoader, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(213, 250);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(703, 51);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(725, 51);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // description
             // 
-            this.description.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.description.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.description.AutoSize = true;
             this.description.Font = new System.Drawing.Font("TH Sarabun New", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.description.ForeColor = System.Drawing.Color.ForestGreen;
-            this.description.Location = new System.Drawing.Point(48, 7);
+            this.description.Location = new System.Drawing.Point(365, 7);
             this.description.Name = "description";
             this.description.Size = new System.Drawing.Size(54, 36);
             this.description.TabIndex = 7;
@@ -136,9 +125,9 @@
             // 
             // iconLoader
             // 
-            this.iconLoader.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.iconLoader.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.iconLoader.Image = global::ShsKiosk.Properties.Resources.block_loading_32px;
-            this.iconLoader.Location = new System.Drawing.Point(3, 5);
+            this.iconLoader.Location = new System.Drawing.Point(18, 5);
             this.iconLoader.Name = "iconLoader";
             this.iconLoader.Size = new System.Drawing.Size(39, 41);
             this.iconLoader.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -329,7 +318,6 @@
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconLoader)).EndInit();
@@ -352,7 +340,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label description;
         private System.Windows.Forms.PictureBox pictureBox1;

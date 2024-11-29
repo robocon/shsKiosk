@@ -220,8 +220,6 @@ namespace ShsKiosk
                     appointCount = int.Parse(result.appointCount);
                     appoint = result.appoint;
 
-
-                    
                 }
                 else
                 {
@@ -264,17 +262,15 @@ namespace ShsKiosk
                 else
                 {
                     /*labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";*/
-                    logger.Log("เซิฟเวอร์ nhso มีปัญหาไม่สามารถขอ authen ได้ กรุณาติดต่อในกลุ่มไลน์เด้อจ้า");
-                }
+                    string nhsoError = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
+                    logger.Log(nhsoError);
 
-                if (pid == "")
-                {
-                    label1SetText("ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้");
-                    return;
+                    description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
+                    label1SetText(nhsoError);
                 }
 
                 saveNhsoService nhso = new saveNhsoService();
-                nhso.pid = pid;
+                nhso.pid = idcard;
                 nhso.claimType = "PG0060001";
                 nhso.mobile = resultOpcard.mobile.Trim();
                 nhso.correlationId = correlationId;
@@ -289,7 +285,6 @@ namespace ShsKiosk
                 logger.Log("Before Confirm Save : " + nhsoJson);
 
 
-                /*
                 HttpClient client = new HttpClient();
                 string json = JsonConvert.SerializeObject(nhso);
                 Console.WriteLine("JSON CONVERT: " + json);
@@ -329,10 +324,6 @@ namespace ShsKiosk
                     Console.WriteLine("Error :" + responseBody);
                     logger.Log("Error :" + responseBody);
                 }
-                */
-
-                label1SetText("ขอ Authen Code จาก สปสช เรียบร้อย");
-                System.Threading.Thread.Sleep(1000);
             }
             
             // ออก VN แล้วปริ้น สลิป
