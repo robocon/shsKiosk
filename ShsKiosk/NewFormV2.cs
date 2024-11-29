@@ -91,7 +91,7 @@ namespace ShsKiosk
         private void Form1_Load_1(object sender, EventArgs e)
         {
             tableLayoutPanel3.Hide();
-
+            this.WindowState = FormWindowState.Maximized;
 
         }
 
