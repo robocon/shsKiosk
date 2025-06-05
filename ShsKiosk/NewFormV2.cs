@@ -25,20 +25,19 @@ namespace ShsKiosk
 
         private ThaiIDCard idcard;
         public Personal person;
-        static readonly HttpClient client = new HttpClient();
         static readonly SmConfigure smConfig = new SmConfigure();
         List<Appoint> appoint;
-        
-        /*static nhsoDataSetC1 pt;*/
 
         private static System.Timers.Timer aTimer;
-        /*private string input;*/
 
         string[] cardReaders;
-        Form2 frm = new Form2();
-        FormSelectDr frmDr = new FormSelectDr();
-
         private string testGetKeyChar = "";
+        
+        private string searchOpcardUrl = "http://192.168.130.15/kioskbroker/searchOpcard.php";
+        private string searchAppointUrl = "http://192.168.130.15/kioskbroker/searchAppoint.php";
+        private string saveVnUrl = "http://192.168.130.15/kioskbroker/saveVn.php";
+
+        private string savePhotoUrl = "http://192.168.131.250/sm3/save_photo.php";
 
         /**
          * Action ที่มาจากการ Scan Barcode
@@ -66,6 +65,7 @@ namespace ShsKiosk
                 cardReaders = idcard.GetReaders();
                 Console.WriteLine(cardReaders[0].ToString());
                 idcard.MonitorStart(cardReaders[0].ToString());
+
                 idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
                 idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
             }
@@ -95,6 +95,9 @@ namespace ShsKiosk
 
         }
 
+        /**
+         * เมื่อถอดบัตร
+         */
         public void CardRemoveCallback()
         {
             label1SetText("");
@@ -106,15 +109,20 @@ namespace ShsKiosk
 
             Bitmap bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.BeginInvoke(new MethodInvoker(delegate { pictureBox1.Image = bm; }));
+
+            // ล้างค่าเลขบัตรประชาชน + ชื่อสกุล + สิทธิการรักษา
             valueIdcard.BeginInvoke(new MethodInvoker(delegate { valueIdcard.Text = "-"; }));
             valueFullname.BeginInvoke(new MethodInvoker(delegate { valueFullname.Text = "-"; }));
             valuePtright.BeginInvoke(new MethodInvoker(delegate { valuePtright.Text = "-"; }));
+
+            // ซ่อนตารางแสดงรายละเอียด
             tableLayoutPanel3.BeginInvoke(new MethodInvoker(delegate { tableLayoutPanel3.Hide(); }));
             
 
             /*idcard.MonitorStop(cardReaders[0].ToString());*/
         }
 
+        // ปิดการแสดงรูป
         public void pictureBox1Status(bool status)
         {
             iconLoader.BeginInvoke(new MethodInvoker(delegate { iconLoader.Visible = status; }));
@@ -172,12 +180,18 @@ namespace ShsKiosk
             var logger = new Logger();
 
             // ตรวจสอบ HN 
-            label1SetText("กำลังตรวจสอบข้อมูลจากแผนกทะเบียน");
+            label1SetText("กำลังตรวจสอบข้อมูลจากแผนกทะเบียน...");
             Console.WriteLine("ตรวจสอบข้อมูลจาก OPCARAD ( searchOpcard.php ) ");
 
             // searchOpcard.php
-            Console.WriteLine($"ค้นหา opcard จากเลขบัตร {smConfig.searchOpcardUrl} {idcard}");
-            string testOpcard = await Task.Run(() => searchFromSm(smConfig.searchOpcardUrl, idcard));
+            Console.WriteLine($"ค้นหา opcard จากเลขบัตร {searchOpcardUrl} {idcard}");
+            string testOpcard = await Task.Run(() => searchFromSm(searchOpcardUrl, idcard));
+            if (String.IsNullOrEmpty(testOpcard))
+            {
+                label1SetText($"ไม่สามารถตรวจสอบข้อมูล Opcard ได้ Error: {searchOpcardUrl}");
+                pictureBox1Status(false);
+                return;
+            }
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
             if (resultOpcard.opcardStatus == "n")
             {
@@ -201,10 +215,40 @@ namespace ShsKiosk
 
             tableLayoutPanel3.BeginInvoke(new MethodInvoker(delegate { tableLayoutPanel3.Show(); }));
 
+            // ส่งรูปจากบัตรประชาชนไว้ที่ HOST
+            //Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(207, 248));
+            System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            Photo1.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            await Task.Run(async () => {
+
+                savePhoto pho = new savePhoto();
+                pho.rawPhoto = Convert.ToBase64String(stream.ToArray());
+                // pho.idCard = person.Citizenid;
+                pho.idCard = resultOpcard.idcard;
+
+                Console.WriteLine("====== Status : save photo from idcard ======");
+                try
+                {
+                    HttpClient httpClient = new HttpClient();
+                    var response = await httpClient.PostAsJsonAsync(savePhotoUrl, pho);
+                    response.EnsureSuccessStatusCode();
+                    string savePhoto = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("======"+savePhoto+ "======");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("====== Error : " + ex.Message+ "======");
+                }
+
+            });
+            // ส่งรูปจากบัตรประชาชนไว้ที่ HOST
+
+
             label1SetText("กำลังตรวจสอบข้อมูลการนัดพบแพทย์ในวันนี้");
             // ตรวจสอบการนัดหมาย ( searchAppoint.php )
-            Console.WriteLine($"ค้นหาการนัด จากเลขบัตรประชาชน {smConfig.searchAppointUrl} {idcard}");
-            string content = await Task.Run(() => searchFromSm(smConfig.searchAppointUrl, idcard));
+            Console.WriteLine($"ค้นหาการนัด จากเลขบัตรประชาชน {searchAppointUrl} {idcard}");
+            string content = await Task.Run(() => searchFromSm(searchAppointUrl, idcard));
             Console.WriteLine(content);
             string appointContent = "";
             int appointCount = 0;
@@ -246,7 +290,7 @@ namespace ShsKiosk
 
                 Console.WriteLine("ดึงค่าจาก Service smart card");
                 HttpClient localhost = new HttpClient();
-                HttpResponseMessage resSmartCard = await localhost.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=true");
+                HttpResponseMessage resSmartCard = await localhost.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=false");
                 if (resSmartCard.IsSuccessStatusCode)
                 {
                     //resSmartCard.EnsureSuccessStatusCode();
@@ -329,7 +373,8 @@ namespace ShsKiosk
             // ออก VN แล้วปริ้น สลิป
             SaveVn sv = new SaveVn();
             int appointRowId = appoint.ToArray()[0].rowId;
-            string saveContent = await Task.Run(() => sv.save(smConfig.createVnUrl, idcard, appointRowId, ptRight));
+            // smConfig.createVnUrl
+            string saveContent = await Task.Run(() => sv.save(saveVnUrl, idcard, appointRowId, ptRight));
             if (!String.IsNullOrEmpty(content))
             {
                 responseSaveVn app = JsonConvert.DeserializeObject<responseSaveVn>(saveContent);
@@ -362,7 +407,7 @@ namespace ShsKiosk
                     //label1SetText("ระบบลงทะเบียนด้วยบาร์โค้ดยังไม่เปิดใช้งาน ขออภัยในความไม่สะดวก\n(" + hn + ")");
 
                     // ตรวจสอบ HN 
-                    string testOpcard = await Task.Run(() => searchFromSmByHn(smConfig.searchOpcardUrl, hn));
+                    string testOpcard = await Task.Run(() => searchFromSmByHn(searchOpcardUrl, hn));
                     if (!string.IsNullOrEmpty(testOpcard))
                     {
                         responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
@@ -374,7 +419,7 @@ namespace ShsKiosk
                     }
                     else
                     {
-                        label1SetText($"ไม่พบข้อมูล {smConfig.searchOpcardUrl}");
+                        label1SetText($"ไม่พบข้อมูล {searchOpcardUrl}");
                     }
 
                     hn = testGetKeyChar = "";
@@ -429,5 +474,11 @@ namespace ShsKiosk
 
             return content;
         }
+    }
+
+    public class savePhoto
+    {
+        public string rawPhoto { set; get; }
+        public string idCard { set; get; }
     }
 }
