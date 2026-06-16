@@ -17,6 +17,7 @@ using System.Web.Script.Serialization;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using System.Drawing.Printing;
 
 namespace ShsKiosk
 {
@@ -36,6 +37,7 @@ namespace ShsKiosk
         private string searchOpcardUrl = "http://192.168.130.15/kioskbroker/searchOpcard.php";
         private string searchAppointUrl = "http://192.168.130.15/kioskbroker/searchAppoint.php";
         private string saveVnUrl = "http://192.168.130.15/kioskbroker/saveVn.php";
+        //private string getTokenUrl = "http://192.168.130.15/kioskbroker/getToken.php";
 
         private string savePhotoUrl = "http://192.168.131.250/sm3/save_photo.php";
 
@@ -44,6 +46,8 @@ namespace ShsKiosk
          */
         public string hn = "";
         public string fullTxt = "";
+
+        //static nhsoDataSetC1 pt;
 
         public NewFormV2()
         {
@@ -88,11 +92,35 @@ namespace ShsKiosk
             //aTimer = null;
         }
 
-        private void Form1_Load_1(object sender, EventArgs e)
+        public bool hasPrinter = false;
+        private async void Form1_Load_1(object sender, EventArgs e)
         {
             tableLayoutPanel3.Hide();
             this.WindowState = FormWindowState.Maximized;
 
+            // 🛠️ 1. ตรวจสอบเครื่องพิมพ์ก่อน (สมมติว่าเครื่องพิมพ์ของคุณชื่อมีคำว่า "EPSON")
+            string targetPrinter = smConfig.printerName;
+            bool hasPrinter = CheckPrinterExists(targetPrinter);
+            
+            if (!hasPrinter)
+            {
+                // แสดงข้อความเตือนบนหน้าจอ (เปลี่ยนเป็นชี้ไปที่ Control ที่คุณต้องการได้ครับ)
+                description.ForeColor = Color.Red;
+                description.Text = "❌ [คำเตือน] ไม่พบเครื่องพิมพ์สลิปในระบบ! กรุณาเปิดเครื่องหรือเช็กสายเชื่อมต่อ";
+
+                // หรือจะโชว์เป็นกล่องข้อความเตือนให้เจ้าหน้าที่กด OK ก็ได้เช่นกัน
+                //MessageBox.Show("ไม่พบเครื่องพิมพ์สลิปในระบบ\nกรุณาเปิดเครื่องพิมพ์หรือตรวจสอบสายการเชื่อมต่อ",
+                //                "ข้อผิดพลาดระบบเครื่องพิมพ์", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                // ถ้าต้องการให้ปิดโปรแกรมไปเลยหากไม่มีเครื่องพิมพ์ ให้เปิดคอมเมนต์บรรทัดล่างนี้ครับ
+                // Application.Exit(); 
+                // return;
+            }
+            else
+            {
+                // 2. ตรวจสอบบัตรประชาชนค้าง (จากลอจิกเดิมก่อนหน้านี้)
+                await CheckCardOnLoad();
+            }
         }
 
         /**
@@ -160,6 +188,56 @@ namespace ShsKiosk
             }
         }
 
+        private async Task CheckCardOnLoad()
+        {
+            // ตรวจสอบเบื้องต้นว่ามี Reader และมีตัวแปร idcard หรือไม่
+            if (idcard == null || cardReaders == null || cardReaders.Length == 0) return;
+
+            try
+            {
+                // ปลดล็อกเธรดเพื่อเช็กข้อมูล
+                var person = await RunCardReadder();
+
+                // ถ้าเบื้องต้นสามารถดึงเลขบัตรออกมาได้ แสดงว่ามีบัตรเสียบค้างอยู่จริง
+                if (person != null && !string.IsNullOrEmpty(person.Citizenid))
+                {
+                    Console.WriteLine("พบตัวตนบัตรเสียบค้างไว้ตอนเปิดโปรแกรม: " + person.Citizenid);
+
+                    // เรียกทำงานฟังก์ชันจัดการข้อมูลตามลอจิกปกติของคุณ
+                    label1SetText("กำลังตรวจสอบข้อมูลบัตรประชาชน (บัตรเสียบค้างอยู่) กรุณารอสักครู่...");
+                    pictureBox1Status(true);
+
+                    Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
+                    UcwsNhso(person.Citizenid, Photo1, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CheckCardOnLoad Error: " + ex.Message);
+            }
+        }
+
+        private bool CheckPrinterExists(string printerName)
+        {
+            try
+            {
+                // วนลูปเช็กรายชื่อเครื่องพิมพ์ทั้งหมดที่มีอยู่ใน Windows
+                foreach (string printer in PrinterSettings.InstalledPrinters)
+                {
+                    // ถ้าพบชื่อเครื่องพิมพ์ที่ระบุ (ใช้ Contains เพื่อเผื่อกรณีชื่อมีต่อท้าย เช่น (Copy 1))
+                    if (printer.Contains(printerName))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error checking printer: " + ex.Message);
+            }
+            return false;
+        }
+
         public async Task<Personal> RunCardReadder()
         {
             string logTxt = "get data from cardreader";
@@ -170,7 +248,7 @@ namespace ShsKiosk
 
         public Personal GetPersonalCardreader()
         {
-            idcard = new ThaiIDCard();
+            //idcard = new ThaiIDCard();
             Personal person = idcard.readAllPhoto();
             return person;
         }
@@ -282,7 +360,6 @@ namespace ShsKiosk
             string ptRight = maininsclCode;
             string correlationId = "";
             logger.Log("cardStatus: " + cardStatus);
-            /*string labelAlertForm2 = "";*/
             // ถ้ามีการเสียบบัตรประชาชน
             if (cardStatus == true)
             {
@@ -290,29 +367,36 @@ namespace ShsKiosk
 
                 Console.WriteLine("ดึงค่าจาก Service smart card");
                 HttpClient localhost = new HttpClient();
-                HttpResponseMessage resSmartCard = await localhost.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=false");
-                if (resSmartCard.IsSuccessStatusCode)
+                string nhsoError = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
+                try
                 {
-                    //resSmartCard.EnsureSuccessStatusCode();
-                    string smartCardString = await resSmartCard.Content.ReadAsStringAsync();
-                    Console.WriteLine("Nhso data : " + smartCardString);
+                    // Smartcard Agent
+                    HttpResponseMessage resSmartCard = await localhost.GetAsync("http://localhost:8189/api/smartcard/read?readImageFlag=false");
+                    if (resSmartCard.IsSuccessStatusCode)
+                    {
+                        //resSmartCard.EnsureSuccessStatusCode();
+                        string smartCardString = await resSmartCard.Content.ReadAsStringAsync();
+                        Console.WriteLine("Smartcard Agent 8189 : " + smartCardString);
 
-                    resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
-                    logger.Log("ข้อมูลจาก nhso : " + smartcard.correlationId + " --> " + smartcard.pid);
+                        resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
+                        logger.Log("[DATA] Agent 8189 : " + smartcard.correlationId + " --> " + smartcard.pid);
 
-                    correlationId = smartcard.correlationId;
-                    pid = smartcard.pid;
+                        correlationId = smartcard.correlationId;
+                        pid = smartcard.pid;
+                    }
+                    else
+                    {
+                        /*labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";*/
+                        description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
+                        label1SetText(nhsoError);
+                    }
+
                 }
-                else
+                catch (Exception excepSmartCard)
                 {
-                    /*labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";*/
-                    string nhsoError = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
-                    logger.Log(nhsoError);
-
-                    description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
-                    label1SetText(nhsoError);
+                    logger.Log(nhsoError+" : "+excepSmartCard.Message.ToString());
                 }
-
+                
                 saveNhsoService nhso = new saveNhsoService();
                 nhso.pid = idcard;
                 nhso.claimType = "PG0060001";
