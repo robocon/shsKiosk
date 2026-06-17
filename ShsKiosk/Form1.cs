@@ -599,14 +599,10 @@ namespace ShsKiosk
         public override void Log(string Messsage)
         {
 
-            System.Console.WriteLine("Logged : {0}", Messsage);
-
+            //System.Console.WriteLine("Logged : {0}", Messsage);
             using (System.IO.StreamWriter w = System.IO.File.AppendText(this.FilePath))
             {
-                w.Write("\r\nLog Entry : ");
-                w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
-                w.WriteLine("  :{0}", Messsage);
-                w.WriteLine("-----------------------------------------------");
+                w.Write($"\r\nLog Entry : {DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()} {Messsage}");
             }
         }
     }

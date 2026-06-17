@@ -1,14 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.PointOfService;
+using Newtonsoft.Json;
 using ShsKiosk.ServiceReference1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Management;
 using System.Net.Http;
+using System.Reflection.Emit;
 using System.Security.Claims;
 using System.Security.Policy;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using ThaiNationalIDCard;
 using System.Management;
@@ -17,7 +24,6 @@ using System.Web.Script.Serialization;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
-using System.Drawing.Printing;
 
 namespace ShsKiosk
 {
@@ -37,7 +43,6 @@ namespace ShsKiosk
         private string searchOpcardUrl = "http://192.168.130.15/kioskbroker/searchOpcard.php";
         private string searchAppointUrl = "http://192.168.130.15/kioskbroker/searchAppoint.php";
         private string saveVnUrl = "http://192.168.130.15/kioskbroker/saveVn.php";
-        //private string getTokenUrl = "http://192.168.130.15/kioskbroker/getToken.php";
 
         private string savePhotoUrl = "http://192.168.131.250/sm3/save_photo.php";
 
@@ -62,16 +67,19 @@ namespace ShsKiosk
             iconLoader.Visible = false;
             description.Text = "";
 
+            description.ForeColor = Color.OrangeRed; // หรือใช้สีที่ต้องการ เช่น Color.FromArgb(230, 126, 34)
+            description.Text = "⏳ กรุณารอสักครู่ โปรแกรมกำลังเตรียมความพร้อมของอุปกรณ์...";
+
             try
             {
                 Console.WriteLine("Form1 was loaded");
                 idcard = new ThaiIDCard();
                 cardReaders = idcard.GetReaders();
                 Console.WriteLine(cardReaders[0].ToString());
-                idcard.MonitorStart(cardReaders[0].ToString());
 
-                idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
-                idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
+                //idcard.MonitorStart(cardReaders[0].ToString());
+                //idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
+                //idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
             }
             catch (Exception ex)
             {
@@ -92,35 +100,11 @@ namespace ShsKiosk
             //aTimer = null;
         }
 
-        public bool hasPrinter = false;
-        private async void Form1_Load_1(object sender, EventArgs e)
+        private void Form1_Load_1(object sender, EventArgs e)
         {
             tableLayoutPanel3.Hide();
             this.WindowState = FormWindowState.Maximized;
 
-            // 🛠️ 1. ตรวจสอบเครื่องพิมพ์ก่อน (สมมติว่าเครื่องพิมพ์ของคุณชื่อมีคำว่า "EPSON")
-            string targetPrinter = smConfig.printerName;
-            bool hasPrinter = CheckPrinterExists(targetPrinter);
-            
-            if (!hasPrinter)
-            {
-                // แสดงข้อความเตือนบนหน้าจอ (เปลี่ยนเป็นชี้ไปที่ Control ที่คุณต้องการได้ครับ)
-                description.ForeColor = Color.Red;
-                description.Text = "❌ [คำเตือน] ไม่พบเครื่องพิมพ์สลิปในระบบ! กรุณาเปิดเครื่องหรือเช็กสายเชื่อมต่อ";
-
-                // หรือจะโชว์เป็นกล่องข้อความเตือนให้เจ้าหน้าที่กด OK ก็ได้เช่นกัน
-                //MessageBox.Show("ไม่พบเครื่องพิมพ์สลิปในระบบ\nกรุณาเปิดเครื่องพิมพ์หรือตรวจสอบสายการเชื่อมต่อ",
-                //                "ข้อผิดพลาดระบบเครื่องพิมพ์", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                // ถ้าต้องการให้ปิดโปรแกรมไปเลยหากไม่มีเครื่องพิมพ์ ให้เปิดคอมเมนต์บรรทัดล่างนี้ครับ
-                // Application.Exit(); 
-                // return;
-            }
-            else
-            {
-                // 2. ตรวจสอบบัตรประชาชนค้าง (จากลอจิกเดิมก่อนหน้านี้)
-                await CheckCardOnLoad();
-            }
         }
 
         /**
@@ -188,55 +172,6 @@ namespace ShsKiosk
             }
         }
 
-        private async Task CheckCardOnLoad()
-        {
-            // ตรวจสอบเบื้องต้นว่ามี Reader และมีตัวแปร idcard หรือไม่
-            if (idcard == null || cardReaders == null || cardReaders.Length == 0) return;
-
-            try
-            {
-                // ปลดล็อกเธรดเพื่อเช็กข้อมูล
-                var person = await RunCardReadder();
-
-                // ถ้าเบื้องต้นสามารถดึงเลขบัตรออกมาได้ แสดงว่ามีบัตรเสียบค้างอยู่จริง
-                if (person != null && !string.IsNullOrEmpty(person.Citizenid))
-                {
-                    Console.WriteLine("พบตัวตนบัตรเสียบค้างไว้ตอนเปิดโปรแกรม: " + person.Citizenid);
-
-                    // เรียกทำงานฟังก์ชันจัดการข้อมูลตามลอจิกปกติของคุณ
-                    label1SetText("กำลังตรวจสอบข้อมูลบัตรประชาชน (บัตรเสียบค้างอยู่) กรุณารอสักครู่...");
-                    pictureBox1Status(true);
-
-                    Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
-                    UcwsNhso(person.Citizenid, Photo1, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("CheckCardOnLoad Error: " + ex.Message);
-            }
-        }
-
-        private bool CheckPrinterExists(string printerName)
-        {
-            try
-            {
-                // วนลูปเช็กรายชื่อเครื่องพิมพ์ทั้งหมดที่มีอยู่ใน Windows
-                foreach (string printer in PrinterSettings.InstalledPrinters)
-                {
-                    // ถ้าพบชื่อเครื่องพิมพ์ที่ระบุ (ใช้ Contains เพื่อเผื่อกรณีชื่อมีต่อท้าย เช่น (Copy 1))
-                    if (printer.Contains(printerName))
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error checking printer: " + ex.Message);
-            }
-            return false;
-        }
 
         public async Task<Personal> RunCardReadder()
         {
@@ -259,31 +194,31 @@ namespace ShsKiosk
 
             // ตรวจสอบ HN 
             label1SetText("กำลังตรวจสอบข้อมูลจากแผนกทะเบียน...");
-            Console.WriteLine("ตรวจสอบข้อมูลจาก OPCARAD ( searchOpcard.php ) ");
+            
 
-            // searchOpcard.php
+            // http://192.168.130.15/kioskbroker/searchOpcard.php
             Console.WriteLine($"ค้นหา opcard จากเลขบัตร {searchOpcardUrl} {idcard}");
             string testOpcard = await Task.Run(() => searchFromSm(searchOpcardUrl, idcard));
+            Console.WriteLine(testOpcard);
             if (String.IsNullOrEmpty(testOpcard))
             {
-                label1SetText($"ไม่สามารถตรวจสอบข้อมูล Opcard ได้ Error: {searchOpcardUrl}");
+                label1SetText($"ไม่สามารถตรวจสอบข้อมูลจากแผนกทะเบียนได้ Error: {searchOpcardUrl}");
                 pictureBox1Status(false);
                 return;
             }
             responseOpcard resultOpcard = JsonConvert.DeserializeObject<responseOpcard>(testOpcard);
             if (resultOpcard.opcardStatus == "n")
             {
-                logger.Log("ไม่พบข้อมูลจาก opcard");
+                logger.Log($"ไม่พบข้อมูลจาก opcard: {idcard}");
                 label1SetText(resultOpcard.errorMsg);
                 pictureBox1Status(false);
                 return;
             }
-            Console.WriteLine(testOpcard);
+            
             var resultOpcardJson = new JavaScriptSerializer().Serialize(resultOpcard);
             logger.Log("ข้อมูลจาก opcard : " + resultOpcardJson);
 
             string idcardShow = "XXXXXXXX"+resultOpcard.idcard.Substring(8);
-            Console.WriteLine(resultOpcard.idcard.Substring(8));
 
             // แสดงรายละเอียดเบื้องต้น
             pictureBox1.BeginInvoke(new MethodInvoker(delegate { pictureBox1.Image = Photo1; }));
@@ -293,7 +228,7 @@ namespace ShsKiosk
 
             tableLayoutPanel3.BeginInvoke(new MethodInvoker(delegate { tableLayoutPanel3.Show(); }));
 
-            // ส่งรูปจากบัตรประชาชนไว้ที่ HOST
+            // ส่งรูปจากบัตรประชาชนไว้ที่ HOST (http://192.168.131.250/sm3/save_photo.php)
             //Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(207, 248));
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
             Photo1.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -324,12 +259,12 @@ namespace ShsKiosk
 
 
             label1SetText("กำลังตรวจสอบข้อมูลการนัดพบแพทย์ในวันนี้");
-            // ตรวจสอบการนัดหมาย ( searchAppoint.php )
+            // ตรวจสอบการนัดหมาย ( http://192.168.130.15/kioskbroker/searchAppoint.php )
             Console.WriteLine($"ค้นหาการนัด จากเลขบัตรประชาชน {searchAppointUrl} {idcard}");
             string content = await Task.Run(() => searchFromSm(searchAppointUrl, idcard));
             Console.WriteLine(content);
-            string appointContent = "";
-            int appointCount = 0;
+            //string appointContent = "";
+            //int appointCount = 0;
             string appointStatus = "";
             if (!string.IsNullOrEmpty(content))
             {
@@ -338,14 +273,13 @@ namespace ShsKiosk
                 if (appointStatus == "y")
                 {
                     logger.Log("ข้อมูลการนัด " + result.appointContent);
-                    appointContent = result.appointContent;
-                    appointCount = int.Parse(result.appointCount);
+                    //appointContent = result.appointContent;
+                    //appointCount = int.Parse(result.appointCount);
                     appoint = result.appoint;
-
                 }
                 else
                 {
-                    logger.Log("ไม่พบข้อมูลการนัด");
+                    logger.Log($"ไม่พบข้อมูลการนัด {idcard}");
                     System.Threading.Thread.Sleep(2000);
                     label1SetText(result.errorMsg);
                     description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
@@ -381,15 +315,18 @@ namespace ShsKiosk
                         resSmartCard smartcard = JsonConvert.DeserializeObject<resSmartCard>(smartCardString);
                         logger.Log("[DATA] Agent 8189 : " + smartcard.correlationId + " --> " + smartcard.pid);
 
-                        correlationId = smartcard.correlationId;
-                        pid = smartcard.pid;
-                    }
-                    else
-                    {
-                        /*labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";*/
-                        description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
-                        label1SetText(nhsoError);
-                    }
+                    correlationId = smartcard.correlationId;
+                    pid = smartcard.pid;
+                }
+                else
+                {
+                    /*labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";*/
+                    string nhsoError = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
+                    logger.Log(nhsoError);
+
+                    description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
+                    label1SetText(nhsoError);
+                }
 
                 }
                 catch (Exception excepSmartCard)
@@ -402,7 +339,7 @@ namespace ShsKiosk
                 nhso.claimType = "PG0060001";
                 nhso.mobile = resultOpcard.mobile.Trim();
                 nhso.correlationId = correlationId;
-                nhso.hn = hn;
+                nhso.hn = resultOpcard.hn.Trim();
                 nhso.hcode = "11512";
 
                 Console.WriteLine(nhso);
@@ -532,7 +469,7 @@ namespace ShsKiosk
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine("Error searchFromSm :{0} ", e.Message);
+                Console.WriteLine($"Error searchFromSm :{0} {posturi} {idcard}", e.Message);
             }
 
             return content;

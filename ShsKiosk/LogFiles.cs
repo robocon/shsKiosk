@@ -24,10 +24,7 @@ namespace ShsKiosk
 
         public void WriteLog(string logMessage)
         {
-            w.Write("\r\nLog Entry : ");
-            w.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-            w.WriteLine($"  :{logMessage}");
-            w.WriteLine("-------------------------------");
+            w.WriteLine($"\r\nLog Entry : {DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()} :{logMessage}");
         }
     }
 }
