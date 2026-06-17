@@ -30,13 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewFormV2));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.description = new System.Windows.Forms.Label();
             this.iconLoader = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.shsLogo = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -48,6 +44,12 @@
             this.valueIdcard = new System.Windows.Forms.Label();
             this.labelIdcard = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconLoader)).BeginInit();
@@ -56,6 +58,7 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -65,35 +68,23 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.74356F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 81.25644F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label3, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.shsLogo, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(104, 30);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65.54054F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.45946F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 86F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 59.39849F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.60151F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 116F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 272F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(971, 585);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(971, 622);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("TH Sarabun New", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label1.Location = new System.Drawing.Point(192, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(768, 63);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "ระบบลงทะเบียนอัตโนมัติ โรงพยาบาลค่ายสุรศักดิ์มนตรี";
             // 
             // tableLayoutPanel2
             // 
@@ -103,7 +94,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.69435F));
             this.tableLayoutPanel2.Controls.Add(this.description, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.iconLoader, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(213, 250);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(213, 283);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -134,41 +125,6 @@
             this.iconLoader.TabIndex = 1;
             this.iconLoader.TabStop = false;
             // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(376, 68);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(400, 35);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "เฉพาะผู้ป่วยนัด อาคารเฉลิมพระเกียรติ";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(382, 140);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(388, 49);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "กรุณาเสียบบัตรประชาชนเพื่อใช้งาน";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, System.Drawing.FontStyle.Underline);
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(301, 189);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(549, 49);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "คำเตือน!!! ระหว่างการใช้งานห้ามดึงบัตรประชาชนออก";
-            // 
             // shsLogo
             // 
             this.shsLogo.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -186,7 +142,7 @@
             // 
             this.flowLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.flowLayoutPanel2.Controls.Add(this.tableLayoutPanel4);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(184, 315);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(184, 352);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(784, 249);
             this.flowLayoutPanel2.TabIndex = 9;
@@ -305,6 +261,81 @@
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(376, 79);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(400, 54);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "เฉพาะผู้ป่วยนัด อาคารเฉลิมพระเกียรติ";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("TH Sarabun New", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label1.Location = new System.Drawing.Point(192, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(768, 79);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "ระบบลงทะเบียนอัตโนมัติ โรงพยาบาลค่ายสุรศักดิ์มนตรี";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
+            this.label6.ForeColor = System.Drawing.Color.Olive;
+            this.label6.Location = new System.Drawing.Point(74, -3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(122, 49);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "คำเตือน!!!";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, System.Drawing.FontStyle.Underline);
+            this.label4.ForeColor = System.Drawing.Color.Olive;
+            this.label4.Location = new System.Drawing.Point(199, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(192, 49);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "ระหว่างเสียบบัตร";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("TH Sarabun New", 27.75F, System.Drawing.FontStyle.Underline);
+            this.label5.ForeColor = System.Drawing.Color.Olive;
+            this.label5.Location = new System.Drawing.Point(10, 42);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(489, 49);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "ห้ามดึงบัตรประชาชนออก จนกว่าจะได้ใบนำทาง";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Location = new System.Drawing.Point(316, 155);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(519, 110);
+            this.panel1.TabIndex = 7;
+            // 
             // NewFormV2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -327,6 +358,8 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -338,7 +371,6 @@
         private System.Windows.Forms.PictureBox iconLoader;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label description;
@@ -352,5 +384,8 @@
         private System.Windows.Forms.Label valuePtright;
         private System.Windows.Forms.Label labelPtright;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel1;
     }
 }

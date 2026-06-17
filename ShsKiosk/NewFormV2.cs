@@ -39,6 +39,8 @@ namespace ShsKiosk
         private string saveVnUrl = "http://192.168.130.15/kioskbroker/saveVn.php";
         private string savePhotoUrl = "http://192.168.131.250/sm3/save_photo.php";
 
+        private bool checkFromCard = false;
+
         /**
          * Action ที่มาจากการ Scan Barcode
          */
@@ -110,7 +112,7 @@ namespace ShsKiosk
 
                 if (description.Text.Contains("เตรียมความพร้อม"))
                 {
-                    label1SetText("✅ โปรแกรมพร้อมใช้งาน กรุณาเสียบบัตรประชาชนได้");
+                    label1SetText("✅ โปรแกรมพร้อมใช้งาน กรุณาเสียบบัตรประชาชน");
                 }
             }
         }
@@ -137,8 +139,8 @@ namespace ShsKiosk
 
             // ซ่อนตารางแสดงรายละเอียด
             tableLayoutPanel3.BeginInvoke(new MethodInvoker(delegate { tableLayoutPanel3.Hide(); }));
-            
 
+            label1SetText("✅ กรุณาเสียบบัตรประชาชนเพื่อใช้งาน");
             /*idcard.MonitorStop(cardReaders[0].ToString());*/
         }
 
@@ -172,6 +174,8 @@ namespace ShsKiosk
             }
             else
             {
+                checkFromCard = true; // SET ค่าให้รู้ว่ามาจากการเสียบบัตรประชาชน
+
                 string idcard = person.Citizenid;
                 logger.Log("พบข้อมูลบัตรประชาชน : " + idcard);
                 Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
@@ -194,11 +198,19 @@ namespace ShsKiosk
                 if (person != null && !string.IsNullOrEmpty(person.Citizenid))
                 {
                     // เรียกทำงานฟังก์ชันจัดการข้อมูลตามลอจิกปกติของคุณ
-                    label1SetText("กำลังตรวจสอบข้อมูลบัตรประชาชน กรุณารอสักครู่...");
-                    pictureBox1Status(true);
+                    //label1SetText("กำลังตรวจสอบข้อมูลบัตรประชาชน กรุณารอสักครู่...");
+                    //pictureBox1Status(true);
 
-                    Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
-                    UcwsNhso(person.Citizenid, Photo1, true);
+                    //Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
+                    //UcwsNhso(person.Citizenid, Photo1, true);
+
+                    Personal personalData = idcard.readAllPhoto();
+                    if (personalData != null)
+                    {
+                        // บังคับให้วิ่งเข้าลอจิก CardInsertedCallback ตัวเดียวกับตอนเสียบบัตรปกติ
+                        CardInsertedCallback(personalData);
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -354,9 +366,7 @@ namespace ShsKiosk
                 }
                 else
                 {
-                    string nhsoError = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
                     logger.Log(nhsoError);
-
                     description.BeginInvoke(new MethodInvoker(delegate { description.ForeColor = Color.Red; }));
                     label1SetText(nhsoError);
                 }
@@ -469,7 +479,7 @@ namespace ShsKiosk
                         Bitmap origin = (Bitmap)Image.FromFile("Images/avatar.png");
                         Bitmap Photo1 = new Bitmap(origin, new Size(160, 200));
 
-                        UcwsNhso(resultOpcard.idcard, Photo1, false);
+                        UcwsNhso(resultOpcard.idcard, Photo1, false); // ถ้ามาจากการพิมพ์/ScanBarcode (KeyPress) Parameter ตัวที่3 จะเป็น false เพื่อให้รู้ว่าไม่ได้มาจากการเสียบบัตรประชาชน
                     }
                     else
                     {
