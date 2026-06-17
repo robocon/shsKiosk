@@ -18,12 +18,6 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using ThaiNationalIDCard;
-using System.Management;
-using Microsoft.PointOfService;
-using System.Web.Script.Serialization;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
 
 namespace ShsKiosk
 {
@@ -43,7 +37,6 @@ namespace ShsKiosk
         private string searchOpcardUrl = "http://192.168.130.15/kioskbroker/searchOpcard.php";
         private string searchAppointUrl = "http://192.168.130.15/kioskbroker/searchAppoint.php";
         private string saveVnUrl = "http://192.168.130.15/kioskbroker/saveVn.php";
-
         private string savePhotoUrl = "http://192.168.131.250/sm3/save_photo.php";
 
         /**
@@ -100,11 +93,26 @@ namespace ShsKiosk
             //aTimer = null;
         }
 
-        private void Form1_Load_1(object sender, EventArgs e)
+        private async void Form1_Load_1(object sender, EventArgs e)
         {
             tableLayoutPanel3.Hide();
             this.WindowState = FormWindowState.Maximized;
 
+            if (idcard != null && cardReaders != null && cardReaders.Length > 0)
+            {
+                // เริ่มระบบ Monitor และผูก Event สัญญาณบัตรที่นี่
+                idcard.MonitorStart(cardReaders[0].ToString());
+                idcard.eventCardInserted += new handleCardInserted(CardInsertedCallback);
+                idcard.eventCardRemoved += new handleCardRemoved(CardRemoveCallback);
+
+                // 3. ตรวจสอบว่ามีบัตรประชาชนเสียบค้างไว้ก่อนเปิดโปรแกรมหรือไม่
+                await CheckCardOnLoad();
+
+                if (description.Text.Contains("เตรียมความพร้อม"))
+                {
+                    label1SetText("✅ โปรแกรมพร้อมใช้งาน กรุณาเสียบบัตรประชาชนได้");
+                }
+            }
         }
 
         /**
@@ -172,6 +180,32 @@ namespace ShsKiosk
             }
         }
 
+        private async Task CheckCardOnLoad()
+        {
+            // ตรวจสอบเบื้องต้นว่ามี Reader และมีตัวแปร idcard หรือไม่
+            if (idcard == null || cardReaders == null || cardReaders.Length == 0) return;
+
+            try
+            {
+                // ปลดล็อกเธรดเพื่อเช็กข้อมูล
+                var person = await RunCardReadder();
+
+                // ถ้าเบื้องต้นสามารถดึงเลขบัตรออกมาได้ แสดงว่ามีบัตรเสียบค้างอยู่จริง
+                if (person != null && !string.IsNullOrEmpty(person.Citizenid))
+                {
+                    // เรียกทำงานฟังก์ชันจัดการข้อมูลตามลอจิกปกติของคุณ
+                    label1SetText("กำลังตรวจสอบข้อมูลบัตรประชาชน กรุณารอสักครู่...");
+                    pictureBox1Status(true);
+
+                    Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(160, 200));
+                    UcwsNhso(person.Citizenid, Photo1, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CheckCardOnLoad Error: " + ex.Message);
+            }
+        }
 
         public async Task<Personal> RunCardReadder()
         {
@@ -320,7 +354,6 @@ namespace ShsKiosk
                 }
                 else
                 {
-                    /*labelAlertForm2 = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";*/
                     string nhsoError = "ระบบ สปสช.สำนักงานใหญ่มีปัญหา ไม่สามารถขอ Authen Code ได้";
                     logger.Log(nhsoError);
 
