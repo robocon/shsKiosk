@@ -267,7 +267,12 @@ namespace ShsKiosk
             string idcardShow = "XXXXXXXX"+resultOpcard.idcard.Substring(8);
 
             // แสดงรายละเอียดเบื้องต้น
-            pictureBox1.BeginInvoke(new MethodInvoker(delegate { pictureBox1.Image = Photo1; }));
+            //pictureBox1.BeginInvoke(new MethodInvoker(delegate { pictureBox1.Image = Photo1; }));
+            // 1. ทำสำเนาภาพไว้สำหรับแสดงผลบนหน้าจอ UI แยกออกมาโดยเฉพาะ
+            Bitmap photoForDisplay = new Bitmap(Photo1);
+            pictureBox1.BeginInvoke(new MethodInvoker(delegate {
+                pictureBox1.Image = photoForDisplay;
+            }));
             valueIdcard.BeginInvoke(new MethodInvoker(delegate { valueIdcard.Text = idcardShow; }));
             valueFullname.BeginInvoke(new MethodInvoker(delegate { valueFullname.Text = resultOpcard.ptname; }));
             valuePtright.BeginInvoke(new MethodInvoker(delegate { valuePtright.Text = resultOpcard.hosPtRight; }));
@@ -275,15 +280,23 @@ namespace ShsKiosk
             tableLayoutPanel3.BeginInvoke(new MethodInvoker(delegate { tableLayoutPanel3.Show(); }));
 
             // ส่งรูปจากบัตรประชาชนไว้ที่ HOST (http://192.168.131.250/sm3/save_photo.php)
-            //Bitmap Photo1 = new Bitmap(person.PhotoBitmap, new Size(207, 248));
+            //System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            //Photo1.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            // 2. ทำสำเนาภาพอีกชุดเพื่อใช้สำหรับประมวลผลเซฟลง MemoryStream ส่งไปเซิร์ฟเวอร์
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            Photo1.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            using (Bitmap photoForSave = new Bitmap(Photo1))
+            {
+                photoForSave.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+
+            // นำ Array ของไบต์ออกมารอไว้ก่อน เพื่อความปลอดภัยในการเรียกใช้ใน Task.Run
+            byte[] photoBytes = stream.ToArray();
+            stream.Dispose(); // เคลียร์สตรีมเมื่อได้ข้อมูลเรียบร้อย
 
             await Task.Run(async () => {
 
                 savePhoto pho = new savePhoto();
-                pho.rawPhoto = Convert.ToBase64String(stream.ToArray());
-                // pho.idCard = person.Citizenid;
+                pho.rawPhoto = Convert.ToBase64String(photoBytes);
                 pho.idCard = resultOpcard.idcard;
 
                 Console.WriteLine("====== Status : save photo from idcard ======");
